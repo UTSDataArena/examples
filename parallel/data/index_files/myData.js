@@ -1,4 +1,4 @@
-var genes = [
+var myData = [
     {
         "name": "ALL100",
         "group": "Female",
