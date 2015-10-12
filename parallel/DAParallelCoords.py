@@ -1,10 +1,9 @@
 from webView import *
 
-#width = 3840
-width = 11020
-height = 1200
-#width = 5760
-#height = 600
+#width = 11020
+#height = 1200
+width = 1200
+height = 800
 
 ww = None
 
@@ -13,10 +12,9 @@ uiroot = ui.getUi()
 
 if(isMaster()):
 	ww = WebView.create(width, height)
-	ww.loadUrl("http://exposedata.com/parallel/")
+	ww.loadUrl("http://www.exposedata.com/parallel/")
+	#ww.loadUrl("file://data/index.htm")
 	ww.setZoom(200)
-	# neat webgl aquarium demo
-	#ww.loadUrl("http://webglsamples.googlecode.com/hg/aquarium/aquarium.html")
 	frame = WebFrame.create(uiroot)
 	frame.setView(ww)
 else:
@@ -26,4 +24,3 @@ else:
 	frame.setData(ww)
 
 ImageBroadcastModule.instance().addChannel(ww, "webpage", ImageFormat.None)
-	
