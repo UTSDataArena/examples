@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+  <title>Weather Data - Parallel Coordinates</title>
+
+  <script type="text/javascript" src="index_files/d3.js"></script>
+  <script type="text/javascript" src="index_files/d3_002.js"></script>
+  <script type="text/javascript" src="index_files/d3_003.js"></script>
+  <script type="text/javascript" src="index_files/parallel-coordinates-veggie.js"></script>
+
+  <script type="text/javascript" src="index_files/jquery_002.js"></script>
+  <script type="text/javascript" src="index_files/underscore.js"></script>
+  <script type="text/javascript" src="index_files/backbone.js"></script>
+
+  <script src="index_files/jquery-ui-1.js"></script>
+  <script type="text/javascript" src="index_files/filter.js"></script>
+
+  <!-- SlickGrid -->
+  <link rel="stylesheet" href="index_files/slick.css" type="text/css" media="screen" charset="utf-8">
+  <script src="index_files/jquery.js"></script>
+  <script src="index_files/slick_003.js"></script>
+  <script src="index_files/slick_004.js"></script>
+  <script src="index_files/slick_002.js"></script>
+  <script src="index_files/slick.js"></script>
+  <script src="index_files/grid.js"></script>
+  <script src="index_files/pie.js"></script>
+  <script src="index_files/options.js"></script>
+  <script src="index_files/weather.js"></script>
+  <link rel="stylesheet" href="index_files/style.css" type="text/css" charset="utf-8">
+<style type="text/css" rel="stylesheet">.slickgrid_108761 .slick-header-column { left: 1000px; } .slickgrid_108761 .slick-top-panel { height:25px; } .slickgrid_108761 .slick-headerrow-columns { height:25px; } .slickgrid_108761 .slick-cell { height:22px; } .slickgrid_108761 .slick-row { width:1620px; height:25px; } .slickgrid_108761 .lr { float:none; position:absolute; } .slickgrid_108761 .l0 { left: 0px; } .slickgrid_108761 .r0 { right: 1300px; } .slickgrid_108761 .l1 { left: 320px; } .slickgrid_108761 .r1 { right: 1120px; } .slickgrid_108761 .l2 { left: 500px; } .slickgrid_108761 .r2 { right: 1040px; } .slickgrid_108761 .l3 { left: 580px; } .slickgrid_108761 .r3 { right: 960px; } .slickgrid_108761 .l4 { left: 660px; } .slickgrid_108761 .r4 { right: 880px; } .slickgrid_108761 .l5 { left: 740px; } .slickgrid_108761 .r5 { right: 800px; } .slickgrid_108761 .l6 { left: 820px; } .slickgrid_108761 .r6 { right: 720px; } .slickgrid_108761 .l7 { left: 900px; } .slickgrid_108761 .r7 { right: 640px; } .slickgrid_108761 .l8 { left: 980px; } .slickgrid_108761 .r8 { right: 560px; } .slickgrid_108761 .l9 { left: 1060px; } .slickgrid_108761 .r9 { right: 480px; } .slickgrid_108761 .l10 { left: 1140px; } .slickgrid_108761 .r10 { right: 400px; } .slickgrid_108761 .l11 { left: 1220px; } .slickgrid_108761 .r11 { right: 320px; } .slickgrid_108761 .l12 { left: 1300px; } .slickgrid_108761 .r12 { right: 240px; } .slickgrid_108761 .l13 { left: 1380px; } .slickgrid_108761 .r13 { right: 160px; } .slickgrid_108761 .l14 { left: 1460px; } .slickgrid_108761 .r14 { right: 80px; } .slickgrid_108761 .l15 { left: 1540px; } .slickgrid_108761 .r15 { right: 0px; }</style></head>
+
+<body>
+<div id="nav">
+  <h1>Data - Parallel Coordinates</h1>
+  <div class="widget right toggle">
+	  <input min="0" max="1" value="0.2" step="0.01" name="power" list="powers" id="line_opacity" type="range">
+   <br>
+	  Opacity: <span id="opacity_level">20%</span>
+	</div>
+  <div><a href="#" id="shadows" class="right toggle">Shadows</a></div>
+  <div><a href="#" id="inverted" class="right toggle">Dark</a></div>
+  <div><a href="#" id="no_ticks" class="right toggle">Hide Ticks</a></div>
+  <p class="intro left clear">
+    An interactive visualization of Australian weather data.
+
+    For information on parallel coordinates, read this <a href="http://eagereyes.org/techniques/parallel-coordinates">tutorial</a>.
+  </p>
+</div>
+<div id="main">
+  <div class="widgets">
+    <h3>Weather data</h3>
+    <div id="totals" class="widget right">Total Selected<br><svg height="80" width="100"></svg></div>
+    <div id="pie" class="widget right">Group Breakdown<br><svg height="80" width="100"></svg></div>
+    <a href="#" id="export_selected" class="button green filter_control">Export</a>
+    <a href="#" id="remove_selected" class="button red filter_control">Remove</a>
+    <a href="#" id="keep_selected" class="button green filter_control">Keep</a>
+    <div id="pager" class="info"><div class="slick-pager"><span class="slick-pager-nav"><span class="ui-state-default ui-corner-all ui-icon-container"><span class="ui-icon ui-icon-seek-first ui-state-disabled"></span></span><span class="ui-state-default ui-corner-all ui-icon-container"><span class="ui-icon ui-icon-seek-prev ui-state-disabled"></span></span><span class="ui-state-default ui-corner-all ui-icon-container"><span class="ui-icon ui-icon-seek-next ui-state-disabled"></span></span><span class="ui-state-default ui-corner-all ui-icon-container"><span class="ui-icon ui-icon-seek-end ui-state-disabled"></span></span></span><span class="slick-pager-settings"><span class="slick-pager-settings-expanded" style="display:none">Show: <a data="0">All</a><a data="-1">Auto</a><a data="25">25</a><a data="50">50</a><a data="100">100</a></span><span class="ui-state-default ui-corner-all ui-icon-container"><span class="ui-icon ui-icon-lightbulb"></span></span></span><span class="slick-pager-status">Selected 1153 rows</span></div></div>
+        <div id="legend">
+    </div>
+  </div>
+  <div class="ui-resizable" style="height: 340px; width: 1920px;" id="parallel">
+  <svg height="340" width="1920"></svg><div class="ui-resizable-handle ui-resizable-s"></div></div>
+  <div class="slickgrid_108761 ui-widget ui-resizable" style="overflow: hidden; outline: 0px none; position: relative;" hidefocus="true" tabindex="0" id="myGrid"><div class="slick-header ui-state-default" style="overflow:hidden;position:relative;"><div unselectable="on" class="slick-header-columns ui-sortable" style="width: 10000px; left: -1000px; -moz-user-select: none;"><div title="name" style="width: 311px;" class="ui-state-default slick-header-column" id="slickgrid_108761name"><span class="slick-column-name">name</span><div class="slick-resizable-handle"></div></div><div title="group" style="width: 171px;" class="ui-state-default slick-header-column" id="slickgrid_108761group"><span class="slick-column-name">group</span><div class="slick-resizable-handle"></div></div><div title="protein (g)" style="width: 71px;" class="ui-state-default slick-header-column" id="slickgrid_108761protein (g)"><span class="slick-column-name">protein (g)</span><div class="slick-resizable-handle"></div></div><div title="calcium (g)" style="width: 71px;" class="ui-state-default slick-header-column" id="slickgrid_108761calcium (g)"><span class="slick-column-name">calcium (g)</span><div class="slick-resizable-handle"></div></div><div title="sodium (g)" style="width: 71px;" class="ui-state-default slick-header-column" id="slickgrid_108761sodium (g)"><span class="slick-column-name">sodium (g)</span><div class="slick-resizable-handle"></div></div><div title="fiber (g)" style="width: 71px;" class="ui-state-default slick-header-column" id="slickgrid_108761fiber (g)"><span class="slick-column-name">fiber (g)</span><div class="slick-resizable-handle"></div></div><div title="vitaminc (g)" style="width: 71px;" class="ui-state-default slick-header-column" id="slickgrid_108761vitaminc (g)"><span class="slick-column-name">vitaminc (g)</span><div class="slick-resizable-handle"></div></div><div title="potassium (g)" style="width: 71px;" class="ui-state-default slick-header-column" id="slickgrid_108761potassium (g)"><span class="slick-column-name">potassium (g)</span><div class="slick-resizable-handle"></div></div><div title="carbohydrate (g)" style="width: 71px;" class="ui-state-default slick-header-column" id="slickgrid_108761carbohydrate (g)"><span class="slick-column-name">carbohydrate (g)</span><div class="slick-resizable-handle"></div></div><div title="sugars (g)" style="width: 71px;" class="ui-state-default slick-header-column" id="slickgrid_108761sugars (g)"><span class="slick-column-name">sugars (g)</span><div class="slick-resizable-handle"></div></div><div title="fat (g)" style="width: 71px;" class="ui-state-default slick-header-column" id="slickgrid_108761fat (g)"><span class="slick-column-name">fat (g)</span><div class="slick-resizable-handle"></div></div><div title="water (g)" style="width: 71px;" class="ui-state-default slick-header-column" id="slickgrid_108761water (g)"><span class="slick-column-name">water (g)</span><div class="slick-resizable-handle"></div></div><div title="calories" style="width: 71px;" class="ui-state-default slick-header-column" id="slickgrid_108761calories"><span class="slick-column-name">calories</span><div class="slick-resizable-handle"></div></div><div title="saturated (g)" style="width: 71px;" class="ui-state-default slick-header-column" id="slickgrid_108761saturated (g)"><span class="slick-column-name">saturated (g)</span><div class="slick-resizable-handle"></div></div><div title="monounsat (g)" style="width: 71px;" class="ui-state-default slick-header-column" id="slickgrid_108761monounsat (g)"><span class="slick-column-name">monounsat (g)</span><div class="slick-resizable-handle"></div></div><div title="polyunsat (g)" style="width: 71px;" class="ui-state-default slick-header-column" id="slickgrid_108761polyunsat (g)"><span class="slick-column-name">polyunsat (g)</span><div class="slick-resizable-handle"></div></div></div></div><div class="slick-headerrow ui-state-default" style="overflow: hidden; position: relative; display: none;"><div class="slick-headerrow-columns" style="width:10000px;"></div></div><div class="
+slick-top-panel-scroller ui-state-default" style="overflow: hidden; position: relative; display: none;"><div class="slick-top-panel" style="width:10000px"></div></div><div class="slick-viewport" tabindex="0" hidefocus="" style="width: 100%; overflow: auto; outline: 0px none; position: relative; height: 235px;"><div style="width: 1620px; height: 28850px;" class="grid-canvas" tabindex="0" hidefocus=""><div class="ui-widget-content slick-row  even" row="0" style="top:0px"><div class="slick-cell lr l0 r0">Butter oil, anhydrous</div><div class="slick-cell lr l1 r1">Dairy and Egg Products</div><div class="slick-cell lr l2 r2">0.28</div><div class="slick-cell lr l3 r3">0.004</div><div class="slick-cell lr l4 r4">0.002</div><div class="slick-cell lr l5 r5"></div><div class="slick-cell lr l6 r6">0</div><div class="slick-cell lr l7 r7">0.005</div><div class="slick-cell lr l8 r8"></div><div class="slick-cell lr l9 r9"></div><div class="slick-cell lr l10 r10">99.48</div><div class="slick-cell lr l11 r11">0.24</div><div class="slick-cell lr l12 r12">876</div><div class="slick-cell lr l13 r13">61.924</div><div class="slick-cell lr l14 r14">28.732</div><div class="slick-cell lr l15 r15">3.694</div></div><div class="ui-widget-content slick-row  odd" row="1" style="top:25px"><div class="slick-cell lr l0 r0">Butter, salted</div><div class="slick-cell lr l1 r1">Dairy and Egg Products</div><div class="slick-cell lr l2 r2">0.85</div><div class="slick-cell lr l3 r3">0.024</div><div class="slick-cell lr l4 r4">0.714</div><div class="slick-cell lr l5 r5"></div><div class="slick-cell lr l6 r6">0</div><div class="slick-cell lr l7 r7">0.024</div><div class="slick-cell lr l8 r8">0.06</div><div class="slick-cell lr l9 r9">0.06</div><div class="slick-cell lr l10 r10">81.11</div><div class="slick-cell lr l11 r11">15.87</div><div class="slick-cell lr l12 r12">717</div><div class="slick-cell lr l13 r13">51.368</div><div class="slick-cell lr l14 r14">21.021</div><div class="slick-cell lr l15 r15">3.043</div></div><div class="ui-widget-content slick-row  even" row="2" style="top:50px"><div class="slick-cell lr l0 r0">Cheese fondue</div><div class="slick-cell lr l1 r1">Dairy and Egg Products</div><div class="slick-cell lr l2 r2">14.23</div><div class="slick-cell lr l3 r3">0.476</div><div class="slick-cell lr l4 r4">0.132</div><div class="slick-cell lr l5 r5"></div><div class="slick-cell lr l6 r6">0</div><div class="slick-cell lr l7 r7">0.105</div><div class="slick-cell lr l8 r8">3.77</div><div class="slick-cell lr l9 r9"></div><div class="slick-cell lr l10 r10">13.47</div><div class="slick-cell lr l11 r11">61.61</div><div class="slick-cell lr l12 r12">229</div><div class="slick-cell lr l13 r13">8.721</div><div class="slick-cell lr l14 r14">3.563</div><div class="slick-cell lr l15 r15">0.484</div></div><div class="ui-widget-content slick-row  odd" row="3" style="top:75px"><div class="slick-cell lr l0 r0">Cheese food, cold pack, american</div><div class="slick-cell lr l1 r1">Dairy and Egg Products</div><div class="slick-cell lr l2 r2">19.66</div><div class="slick-cell lr l3 r3">0.497</div><div class="slick-cell lr l4 r4">0.966</div><div class="slick-cell lr l5 r5"></div><div class="slick-cell lr l6 r6">0</div><div class="slick-cell lr l7 r7">0.363</div><div class="slick-cell lr l8 r8">8.32</div><div class="slick-cell lr l9 r9"></div><div class="slick-cell lr l10 r10">24.46</div><div class="slick-cell lr l11 r11">43.12</div><div class="slick-cell lr l12 r12">331</div><div class="slick-cell lr l13 r13">15.355</div><div class="slick-cell lr l14 r14">7.165</div><div class="slick-cell lr l15 r15">0.719</div></div><div class="ui-widget-content slick-row  even" row="4" style="top:100px"><div class="slick-cell lr l0 r0">Cheese food, pasteurized process, swiss</div><div class="slick-cell lr l1 r1">Dairy and Egg Products</div><div class="slick-cell lr l2 r2">21.92</div><div class="slick-cell lr l3 r3">0.723</div><div class="slick-cell lr l4 r4">1.552</div><div class="slick-cell lr l5 r5"></div><div class="slick-cell lr l6 r6">0</div><div class="slick-cell lr l7 r7">0.
+284</div><div class="slick-cell lr l8 r8">4.5</div><div class="slick-cell lr l9 r9"></div><div class="slick-cell lr l10 r10">24.14</div><div class="slick-cell lr l11 r11">43.67</div><div class="slick-cell lr l12 r12">323</div><div class="slick-cell lr l13 r13">15.487</div><div class="slick-cell lr l14 r14">6.801</div><div class="slick-cell lr l15 r15">0.6</div></div><div class="ui-widget-content slick-row  odd" row="5" style="top:125px"><div class="slick-cell lr l0 r0">Cheese spread, cream cheese base</div><div class="slick-cell lr l1 r1">Dairy and Egg Products</div><div class="slick-cell lr l2 r2">7.1</div><div class="slick-cell lr l3 r3">0.071</div><div class="slick-cell lr l4 r4">0.673</div><div class="slick-cell lr l5 r5"></div><div class="slick-cell lr l6 r6">0</div><div class="slick-cell lr l7 r7">0.112</div><div class="slick-cell lr l8 r8">3.5</div><div class="slick-cell lr l9 r9">3.5</div><div class="slick-cell lr l10 r10">28.6</div><div class="slick-cell lr l11 r11">58.5</div><div class="slick-cell lr l12 r12">295</div><div class="slick-cell lr l13 r13">18.02</div><div class="slick-cell lr l14 r14">8.071</div><div class="slick-cell lr l15 r15">1.033</div></div><div class="ui-widget-content slick-row  even" row="6" style="top:150px"><div class="slick-cell lr l0 r0">Cheese, blue</div><div class="slick-cell lr l1 r1">Dairy and Egg Products</div><div class="slick-cell lr l2 r2">21.4</div><div class="slick-cell lr l3 r3">0.528</div><div class="slick-cell lr l4 r4">1.395</div><div class="slick-cell lr l5 r5"></div><div class="slick-cell lr l6 r6">0</div><div class="slick-cell lr l7 r7">0.256</div><div class="slick-cell lr l8 r8">2.34</div><div class="slick-cell lr l9 r9">0.5</div><div class="slick-cell lr l10 r10">28.74</div><div class="slick-cell lr l11 r11">42.41</div><div class="slick-cell lr l12 r12">353</div><div class="slick-cell lr l13 r13">18.669</div><div class="slick-cell lr l14 r14">7.778</div><div class="slick-cell lr l15 r15">0.8</div></div><div class="ui-widget-content slick-row  odd" row="7" style="top:175px"><div class="slick-cell lr l0 r0">Cheese, brick</div><div class="slick-cell lr l1 r1">Dairy and Egg Products</div><div class="slick-cell lr l2 r2">23.24</div><div class="slick-cell lr l3 r3">0.674</div><div class="slick-cell lr l4 r4">0.56</div><div class="slick-cell lr l5 r5"></div><div class="slick-cell lr l6 r6">0</div><div class="slick-cell lr l7 r7">0.136</div><div class="slick-cell lr l8 r8">2.79</div><div class="slick-cell lr l9 r9">0.51</div><div class="slick-cell lr l10 r10">29.68</div><div class="slick-cell lr l11 r11">41.11</div><div class="slick-cell lr l12 r12">371</div><div class="slick-cell lr l13 r13">18.764</div><div class="slick-cell lr l14 r14">8.598</div><div class="slick-cell lr l15 r15">0.784</div></div><div class="ui-widget-content slick-row  even" row="8" style="top:200px"><div class="slick-cell lr l0 r0">Cheese, brie</div><div class="slick-cell lr l1 r1">Dairy and Egg Products</div><div class="slick-cell lr l2 r2">20.75</div><div class="slick-cell lr l3 r3">0.184</div><div class="slick-cell lr l4 r4">0.629</div><div class="slick-cell lr l5 r5"></div><div class="slick-cell lr l6 r6">0</div><div class="slick-cell lr l7 r7">0.152</div><div class="slick-cell lr l8 r8">0.45</div><div class="slick-cell lr l9 r9">0.45</div><div class="slick-cell lr l10 r10">27.68</div><div class="slick-cell lr l11 r11">48.42</div><div class="slick-cell lr l12 r12">334</div><div class="slick-cell lr l13 r13">17.41</div><div class="slick-cell lr l14 r14">8.013</div><div class="slick-cell lr l15 r15">0.826</div></div><div class="ui-widget-content slick-row  odd" row="9" style="top:225px"><div class="slick-cell lr l0 r0">Cheese, camembert</div><div class="slick-cell lr l1 r1">Dairy and Egg Products</div><div class="slick-cell lr l2 r2">19.8</div><div class="slick-cell lr l3 r3">0.388</div><div class="slick-cell lr l4 r4">0.842</div><div class="slick-cell lr l5 r5"></div><div class="slick-cell lr l6 r6">0</div><div class="slick-cell lr l7 r7">0.187</div><div class="slick-cell lr l8 r8">0.46</div><div
+class="slick-cell lr l9 r9">0.46</div><div class="slick-cell lr l10 r10">24.26</div><div class="slick-cell lr l11 r11">51.8</div><div class="slick-cell lr l12 r12">300</div><div class="slick-cell lr l13 r13">15.259</div><div class="slick-cell lr l14 r14">7.023</div><div class="slick-cell lr l15 r15">0.724</div></div><div class="ui-widget-content slick-row  even" row="10" style="top:250px"><div class="slick-cell lr l0 r0">Cheese, cheddar</div><div class="slick-cell lr l1 r1">Dairy and Egg Products</div><div class="slick-cell lr l2 r2">24.9</div><div class="slick-cell lr l3 r3">0.721</div><div class="slick-cell lr l4 r4">0.621</div><div class="slick-cell lr l5 r5"></div><div class="slick-cell lr l6 r6">0</div><div class="slick-cell lr l7 r7">0.098</div><div class="slick-cell lr l8 r8">1.28</div><div class="slick-cell lr l9 r9">0.52</div><div class="slick-cell lr l10 r10">33.14</div><div class="slick-cell lr l11 r11">36.75</div><div class="slick-cell lr l12 r12">403</div><div class="slick-cell lr l13 r13">21.092</div><div class="slick-cell lr l14 r14">9.391</div><div class="slick-cell lr l15 r15">0.942</div></div><div class="ui-widget-content slick-row  odd" row="11" style="top:275px"><div class="slick-cell lr l0 r0">Cheese, cheshire</div><div class="slick-cell lr l1 r1">Dairy and Egg Products</div><div class="slick-cell lr l2 r2">23.37</div><div class="slick-cell lr l3 r3">0.643</div><div class="slick-cell lr l4 r4">0.7</div><div class="slick-cell lr l5 r5"></div><div class="slick-cell lr l6 r6">0</div><div class="slick-cell lr l7 r7">0.095</div><div class="slick-cell lr l8 r8">4.78</div><div class="slick-cell lr l9 r9"></div><div class="slick-cell lr l10 r10">30.6</div><div class="slick-cell lr l11 r11">37.65</div><div class="slick-cell lr l12 r12">387</div><div class="slick-cell lr l13 r13">19.475</div><div class="slick-cell lr l14 r14">8.671</div><div class="slick-cell lr l15 r15">0.87</div></div><div class="ui-widget-content slick-row  even" row="12" style="top:300px"><div class="slick-cell lr l0 r0">Cheese, colby</div><div class="slick-cell lr l1 r1">Dairy and Egg Products</div><div class="slick-cell lr l2 r2">23.76</div><div class="slick-cell lr l3 r3">0.685</div><div class="slick-cell lr l4 r4">0.604</div><div class="slick-cell lr l5 r5"></div><div class="slick-cell lr l6 r6">0</div><div class="slick-cell lr l7 r7">0.127</div><div class="slick-cell lr l8 r8">2.57</div><div class="slick-cell lr l9 r9">0.52</div><div class="slick-cell lr l10 r10">32.11</div><div class="slick-cell lr l11 r11">38.2</div><div class="slick-cell lr l12 r12">394</div><div class="slick-cell lr l13 r13">20.218</div><div class="slick-cell lr l14 r14">9.28</div><div class="slick-cell lr l15 r15">0.953</div></div><div class="ui-widget-content slick-row  odd" row="13" style="top:325px"><div class="slick-cell lr l0 r0">Cheese, cottage, creamed, large or small curd</div><div class="slick-cell lr l1 r1">Dairy and Egg Products</div><div class="slick-cell lr l2 r2">11.12</div><div class="slick-cell lr l3 r3">0.083</div><div class="slick-cell lr l4 r4">0.364</div><div class="slick-cell lr l5 r5"></div><div class="slick-cell lr l6 r6">0</div><div class="slick-cell lr l7 r7">0.104</div><div class="slick-cell lr l8 r8">3.38</div><div class="slick-cell lr l9 r9">2.67</div><div class="slick-cell lr l10 r10">4.3</div><div class="slick-cell lr l11 r11">79.79</div><div class="slick-cell lr l12 r12">98</div><div class="slick-cell lr l13 r13">1.718</div><div class="slick-cell lr l14 r14">0.778</div><div class="slick-cell lr l15 r15">0.123</div></div></div></div><div class="ui-resizable-handle ui-resizable-s"></div></div>
+  <script type="text/javascript">
+
+  $(function() {
+
+    var dimensions = new Filter();
+    var highlighter = new Selector();
+
+    dimensions.set({data: weatherData });
+
+    var columns = _(weatherData[0]).keys();
+    var axes = columns;
+
+    var locations = [
+		"Canberra",
+		"Sydney",
+		"Brisbane",
+		"Melbourne",
+		"Perth",
+		"Adelaid",
+		"Hobart",
+		"Darwin"
+    ]
+//       ["Dairy and Egg Products", /*"Spices and Herbs", "Baby Foods",*/ "Fats and Oils",
+//        "Poultry Products", "Soups, Sauces, and Gravies", "Vegetables and Vegetable Products",
+//        "Sausages and Luncheon Meats", "Breakfast Cereals", "Fruits and Fruit Juices",
+//        "Nut and Seed Products", "Beverages", "Finfish and Shellfish Products",
+//        "Legumes and Legume Products", "Baked Products", "Sweets", "Cereal Grains and Pasta",
+//        "Fast Foods", "Meals, Entrees, and Sidedishes", "Snacks", /*"Ethnic Foods",*/ "Restaurant Foods"];
+
+    var colors = {
+      "Canberra" : '#ff7f0e',
+      "Sydney" : '#aec7e8',
+      "Brisbane" : '#ffbb78',
+      "Melbourne" : '#d62728',
+      "Perth" : '#98df8a',
+      "Adelaid" : '#2ca02c',
+      "Hobart" : '#ff9896',
+      "Darwin" : '#9467bd'
+//       "Fruits and Fruit Juices" : '#c5b0d5',
+//       "Nut and Seed Products" : '#8c564b',
+//       "Beverages" : '#c49c94',
+//       "Finfish and Shellfish Products" : '#e377c2',
+//       "Legumes and Legume Products" : '#f7b6d2',
+//       "Baked Products" : '#7f7f7f',
+//       "Sweets" : '#c7c7c7',
+//       "Cereal Grains and Pasta" : ' #bcbd22',
+//       "Fast Foods" : '#dbdb8d',
+//       "Meals, Entrees, and Sidedishes" : '#17becf',
+//       "Snacks" : '#9edae5',
+//       "Ethnic Foods" : '#e7ba52',
+//       "Restaurant Foods" : '#1f77b4'
+    }
+
+    _(locations).each(function(group) {
+      $('#legend').append("<div class='item'><div class='color' style='background: " + colors[group] + "';></div><div class='key'>" + group + "</div></div>");
+    });
+
+    var pc = parallel(dimensions, colors);
+    var pie = piegroups(weatherData, locations, colors, 'location');
+    var totals = pietotals(
+      ['in', 'out'],
+      [_(weatherData).size(), 0]
+    );
+
+    var slicky = new grid({
+      model: dimensions,
+      selector: highlighter,
+      width: $('body').width(),
+      columns: columns
+    });
+
+    // vertical full screen
+    var parallel_height = $(window).height() - 64 - 12 - 120 - 320;
+    if (parallel_height < 120) parallel_height = 120;  // min height
+    if (parallel_height > 400) parallel_height = 400;  // max height
+    $('#parallel').css({
+        height: parallel_height + 'px',
+        width: $(window).width() + 'px'
+    });
+
+    slicky.update();
+    pc.render();
+
+    dimensions.bind('change:filtered', function() {
+      var data = dimensions.get('data');
+      var filtered = dimensions.get('filtered');
+      var data_size = _(data).size();
+      var filtered_size = _(filtered).size();
+      pie.update(filtered);
+      totals.update([filtered_size, data_size - filtered_size]);
+
+      var opacity = _([2/Math.pow(filtered_size,0.37), 100]).min();
+      $('#line_opacity').val(opacity).change();
+    });
+
+    highlighter.bind('change:selected', function() {
+      var highlighted = this.get('selected');
+      pc.highlight(highlighted);
+    });
+
+    $('#remove_selected').click(function() {
+      dimensions.outliers();
+      pc.update(dimensions.get('data'));
+      pc.render();
+      dimensions.trigger('change:filtered');
+      return false;
+    });
+
+    $('#keep_selected').click(function() {
+      dimensions.inliers();
+      pc.update(dimensions.get('data'));
+      pc.render();
+      dimensions.trigger('change:filtered');
+      return false;
+    });
+
+    $('#export_selected').click(function() {
+      var data = dimensions.get('filtered');
+      var keys = _.keys(data[0]);
+      var csv = _(keys).map(function(d) { return '"' + addslashes(d) + '"'; }).join(",");
+      _(data).each(function(row) {
+        csv += "\n";
+        csv += _(keys).map(function(k) {
+          var val = row[k];
+          if (_.isString(val)) {
+            return '"' + addslashes(val) + '"';
+          }
+          if (_.isNumber(val)) {
+            return val;
+          }
+          if (_.isNull(val)) {
+            return "";
+          }
+        }).join(",");
+      });
+      var uriContent = "data:application/octet-stream," + encodeURIComponent(csv);
+      var myWindow = window.open(uriContent, "Nutrient CSV");
+      myWindow.focus();
+      return false;
+    });
+
+    $('#line_opacity').change(function() {
+      var val = $(this).val();
+      $('#parallel .foreground path').css('stroke-opacity', val.toString());
+      $('#opacity_level').html((Math.round(val*10000)/100) + "%");
+    });
+
+    $('#parallel').resize(function() {
+      // vertical full screen
+      pc.render();
+      var val = $('#line_opacity').val();
+      $('#parallel .foreground path').css('stroke-opacity', val.toString());
+    });
+
+    $('#parallel').resizable({
+      handles: 's',
+      resize: function () { return false; }
+    });
+
+    $('#myGrid').resizable({
+      handles: 's'
+    });
+
+    function addslashes( str ) {
+      return (str+'')
+        .replace(/\"/g, "\"\"")        // escape double quotes
+        .replace(/\0/g, "\\0");        // replace nulls with 0
+    };
+
+  });
+
+  </script>
+  <!--
+    <p>
+     Copyright 2011, Kai Chang
+    </p>
+    <p>
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+    </p>
+    <p>
+         http://www.apache.org/licenses/LICENSE-2.0
+    </p>
+    <p>
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+	-->
+</div>
+
+
+</body></html>
