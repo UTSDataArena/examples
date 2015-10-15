@@ -39,7 +39,25 @@
       // Extract the list of dimensions and create a scale for each.
       // Excludes axis from diagram
       x.domain(dimensions = d3.keys(cars[0]).filter(function(d) {
-        return d != "date" && d != "location" && d != "id" && d != "day" &&
+        return d != "id" && d != "location" && d != "date" && d != "day" && d != "year" &&
+		// Full dataset exclusions
+		d != "evaporation" && 
+		d != "sunshine" && 
+		d != "windDirection" && 
+		d != "windSpeed" &&
+		d != "windTime" && 
+		d != "9amTemp" && 
+		d != "9amHumid" && 
+		d != "9amClouds" &&
+		d != "9amWindDirection" && 
+		d != "9amWindSpeed" &&
+		d != "9amPressure" && 
+		d != "3pmTemp" &&
+		d != "3pmHumid" && 
+		d != "3pmClouds" && 
+		d != "3pmWindDirection" && 
+		d != "3pmWindSpeed" && 
+		d != "3pmPressure" &&
                (y[d] = d3.scale.linear()
             .domain(d3.extent(cars, function(p) { return +p[d]; }))
             .range([h, 0]));
