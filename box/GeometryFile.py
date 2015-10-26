@@ -14,19 +14,17 @@ class GeometryFile():
 	def makeBase(self):
 		GeometryFile._sceneNodeCount += 1
 		self.base = SceneNode.create("Geometry_" + str(GeometryFile._sceneNodeCount))
-		self.initialRot = self.base.getOrientation()
-		self.initialAngles = list(self.base.getOrientation().get_euler())
+		self.initialAngles = self.base.getOrientation()
 		self.initialPosition = list(self.base.getPosition())
 
                 self.reset()
 
-        def __init__(self): 
+        def __init__(self, fileToLoad): 
                 self.base = None
 
 		self.angles = None
 		self.position = None
 
-		self.initialRot = None
 		self.initialAngles = None
                 self.initialPosition = None
 
@@ -41,10 +39,17 @@ class GeometryFile():
 		self.modelInfos = []
 
 		self.makeBase()
+                self.loadModel(fileToLoad)
 
         def reset(self):
-                self.angles = self.initialAngles
+                self.angles = list(self.initialAngles.get_euler())
                 self.position = self.initialPosition
+
+	def loadModel(self, fileToLoad, textured=True):
+		getSceneManager().loadModel(self.addModel(fileToLoad))
+		newModel = StaticObject.create(fileToLoad)
+		newModel.setName(fileToLoad)
+		self.setModel(newModel, textured)
 
 	def addModel(self, fileToLoad):
 		# Load a static model
@@ -56,12 +61,6 @@ class GeometryFile():
 		mdlModel.optimize = False 
 		self.modelInfos.append(mdlModel)
 		return self.modelInfos[-1]
-
-	def loadModel(self, fileToLoad, textured=True):
-		getSceneManager().loadModel(self.addModel(fileToLoad))
-		newModel = StaticObject.create(fileToLoad)
-		newModel.setName(fileToLoad)
-		self.setModel(newModel, textured)
 
 	def setModel(self, model, textured=True):
 		if textured:
@@ -90,7 +89,7 @@ class GeometryFile():
                     min(max(self.angles[2] + newAngles[2], -self.zAngClamp), self.zAngClamp)
             ]
 
-            self.base.setOrientation(self.initialRot * quaternionFromEulerDeg(*self.angles))
+            self.base.setOrientation(self.initialAngles * quaternionFromEulerDeg(*self.angles))
 
             self.position = [
                     min(max(self.position[0] + newPosition[0], -self.xPosClamp), self.xPosClamp),

@@ -6,9 +6,10 @@ class DAEventHandler():
         def __init__(self):
                 self.cam = getDefaultCamera()
                 self.cameraControl = False
+                self.initialCamAngles = self.cam.getOrientation()
                 self.initialCamPosition = self.cam.getPosition()
 
-                self.geo = None
+                self.geos = []
 
                 self.spaceNavMoveSensitivity = 5.0
                 self.spaceNavRotSensitivity = 0.005
@@ -77,7 +78,7 @@ class DAEventHandler():
                 
 
         def addGeo(self, geo):
-                self.geo = geo
+                self.geos.append(geo)
 
         # Space Navigator axes:
         #0 (-left, +right)
@@ -149,11 +150,12 @@ class DAEventHandler():
 
                 elif self.leftButtonDown and e.getType() == EventType.Move:
                         delta = self.prevMousePos - e.getPosition()
-                        xDeg = self.xAngSensitivity * delta.x
-                        yDeg = self.yAngSensitivity * delta.y
 
-                        angles[0] = xDeg
-                        angles[1] = yDeg
+                        xMove = self.xPosSensitivity * delta.x
+                        yMove = self.yPosSensitivity * delta.y
+
+                        position[0] = xMove
+                        position[1] = yMove
 
                         self.prevMousePos = e.getPosition()
 
@@ -169,11 +171,11 @@ class DAEventHandler():
                 elif self.rightButtonDown and e.getType() == EventType.Move:
                         delta = self.prevMousePos - e.getPosition()
 
-                        xMove = self.xPosSensitivity * delta.x
-                        yMove = self.yPosSensitivity * delta.y
+                        xDeg = self.xAngSensitivity * delta.x
+                        yDeg = self.yAngSensitivity * delta.y
 
-                        position[0] = xMove
-                        position[1] = yMove
+                        angles[1] = xDeg
+                        angles[0] = yDeg
 
                         self.prevMousePos = e.getPosition()
 
@@ -243,10 +245,10 @@ class DAEventHandler():
 
                 if e.isKeyDown(ord('n')):
                         if self.cameraControl:
-                                self.cam.resetOrientation()
+                                self.cam.setOrientation(self.initialCamAngles)
                                 self.cam.setPosition(self.initialCamPosition)
                         else:
-                                self.geo.reset()
+                                [ g.reset() for g in self.geos ]
 
                 if e.isKeyDown(ord('i')):
                         self.printConfig()
@@ -268,7 +270,7 @@ class DAEventHandler():
                         self.cam.setOrientation(self.cam.getOrientation() * quaternionFromEulerDeg(*angles))
                         self.cam.translate(Vector3(*position), Space.Local)
                 else:
-                        self.geo.updateModel(angles, position)
+                        [ g.updateModel(angles, position) for g in self.geos ]
 
         def onUpdate(self, frame, time, dt):
                 pass
