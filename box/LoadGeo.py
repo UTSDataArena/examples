@@ -8,7 +8,7 @@ from DAEventHandler import DAEventHandler
 #fileToLoad = "/da/mannequinShoot/exports/Mook/Mook_mix1_initial.fbx"
 #fileToLoad = "/home/fabian/Code/paulBourke/weld/take1.obj"
 fileToLoad = "/home/fabian/Code/examples/box/box.obj"
-#fileToLoad = "/home/fabian/Code/examples/box/box_translate.obj"
+#fileToLoad = "/home/fabian/Code/examples/box/box_translated.obj"
 
 cam = getDefaultCamera()
 cam.setControllerEnabled(False)

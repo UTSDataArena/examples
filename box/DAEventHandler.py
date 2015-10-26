@@ -1,8 +1,13 @@
-from omega import getDefaultCamera, getEvent, ServiceType, EventFlags, EventType, isStereoEnabled, toggleStereo
+from euclid import Vector3
+from omega import getDefaultCamera, getEvent, ServiceType, EventFlags, EventType, isStereoEnabled, toggleStereo, Space, quaternionFromEulerDeg
 
 class DAEventHandler():
 
         def __init__(self):
+                self.cam = getDefaultCamera()
+                self.cameraControl = False
+                self.initialCamPosition = self.cam.getPosition()
+
                 self.geo = None
 
                 self.spaceNavMoveSensitivity = 5.0
@@ -51,12 +56,16 @@ class DAEventHandler():
                 print "Use key s to toggle stereo view"
                 print
                 print "Use key i to print active configuration"
+                print
+                print "Use key c to toggle camera or object control"
                 print "\n=========================\n"
 
         def printConfig(self):
                 stringConvert = {True:'enabled', False:'disabled'}
                 print "\n=========================\n"
                 print "Stereo is %s" % stringConvert[isStereoEnabled()]
+                print "Camera control is %s" % stringConvert[self.cameraControl]
+                print
                 print "Movement on x axis is %s" % stringConvert[self.allowXMove]
                 print "Movement on y axis is %s" % stringConvert[self.allowYMove]
                 print "Movement on z axis is %s" % stringConvert[self.allowZMove]
@@ -219,7 +228,7 @@ class DAEventHandler():
                     position[2] = 0
 
                 return angles, position
-
+        
         def onEvent(self):
                 e = getEvent()
                 angles = [0, 0, 0]
@@ -228,8 +237,16 @@ class DAEventHandler():
                 if self.allowStereoSetting:
                         if e.isKeyDown(ord('s')):
                                 self.changeStereo()
+
+                if e.isKeyDown(ord('c')):
+                        self.cameraControl = not self.cameraControl
+
                 if e.isKeyDown(ord('n')):
-                        self.geo.reset()
+                        if self.cameraControl:
+                                self.cam.resetOrientation()
+                                self.cam.setPosition(self.initialCamPosition)
+                        else:
+                                self.geo.reset()
 
                 if e.isKeyDown(ord('i')):
                         self.printConfig()
@@ -246,7 +263,12 @@ class DAEventHandler():
 
                 self.restrictControl(e)
                 angles, position = self.applyRestriction(angles, position)
-                self.updateGeo(angles, position)
+
+                if self.cameraControl:
+                        self.cam.setOrientation(self.cam.getOrientation() * quaternionFromEulerDeg(*angles))
+                        self.cam.translate(Vector3(*position), Space.Local)
+                else:
+                        self.geo.updateModel(angles, position)
 
         def onUpdate(self, frame, time, dt):
                 pass
@@ -260,6 +282,3 @@ class DAEventHandler():
                 else:
                         #getDisplayConfig().stereoMode = StereoMode.Mono
                         getDefaultCamera().setEyeSeparation(0.06)
-
-        def updateGeo(self, angles, position):
-                self.geo.updateModel(angles, position)

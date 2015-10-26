@@ -98,5 +98,6 @@ class GeometryFile():
                     min(max(self.position[2] + newPosition[2], -self.zPosClamp), self.zPosClamp)
             ]
 
+            # update position to have newest pivot for rotation
             self.base.setPosition(Vector3(*self.position))
             self.base.translate(Vector3(*self.position), Space.Local)
