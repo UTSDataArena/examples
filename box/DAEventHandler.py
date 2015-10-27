@@ -48,9 +48,9 @@ class DAEventHandler():
 
         def printHelp(self):
                 print "\n=========================\n"
-                print "Use keys x,y,z to toggle object movement in axis x,y or z"
+                print "Use keys x,y,z to toggle object movement on axis x,y or z"
                 print 
-                print "Use keys p,j,r to toggle object rotation in axis x,y or z (pitch, jam jar, roll)"
+                print "Use keys p,j,r to toggle object rotation on axis x,y or z (pitch, jam jar, roll)"
                 print
                 print "Use key n to reset the model"
                 print
@@ -58,7 +58,7 @@ class DAEventHandler():
                 print
                 print "Use key i to print active configuration"
                 print
-                print "Use key c to toggle camera or object control"
+                print "Use key m to toggle camera or object control mode"
                 print "\n=========================\n"
 
         def printConfig(self):
@@ -88,8 +88,13 @@ class DAEventHandler():
         #4 roll (-right, +left)
         #5 yaw (-left, +right)
         def onSpaceNavEvent(self, e):
+                if e.isButtonDown(EventFlags.Button1):
+                        self.resetView()
+                if e.isButtonDown(EventFlags.Button2):
+                        self.cameraControl = not self.cameraControl
+
                 pitch = e.getExtraDataFloat(3) * self.spaceNavMoveSensitivity
-                yaw  = -e.getExtraDataFloat(5) * self.spaceNavMoveSensitivity
+                yaw   = -e.getExtraDataFloat(5) * self.spaceNavMoveSensitivity
                 roll  = e.getExtraDataFloat(4) * self.spaceNavMoveSensitivity
 
                 angles = [pitch, yaw, roll]
@@ -240,15 +245,11 @@ class DAEventHandler():
                         if e.isKeyDown(ord('s')):
                                 self.changeStereo()
 
-                if e.isKeyDown(ord('c')):
+                if e.isKeyDown(ord('m')):
                         self.cameraControl = not self.cameraControl
 
                 if e.isKeyDown(ord('n')):
-                        if self.cameraControl:
-                                self.cam.setOrientation(self.initialCamAngles)
-                                self.cam.setPosition(self.initialCamPosition)
-                        else:
-                                [ g.reset() for g in self.geos ]
+                        self.resetView()
 
                 if e.isKeyDown(ord('i')):
                         self.printConfig()
@@ -275,6 +276,13 @@ class DAEventHandler():
         def onUpdate(self, frame, time, dt):
                 pass
 #                self.doControllerMove()
+
+        def resetView(self):
+                if self.cameraControl:
+                        self.cam.setOrientation(self.initialCamAngles)
+                        self.cam.setPosition(self.initialCamPosition)
+                else:
+                        [ g.reset() for g in self.geos ]
 
         def changeStereo(self):
                 toggleStereo()
