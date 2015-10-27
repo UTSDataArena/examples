@@ -25,6 +25,16 @@ class DAEventHandler():
                 self.mousePos = None
                 self.prevMousePos = None
 
+                # mouse sensitivity
+                self.xAngSensitivity = 0.3
+                self.yAngSensitivity = 0.3
+                self.zAngSensitivity = 0.3
+                
+                self.xPosSensitivity = 0.004
+                self.yPosSensitivity = 0.004
+                self.zPosSensitivity = 0.004
+
+                # navigation restriction
                 self.allowXMove = True
                 self.allowYMove = True
                 self.allowZMove = True
@@ -33,14 +43,14 @@ class DAEventHandler():
                 self.allowYRot = True
                 self.allowZRot = True
 
-                self.xAngSensitivity = 0.3
-                self.yAngSensitivity = 0.3
-                self.zAngSensitivity = 0.3
-                
-                # x and z negative for intuitive mouse movement
-                self.xPosSensitivity = -0.004
-                self.yPosSensitivity = 0.004
-                self.zPosSensitivity = -0.004
+                # change direction of movement
+                self.invertXMove = True
+                self.invertYMove = False
+                self.invertZMove = True
+
+                self.invertXRot = True
+                self.invertYRot = True
+                self.invertZRot = False
 
                 self.allowStereoSetting = True
 
@@ -52,20 +62,25 @@ class DAEventHandler():
                 print 
                 print "Use keys p,j,r to toggle object rotation on axis x,y or z (pitch, jam jar, roll)"
                 print
-                print "Use key n to reset the model"
+                print "Use Ctrl+[x,y,z, p,j,r] to invert the direction of movement/rotation in the selected axis"
+                print
+                print "Use key m to toggle camera or object control mode"
+                print
+                print "Use key n to reset the view"
                 print
                 print "Use key s to toggle stereo view"
                 print
                 print "Use key i to print active configuration"
-                print
-                print "Use key m to toggle camera or object control mode"
                 print "\n=========================\n"
 
         def printConfig(self):
                 stringConvert = {True:'enabled', False:'disabled'}
                 print "\n=========================\n"
                 print "Stereo is %s" % stringConvert[isStereoEnabled()]
-                print "Camera control is %s" % stringConvert[self.cameraControl]
+                if self.cameraControl: 
+                        print "You control the camera!"
+                else:
+                        print "You control the object!"
                 print
                 print "Movement on x axis is %s" % stringConvert[self.allowXMove]
                 print "Movement on y axis is %s" % stringConvert[self.allowYMove]
@@ -93,16 +108,17 @@ class DAEventHandler():
                 if e.isButtonDown(EventFlags.Button2):
                         self.cameraControl = not self.cameraControl
 
-                pitch = e.getExtraDataFloat(3) * self.spaceNavMoveSensitivity
-                yaw   = -e.getExtraDataFloat(5) * self.spaceNavMoveSensitivity
+                # set pitch and movement negative for intuitive movement and mouse compliance
+
+                pitch = -e.getExtraDataFloat(3) * self.spaceNavMoveSensitivity
+                yaw   = e.getExtraDataFloat(5) * self.spaceNavMoveSensitivity
                 roll  = e.getExtraDataFloat(4) * self.spaceNavMoveSensitivity
 
                 angles = [pitch, yaw, roll]
 
-                x = e.getExtraDataFloat(0) * self.spaceNavRotSensitivity
-                # negative for intuitive movement
+                x = -e.getExtraDataFloat(0) * self.spaceNavRotSensitivity
                 y = -e.getExtraDataFloat(2) * self.spaceNavRotSensitivity
-                z = e.getExtraDataFloat(1) * self.spaceNavRotSensitivity
+                z = -e.getExtraDataFloat(1) * self.spaceNavRotSensitivity
 
                 position = [x, y, z]
 
@@ -240,7 +256,7 @@ class DAEventHandler():
                 e = getEvent()
                 angles = [0, 0, 0]
                 position = [0, 0, 0]
-
+                
                 if self.allowStereoSetting:
                         if e.isKeyDown(ord('s')):
                                 self.changeStereo()
@@ -266,6 +282,7 @@ class DAEventHandler():
 
                 self.restrictControl(e)
                 angles, position = self.applyRestriction(angles, position)
+                angles, position = self.invertNavigation(e, angles, position)
 
                 if self.cameraControl:
                         self.cam.setOrientation(self.cam.getOrientation() * quaternionFromEulerDeg(*angles))
@@ -292,3 +309,36 @@ class DAEventHandler():
                 else:
                         #getDisplayConfig().stereoMode = StereoMode.Mono
                         getDefaultCamera().setEyeSeparation(0.06)
+
+        def invertNavigation(self, event, angles, position):
+                if event.isKeyDown(ord('X')):
+                        self.invertXMove = not self.invertXMove
+                if self.invertXMove:
+                         position[0] = -position[0]
+
+                if event.isKeyDown(ord('Y')):
+                        self.invertYMove = not self.invertYMove
+                if self.invertYMove:
+                         position[1] = -position[1]
+
+                if event.isKeyDown(ord('Z')):
+                        self.invertZMove = not self.invertZMove
+                if self.invertZMove:
+                         position[2] = -position[2]
+
+                if event.isKeyDown(ord('P')):
+                        self.invertXRot = not self.invertXRot
+                if self.invertXRot:
+                         angles[0] = -angles[0]
+
+                if event.isKeyDown(ord('J')):
+                        self.invertYRot = not self.invertYRot
+                if self.invertYRot:
+                         angles[1] = -angles[1]
+
+                if event.isKeyDown(ord('R')):
+                        self.invertZRot = not self.invertZRot
+                if self.invertZRot:
+                         angles[2] = -angles[2]
+
+                return angles, position

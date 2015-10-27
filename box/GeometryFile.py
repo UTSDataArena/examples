@@ -36,6 +36,8 @@ class GeometryFile():
                 self.yPosClamp = 1
                 self.zPosClamp = 1
 
+                self.textured = True
+
 		self.modelInfos = []
 
 		self.makeBase()
@@ -45,38 +47,33 @@ class GeometryFile():
                 self.angles = list(self.initialAngles.get_euler())
                 self.position = self.initialPosition
 
-	def loadModel(self, fileToLoad, textured=True):
-		getSceneManager().loadModel(self.addModel(fileToLoad))
+	def loadModel(self, fileToLoad):
+		modelInfo = ModelInfo()
+		modelInfo.name = fileToLoad
+		modelInfo.path = fileToLoad
+		modelInfo.size = 1.0
+                # optimising takes a LONG time..
+		modelInfo.optimize = False 
+		self.modelInfos.append(modelInfo)
+
+		getSceneManager().loadModel(modelInfo)
 		newModel = StaticObject.create(fileToLoad)
 		newModel.setName(fileToLoad)
-		self.setModel(newModel, textured)
 
-	def addModel(self, fileToLoad):
-		# Load a static model
-		mdlModel = ModelInfo()
-		mdlModel.name = fileToLoad
-		mdlModel.path = fileToLoad
-		mdlModel.size = 1.0
-                # optimising takes a LONG time..
-		mdlModel.optimize = False 
-		self.modelInfos.append(mdlModel)
-		return self.modelInfos[-1]
-
-	def setModel(self, model, textured=True):
-		if textured:
-			model.setEffect("textured")
-			model.setEffect("@unlit")
+		if self.textured:
+			newModel.setEffect("textured")
+			newModel.setEffect("@unlit")
 		else:
-			model.setEffect("colored -d white -C")
+			newModel.setEffect("colored -d white -C")
 
-		model.getMaterial().setDoubleFace(True)
+		newModel.getMaterial().setDoubleFace(True)
 
-                # translate model if getBoundCenter would work
-		if model.getName() not in GeometryFile._offsets.keys():
-			GeometryFile._offsets[model.getName()] = -model.getBoundCenter()
-		model.initialPosition = GeometryFile._offsets[model.getName()]
+                # translate newModel if getBoundCenter would work
+		if newModel.getName() not in GeometryFile._offsets.keys():
+			GeometryFile._offsets[newModel.getName()] = -newModel.getBoundCenter()
+		newModel.initialPosition = GeometryFile._offsets[newModel.getName()]
 
-		self.base.addChild(model)
+		self.base.addChild(newModel)
 
 	def deleteModels(self):
 		while self.base.numChildren() > 0:
