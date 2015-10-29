@@ -1,6 +1,7 @@
 # [Fabian 23Oct15]
 # adjust DA_Turntable from /da/proj/paulBourke for loading general geometry
 
+from euclid import Vector3
 from omega import getDefaultCamera, Color, setEventFunction, setUpdateFunction
 from GeometryFile import GeometryFile
 from DAEventHandler import DAEventHandler
