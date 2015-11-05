@@ -30,14 +30,14 @@ class GeometryFile():
 
                 #: Set maximum rotation here.
                 #: TODO Not working so far
-		self.xAngClamp = 90
-		self.yAngClamp = 90
-		self.zAngClamp = 90
+		self.xRotClamp = 90
+		self.yRotClamp = 90
+		self.zRotClamp = 90
 
                 #: Set maximum translation here.
-                self.xPosClamp = 10
-                self.yPosClamp = 10
-                self.zPosClamp = 10
+                self.xMoveClamp = 10
+                self.yMoveClamp = 10
+                self.zMoveClamp = 10
 
                 self.textured = True
 
@@ -91,28 +91,28 @@ class GeometryFile():
                 self.model = SceneNode.create("Parent")
                 self.model.addChild(newModel)
 
-        def updateModel(self, newAngles, newPosition):
+        def updateModel(self, newRotation, newPosition):
                 """Callback for DAEventhandler to update coordinates.
 
-                :param newAngle: Rotation vector
+                :param newRotation: Rotation vector
                 :param newPosition: Translation vector
-                :type newAngle: List with 3 double values
+                :type newRotation: List with 3 double values
                 :type newPosition: List with 3 double values
 
                 This method is used to change the angle and position or the object with the given vectors
                 """
                 angles = [
-                        min(max(newAngles[0], -self.xAngClamp), self.xAngClamp),
-                        min(max(newAngles[1], -self.yAngClamp), self.yAngClamp),
-                        min(max(newAngles[2], -self.zAngClamp), self.zAngClamp)
+                        min(max(newRotation[0], -self.xRotClamp), self.xRotClamp),
+                        min(max(newRotation[1], -self.yRotClamp), self.yRotClamp),
+                        min(max(newRotation[2], -self.zRotClamp), self.zRotClamp)
                 ]
 
                 self.model.setOrientation(quaternionFromEulerDeg(*angles) * self.model.getOrientation())
 
                 self.position = [
-                        min(max(self.position[0] + newPosition[0], -self.xPosClamp), self.xPosClamp),
-                        min(max(self.position[1] + newPosition[1], -self.yPosClamp), self.yPosClamp),
-                        min(max(self.position[2] + newPosition[2], -self.zPosClamp), self.zPosClamp)
+                        min(max(self.position[0] + newPosition[0], -self.xMoveClamp), self.xMoveClamp),
+                        min(max(self.position[1] + newPosition[1], -self.yMoveClamp), self.yMoveClamp),
+                        min(max(self.position[2] + newPosition[2], -self.zMoveClamp), self.zMoveClamp)
                 ]
 
                 self.model.setPosition(*self.position)

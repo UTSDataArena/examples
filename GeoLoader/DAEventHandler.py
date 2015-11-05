@@ -1,5 +1,4 @@
-from euclid import Vector3
-from omega import getDefaultCamera, getEvent, ServiceType, EventFlags, EventType, isStereoEnabled, toggleStereo, Space, quaternionFromEulerDeg
+from omega import getDefaultCamera, getEvent, ServiceType, EventFlags, EventType, isStereoEnabled, toggleStereo, quaternionFromEulerDeg
 
 class DAEventHandler():
         """This class encapsulates the navigation interaction with geometry loaded into omegalib.
@@ -12,7 +11,7 @@ class DAEventHandler():
                 """The constructor provides several tuning parameters."""
                 self.cam = getDefaultCamera()
                 self.cameraControl = False
-                self.initialCamAngles = self.cam.getOrientation()
+                self.initialCamRotation = self.cam.getOrientation()
                 self.initialCamPosition = self.cam.getPosition()
 
                 self.geos = []
@@ -32,13 +31,13 @@ class DAEventHandler():
                 self.prevMousePos = None
 
                 #:Mouse sensitivity
-                self.xAngSensitivity = 0.3
-                self.yAngSensitivity = 0.3
-                self.zAngSensitivity = 0.3
+                self.xRotSensitivity = 0.3
+                self.yRotSensitivity = 0.3
+                self.zRotSensitivity = 0.3
                 
-                self.xPosSensitivity = 0.004
-                self.yPosSensitivity = 0.004
-                self.zPosSensitivity = 0.004
+                self.xMoveSensitivity = 0.004
+                self.yMoveSensitivity = 0.004
+                self.zMoveSensitivity = 0.004
 
                 #: Navigation restriction
                 self.allowXMove = True
@@ -68,7 +67,7 @@ class DAEventHandler():
                 print 
                 print "Use keys p,j,r to toggle object rotation on axis x,y or z (pitch, jam jar, roll)"
                 print
-                print "Use Ctrl+[x,y,z, p,j,r] to invert the direction of movement/rotation in the selected axis"
+                print "Use Shift+[x,y,z, p,j,r] to invert the direction of movement/rotation in the selected axis"
                 print
                 print "Use key m to toggle camera or object control mode"
                 print
@@ -182,8 +181,8 @@ class DAEventHandler():
                 elif self.leftButtonDown and e.getType() == EventType.Move:
                         delta = self.prevMousePos - e.getPosition()
 
-                        xMove = self.xPosSensitivity * delta.x
-                        yMove = self.yPosSensitivity * delta.y
+                        xMove = self.xMoveSensitivity * delta.x
+                        yMove = self.yMoveSensitivity * delta.y
 
                         position[0] = xMove
                         position[1] = yMove
@@ -202,11 +201,12 @@ class DAEventHandler():
                 elif self.rightButtonDown and e.getType() == EventType.Move:
                         delta = self.prevMousePos - e.getPosition()
 
-                        xDeg = self.xAngSensitivity * delta.x
-                        yDeg = self.yAngSensitivity * delta.y
+                        # swap axis for intuitive mouse movement
+                        xDeg = self.xRotSensitivity * delta.y
+                        yDeg = self.yRotSensitivity * delta.x
 
-                        angles[1] = xDeg
-                        angles[0] = yDeg
+                        angles[0] = xDeg
+                        angles[1] = yDeg
 
                         self.prevMousePos = e.getPosition()
 
@@ -221,10 +221,10 @@ class DAEventHandler():
                 elif self.middleButtonDown and e.getType() == EventType.Move:
                         delta = self.prevMousePos - e.getPosition()
                         
-                        zAng = self.zAngSensitivity * delta.x
-                        zMove = self.zPosSensitivity * delta.y
+                        zRot = self.zRotSensitivity * delta.x
+                        zMove = self.zMoveSensitivity * delta.y
 
-                        angles[2] = zAng
+                        angles[2] = zRot
                         position[2] = zMove 
 
                         self.prevMousePos = e.getPosition()
@@ -300,8 +300,8 @@ class DAEventHandler():
                 angles, position = self.invertNavigation(e, angles, position)
 
                 if self.cameraControl:
-                        self.cam.setOrientation(self.cam.getOrientation() * quaternionFromEulerDeg(*angles))
-                        self.cam.translate(Vector3(*position), Space.Local)
+                        self.cam.setOrientation(quaternionFromEulerDeg(*angles) * self.cam.getOrientation())
+                        self.cam.setPosition(*(position + self.cam.getPosition()))
                 else:
                         [ g.updateModel(angles, position) for g in self.geos ]
 
@@ -313,7 +313,7 @@ class DAEventHandler():
         def resetView(self):
                 """Resets the position of object or camera."""
                 if self.cameraControl:
-                        self.cam.setOrientation(self.initialCamAngles)
+                        self.cam.setOrientation(self.initialCamRotation)
                         self.cam.setPosition(self.initialCamPosition)
                 else:
                         [ g.reset() for g in self.geos ]
