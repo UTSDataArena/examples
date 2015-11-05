@@ -1,5 +1,4 @@
-from euclid import Vector3
-from omega import SceneNode, Space, quaternionFromEulerDeg
+from omega import SceneNode, quaternionFromEulerDeg
 from cyclops import ModelInfo, StaticObject, getSceneManager
 
 class GeometryFile():
@@ -7,12 +6,6 @@ class GeometryFile():
 
         An instantiated object is registered at a `DAEventHandler` object and encapsulates the geometry.
         """
-
-        #: TODO fix this
-        # numbers temporarily hard coded, getBoundCenter doesn't seem to work
-        _offsets = {
-                "/da/mannequinShoot/exports/TammyLuk/TammyLuk_look1_initial.fbx": Vector3(-0.99, -0.02, -0.62),
-        }
 
         def __init__(self, fileToLoad): 
                 """The constructor provides some parameters to tune the object interaction.
@@ -28,9 +21,12 @@ class GeometryFile():
 
 		self.position = None
 
-                #: Changeing initial position or angle requires reset() call.
-		self.initialAngles = [0, 0, 0]
-                self.initialPosition = [0, 0, 0]
+                #: Changing initial position/rotation requires reset() call.
+		self.initialRotation = [0, 0, 0]
+		self.initialPosition = [0, 0, 0]
+
+                #: Specifies rotation point of the object, requires reset(). (default: center of bounding box)
+                self.pivotPoint = [0, 0, 0]
 
                 #: Set maximum rotation here.
                 #: TODO Not working so far
@@ -39,9 +35,9 @@ class GeometryFile():
 		self.zAngClamp = 90
 
                 #: Set maximum translation here.
-                self.xPosClamp = 1
-                self.yPosClamp = 1
-                self.zPosClamp = 1
+                self.xPosClamp = 10
+                self.yPosClamp = 10
+                self.zPosClamp = 10
 
                 self.textured = True
 
@@ -52,12 +48,15 @@ class GeometryFile():
                 self.reset()
 
         def reset(self):
-                """Reset to original position.
+                """Reset to initial position.
                 
-                The rotation is reset inside the SceneNode, the reset position is read in updateModel().
+                Update pivot point and set configured initialRotation/Position, redraw with updateModel().
                 """
-                self.model.setOrientation(quaternionFromEulerDeg(*self.initialAngles))
+
+                self.model.getChildByIndex(0).setPosition(*self.pivotPoint)
+
                 self.position = self.initialPosition
+                self.model.setOrientation(quaternionFromEulerDeg(*self.initialRotation))
 
                 self.updateModel([0, 0, 0], [0, 0, 0])
 
@@ -86,12 +85,11 @@ class GeometryFile():
 
 		newModel.getMaterial().setDoubleFace(True)
 
-                # translate newModel if getBoundCenter would work
-		if newModel.getName() not in GeometryFile._offsets.keys():
-			GeometryFile._offsets[newModel.getName()] = -newModel.getBoundCenter()
-		newModel.initialPosition = GeometryFile._offsets[newModel.getName()]
+                self.pivotPoint = list(-newModel.getBoundCenter())
 
-                self.model = newModel
+                #: Use parent object to apply correct rotation on initially translated objects.
+                self.model = SceneNode.create("Parent")
+                self.model.addChild(newModel)
 
         def updateModel(self, newAngles, newPosition):
                 """Callback for DAEventhandler to update coordinates.
@@ -117,5 +115,4 @@ class GeometryFile():
                         min(max(self.position[2] + newPosition[2], -self.zPosClamp), self.zPosClamp)
                 ]
 
-                # update position to have newest pivot for rotation
-                self.model.setPosition(Vector3(*self.position))
+                self.model.setPosition(*self.position)
