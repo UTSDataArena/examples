@@ -1,4 +1,4 @@
-Geometry Loader for the Data Arena
+Description
 ==================================
 
 These Python scripts offer a modular way to display geometry data via omegalib.

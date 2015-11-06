@@ -1,16 +1,21 @@
-from euclid import Vector3
-from omega import getDefaultCamera, getEvent, ServiceType, EventFlags, EventType, isStereoEnabled, toggleStereo, Space, quaternionFromEulerDeg
+from omega import getDefaultCamera, getEvent, ServiceType, EventFlags, EventType, isStereoEnabled, toggleStereo, quaternionFromEulerDeg
 
 class DAEventHandler():
+        """This class encapsulates the navigation interaction with geometry loaded into omegalib.
 
+        An instance of DAEventHandler can load several `GemoetryFile` objects.
+        The functions `onEvent()` and `onUpdate()` are registered at the omegalib callbacks.
+        Interaction with the loaded objects is then provided via mouse, keyboard or Space Navigator.
+        """
         def __init__(self):
+                """The constructor provides several tuning parameters."""
                 self.cam = getDefaultCamera()
                 self.cameraControl = False
-                self.initialCamAngles = self.cam.getOrientation()
+                self.initialCamRotation = self.cam.getOrientation()
                 self.initialCamPosition = self.cam.getPosition()
 
                 self.geos = []
-
+                #: Sensitivity of the Space Navigator movement/rotation
                 self.spaceNavMoveSensitivity = 5.0
                 self.spaceNavRotSensitivity = 0.005
 
@@ -25,16 +30,16 @@ class DAEventHandler():
                 self.mousePos = None
                 self.prevMousePos = None
 
-                # mouse sensitivity
-                self.xAngSensitivity = 0.3
-                self.yAngSensitivity = 0.3
-                self.zAngSensitivity = 0.3
+                #:Mouse sensitivity
+                self.xRotSensitivity = 0.3
+                self.yRotSensitivity = 0.3
+                self.zRotSensitivity = 0.3
                 
-                self.xPosSensitivity = 0.004
-                self.yPosSensitivity = 0.004
-                self.zPosSensitivity = 0.004
+                self.xMoveSensitivity = 0.004
+                self.yMoveSensitivity = 0.004
+                self.zMoveSensitivity = 0.004
 
-                # navigation restriction
+                #: Navigation restriction
                 self.allowXMove = True
                 self.allowYMove = True
                 self.allowZMove = True
@@ -43,7 +48,7 @@ class DAEventHandler():
                 self.allowYRot = True
                 self.allowZRot = True
 
-                # change direction of movement
+                #: Invert direction of movement
                 self.invertXMove = True
                 self.invertYMove = False
                 self.invertZMove = True
@@ -62,7 +67,7 @@ class DAEventHandler():
                 print 
                 print "Use keys p,j,r to toggle object rotation on axis x,y or z (pitch, jam jar, roll)"
                 print
-                print "Use Ctrl+[x,y,z, p,j,r] to invert the direction of movement/rotation in the selected axis"
+                print "Use Shift+[x,y,z, p,j,r] to invert the direction of movement/rotation in the selected axis"
                 print
                 print "Use key m to toggle camera or object control mode"
                 print
@@ -74,6 +79,7 @@ class DAEventHandler():
                 print "\n=========================\n"
 
         def printConfig(self):
+                """Prints the current configuration of important parameters."""
                 stringConvert = {True:'enabled', False:'disabled'}
                 print "\n=========================\n"
                 print "Stereo is %s" % stringConvert[isStereoEnabled()]
@@ -93,6 +99,7 @@ class DAEventHandler():
                 
 
         def addGeo(self, geo):
+                """Registers a `GeometryFile` object."""
                 self.geos.append(geo)
 
         # Space Navigator axes:
@@ -103,6 +110,7 @@ class DAEventHandler():
         #4 roll (-right, +left)
         #5 yaw (-left, +right)
         def onSpaceNavEvent(self, e):
+                """Callback for `onEvent` to read Space Navigator input."""
                 if e.isButtonDown(EventFlags.Button1):
                         self.resetView()
                 if e.isButtonDown(EventFlags.Button2):
@@ -124,7 +132,7 @@ class DAEventHandler():
 
                 return angles, position
 
-        # TODO: integrate PS controller
+        #: TODO: integrate PS controller
         # ps3, ps4 and ps move Controller controls
         # Left analog:
         # channel 0: left/right - yaw
@@ -159,6 +167,7 @@ class DAEventHandler():
                 return angles, position
 
         def onMouseEvent(self, e):
+                """Callback for `onEvent` to read Mouse input."""
                 angles = [0, 0, 0]
                 position = [0, 0, 0]
                 if e.isButtonDown(EventFlags.Left):
@@ -172,8 +181,8 @@ class DAEventHandler():
                 elif self.leftButtonDown and e.getType() == EventType.Move:
                         delta = self.prevMousePos - e.getPosition()
 
-                        xMove = self.xPosSensitivity * delta.x
-                        yMove = self.yPosSensitivity * delta.y
+                        xMove = self.xMoveSensitivity * delta.x
+                        yMove = self.yMoveSensitivity * delta.y
 
                         position[0] = xMove
                         position[1] = yMove
@@ -192,11 +201,12 @@ class DAEventHandler():
                 elif self.rightButtonDown and e.getType() == EventType.Move:
                         delta = self.prevMousePos - e.getPosition()
 
-                        xDeg = self.xAngSensitivity * delta.x
-                        yDeg = self.yAngSensitivity * delta.y
+                        # swap axis for intuitive mouse movement
+                        xDeg = self.xRotSensitivity * delta.y
+                        yDeg = self.yRotSensitivity * delta.x
 
-                        angles[1] = xDeg
-                        angles[0] = yDeg
+                        angles[0] = xDeg
+                        angles[1] = yDeg
 
                         self.prevMousePos = e.getPosition()
 
@@ -211,10 +221,10 @@ class DAEventHandler():
                 elif self.middleButtonDown and e.getType() == EventType.Move:
                         delta = self.prevMousePos - e.getPosition()
                         
-                        zAng = self.zAngSensitivity * delta.x
-                        zMove = self.zPosSensitivity * delta.y
+                        zRot = self.zRotSensitivity * delta.x
+                        zMove = self.zMoveSensitivity * delta.y
 
-                        angles[2] = zAng
+                        angles[2] = zRot
                         position[2] = zMove 
 
                         self.prevMousePos = e.getPosition()
@@ -222,6 +232,10 @@ class DAEventHandler():
                 return angles, position
 
         def restrictControl(self, event):
+                """Restricts movement on axes.
+
+                On specified keyboard events the movement or rotation of the object, respectively camera, is blocked.
+                """
                 if event.isKeyDown(ord('x')):
                         self.allowXMove = not self.allowXMove
                 if event.isKeyDown(ord('y')):
@@ -253,6 +267,7 @@ class DAEventHandler():
                 return angles, position
         
         def onEvent(self):
+                """Callback for omegalib to register with `setEventFunction`."""
                 e = getEvent()
                 angles = [0, 0, 0]
                 position = [0, 0, 0]
@@ -285,23 +300,26 @@ class DAEventHandler():
                 angles, position = self.invertNavigation(e, angles, position)
 
                 if self.cameraControl:
-                        self.cam.setOrientation(self.cam.getOrientation() * quaternionFromEulerDeg(*angles))
-                        self.cam.translate(Vector3(*position), Space.Local)
+                        self.cam.setOrientation(quaternionFromEulerDeg(*angles) * self.cam.getOrientation())
+                        self.cam.setPosition(*(position + self.cam.getPosition()))
                 else:
                         [ g.updateModel(angles, position) for g in self.geos ]
 
         def onUpdate(self, frame, time, dt):
+                """Callback for omegalib to register with `setUpdateFunction`."""
                 pass
 #                self.doControllerMove()
 
         def resetView(self):
+                """Resets the position of object or camera."""
                 if self.cameraControl:
-                        self.cam.setOrientation(self.initialCamAngles)
+                        self.cam.setOrientation(self.initialCamRotation)
                         self.cam.setPosition(self.initialCamPosition)
                 else:
                         [ g.reset() for g in self.geos ]
 
         def changeStereo(self):
+                """Toggles stereo view and sets eye separation"""
                 toggleStereo()
                 if isStereoEnabled():
                         #getDisplayConfig().stereoMode = StereoMode.LineInterleaved

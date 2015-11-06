@@ -1,9 +1,13 @@
 # [Fabian 23Oct15]
 # adjust DA_Turntable from /da/proj/paulBourke for loading general geometry
+# TODO: append GeoLoader package to python search path in omegalib: workaround
+import sys
+sys.path.append('/local/examples')
 
+from euclid import Vector3
 from omega import getDefaultCamera, Color, setEventFunction, setUpdateFunction
-from GeometryFile import GeometryFile
-from DAEventHandler import DAEventHandler
+from GeoLoader.GeometryFile import GeometryFile
+from GeoLoader.DAEventHandler import DAEventHandler
 
 #fileToLoad = "/da/mannequinShoot/exports/Mook/Mook_mix1_initial.fbx"
 #fileToLoad = "/home/fabian/Code/paulBourke/weld/take1.obj"
