@@ -29,7 +29,7 @@ class GeometryFile():
                 self.pivotPoint = [0, 0, 0]
 
                 #: Set maximum rotation here.
-                #: TODO Not working so far
+                #: TODO Not working so far, see updateModel()
 		self.xRotClamp = 90
 		self.yRotClamp = 90
 		self.zRotClamp = 90
@@ -101,6 +101,30 @@ class GeometryFile():
 
                 This method is used to change the angle and position or the object with the given vectors
                 """
+                #TODO: clamping the rotation does not work with Quaternions, omegalib conversion seems not precise
+                # First try: convert quaternion to euler, clamp and apply result
+                # Result: Object moves around without dragging (rounded conversiona?)
+                #currentRotation = list(quaternionToEulerDeg(self.model.getOrientation()))
+                #angles = [
+                #        min(max(newRotation[0] + currentRotation[0], -self.xRotClamp), self.xRotClamp),
+                #        min(max(newRotation[1] + currentRotation[1], -self.yRotClamp), self.yRotClamp),
+                #        min(max(newRotation[2] + currentRotation[2], -self.zRotClamp), self.zRotClamp)
+                #]
+                #    self.model.setOrientation(quaternionFromEulerDeg(*angles))
+                #
+                # second try: only apply new rotation if total converted rotation is in interval
+                # Result: Sometimes box is moving without interaction
+                #       converted eulerDeg are different for same rotation which results in more rotation than allowed
+                #
+                #currentRotation = list(quaternionToEulerDeg(quaternionFromEulerDeg(*newRotation) * self.model.getOrientation()))
+                #
+                #print currentRotation 
+                #self.model.setOrientation(quaternionFromEulerDeg(*angles) * self.model.getOrientation())
+                #if (abs(currentRotation[0]) < self.xRotClamp and
+                #    abs(currentRotation[1]) < self.yRotClamp and
+                #    abs(currentRotation[2]) < self.zRotClamp):
+                #    self.model.setOrientation(quaternionFromEulerDeg(*newRotation) * self.model.getOrientation())
+
                 angles = [
                         min(max(newRotation[0], -self.xRotClamp), self.xRotClamp),
                         min(max(newRotation[1], -self.yRotClamp), self.yRotClamp),
