@@ -1,4 +1,4 @@
-from omega import getDefaultCamera, getEvent, ServiceType, EventFlags, EventType, isStereoEnabled, toggleStereo, quaternionFromEulerDeg
+from omega import getDefaultCamera, getEvent, ServiceType, EventFlags, EventType, isStereoEnabled, toggleStereo, quaternionFromEulerDeg, quaternionToEulerDeg, SceneNode
 from daHEngine import HoudiniEngine
 
 class DAEventHandler():
@@ -10,10 +10,20 @@ class DAEventHandler():
         """
         def __init__(self):
                 """The constructor provides several tuning parameters."""
-                self.cam = getDefaultCamera()
+                defCam = getDefaultCamera()
+                defCam.setControllerEnabled(False)
+                defCam.setNearFarZ(0.001, 100)
+
+                #: Absolute position and orientation of camera, headOffset is added.
+                self.initialCamRotation = list(quaternionToEulerDeg(defCam.getOrientation()))
+                self.initialCamPosition = list(defCam.getPosition())
+                defCam.setPosition(-defCam.getHeadOffset())
+
+                self.cameraObject = SceneNode.create("Camera")
+                self.cameraObject.addChild(defCam)
+                self.resetCamera()
+
                 self.cameraControl = False
-                self.initialCamRotation = self.cam.getOrientation()
-                self.initialCamPosition = self.cam.getPosition()
 
                 self.geos = []
                 #: Sensitivity of the Space Navigator movement/rotation
@@ -301,8 +311,8 @@ class DAEventHandler():
                 angles, position = self.invertNavigation(e, angles, position)
 
                 if self.cameraControl:
-                        self.cam.setOrientation(quaternionFromEulerDeg(*angles) * self.cam.getOrientation())
-                        self.cam.setPosition(*(position + self.cam.getPosition()))
+                        self.cameraObject.setOrientation(quaternionFromEulerDeg(*angles) * self.cameraObject.getOrientation())
+                        self.cameraObject.setPosition(*(position + self.cameraObject.getPosition()))
                 else:
                         [ g.updateModel(angles, position) for g in self.geos ]
 
@@ -311,11 +321,24 @@ class DAEventHandler():
                 pass
 #                self.doControllerMove()
 
+        def resetCamera(self):
+                """Reset the campera position/orientation to initial values."""
+                self.cameraObject.setOrientation(quaternionFromEulerDeg(*self.initialCamRotation))
+                self.cameraObject.setPosition(*self.initialCamPosition)
+
+        def getCamera(self):
+                """Returns the camera of the scene.
+
+                Getter necessary because of parented camera object.
+                This is done to correctly implement rotation of translated objects.
+                Allows to ajust camera parameters, such as clipping planes or eye separation.
+                """
+                return self.cameraObject.getChildByIndex(0)
+
         def resetView(self):
                 """Resets the position of object or camera."""
                 if self.cameraControl:
-                        self.cam.setOrientation(self.initialCamRotation)
-                        self.cam.setPosition(self.initialCamPosition)
+                        self.resetCamera()
                 else:
                         [ g.reset() for g in self.geos ]
 
