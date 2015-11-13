@@ -2,17 +2,15 @@
 # the list of demos to use
 
 omegalibDemos = {
-	"solo" : {
-		"Wombeyan Caves": "cave",
-		"Water Pipe": "pipe",
-		"Fashion Turntable": "ft",
-		"DAB Fashion Show": "fs.solo.sound",
-		"Pong": "p",
-		"Parallel Coordinates": "pcm",
-		"Motion Capture movies": "dance",
-		"Storm Surfers": "bondi.solo",
-	},
     "127.0.0.1" : {
+	"Wombeyan Caves": "cave",
+	"Water Pipe": "pipe",
+	"Fashion Turntable": "ft",
+	"DAB Fashion Show": "fs.solo.sound",
+	"Pong": "p",
+	"Parallel Coordinates": "pcm",
+	"Motion Capture movies": "dance",
+	"Storm Surfers": "bondi.solo",
         "Box": "box/LoadBox.py",
         "Earth": "earth/earth.py",
         "Parallel Coords": "parallel/DAParallelCoords.py",
