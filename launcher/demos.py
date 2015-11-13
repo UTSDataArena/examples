@@ -12,9 +12,10 @@ omegalibDemos = {
 	"Motion Capture movies": "dance",
 	"Storm Surfers": "bondi.solo",
         "Box": "box/LoadBox.py",
-        "Earth": "earth/earth.py",
+        "Earth": "earth/LoadEarth.py",
         "Parallel Coords": "parallel/DAParallelCoords.py",
-        "Mocap": "box/loadBox.py",
+        "Mocap": "box/LoadOTL.py",
+        "Bar Chart": "barchart/LoadBarChart.py",
     },
 }
 
