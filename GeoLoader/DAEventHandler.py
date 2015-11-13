@@ -1,4 +1,5 @@
 from omega import getDefaultCamera, getEvent, ServiceType, EventFlags, EventType, isStereoEnabled, toggleStereo, quaternionFromEulerDeg
+from daHEngine import HoudiniEngine
 
 class DAEventHandler():
         """This class encapsulates the navigation interaction with geometry loaded into omegalib.
@@ -265,7 +266,7 @@ class DAEventHandler():
                     position[2] = 0
 
                 return angles, position
-        
+
         def onEvent(self):
                 """Callback for omegalib to register with `setEventFunction`."""
                 e = getEvent()
@@ -360,3 +361,52 @@ class DAEventHandler():
                          angles[2] = -angles[2]
 
                 return angles, position
+
+class OTLHandler(DAEventHandler):
+
+        def __init__(self):
+                """Initializes DAEventHandler and HoudiniEngine."""
+                DAEventHandler.__init__(self)
+                self.engine = HoudiniEngine.createAndInitialize()
+                self.engine.setLoggingEnabled(False)
+                self.framesPerSec = 25
+                self.play = False
+
+        def addGeo(self, otl):
+                """Loads OTL with HoudiniEngine."""
+                DAEventHandler.addGeo(self, otl)
+
+                otlName, assetName, geoName = otl.otlDescription
+                self.engine.loadAssetLibraryFromFile(otlName)
+                self.engine.instantiateAsset(assetName)
+                staticObject = self.engine.instantiateGeometry(geoName)
+                otl.setModel(staticObject)
+
+        def renderFrame(self, frame):
+                self.engine.setTime(frame / self.framesPerSec)
+                self.engine.cook()
+
+        def nextFrame(self, offset = 0):
+                seconds = self.engine.getTime()
+                self.renderFrame(seconds * self.framesPerSec + 1 + offset)
+
+        def onUpdate(self, frame, time, dt):
+                """Callback for omegalib to register with `setUpdateFunction`."""
+                if self.play:
+                    self.nextFrame()
+
+        def onEvent(self):
+                """Callback for omegalib to register with `setEventFunction`."""
+                DAEventHandler.onEvent(self)
+
+                e = getEvent()
+                if e.isKeyDown(ord('f')):
+                        self.nextFrame()
+                if e.isKeyDown(ord('F')):
+                        self.nextFrame(self.framesPerSec)
+                if e.isKeyDown(ord('b')):
+                        self.nextFrame(-2)
+                if e.isKeyDown(ord('B')):
+                        self.nextFrame(-self.framesPerSec -1)
+                if e.isKeyDown(ord(' ')):
+                        self.play = not self.play

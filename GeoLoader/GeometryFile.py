@@ -19,7 +19,8 @@ class GeometryFile():
 
                 self.model = None
 
-		self.position = None
+                # private variable
+                self.position = [0, 0, 0]
 
                 #: Changing initial position/rotation requires reset() call.
 		self.initialRotation = [0, 0, 0]
@@ -140,3 +141,33 @@ class GeometryFile():
                 ]
 
                 self.model.setPosition(*self.position)
+
+
+class OTL(GeometryFile):
+        """Encapsulates an OTL to load it into omegalib with OTLHandler."""
+
+        def __init__(self, otlDescription):
+                """Initialize empty GeometryFile object.
+
+                :param otlDescription: Information of the OTL to load later.
+                :type otlDescription: Tripel: OTL filename, OTL object name, geometry name)
+                """
+                GeometryFile.__init__(self, None)
+                self.otlDescription = otlDescription
+
+        def loadModel(self, otlDescription):
+                self.modelInfos = None
+
+        def setModel(self, staticObject):
+                """Called from OTLHanlder to add model provided from HoudiniEngine."""
+                self.pivotPoint = list(-staticObject.getBoundCenter())
+
+                #: Use parent object to apply correct rotation on initially translated objects.
+                self.model = SceneNode.create("Parent")
+                self.model.addChild(staticObject)
+                self.reset()
+
+        def reset(self):
+                """First call super class when model is set."""
+                if self.model is not None:
+                        GeometryFile.reset(self)
