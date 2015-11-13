@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <meta name="mobile-web-app-capable" content="yes">
+  </head>
+  <body style="background: #222; font-size: 150%">
+    <div style="width: 80%; height: 100%; position: absolute; top: 0; bottom: 0; left: 0; right: 0; margin: auto;">
+      <div class="pure-g">
+        <div class="pure-u-1 pure-menu">
+          <div style="background: transparent url('images/launcher.bg.png') 0 0 no-repeat fixed; background-size: cover; text-align: center; height: 100%">
+            <h1 style="color: white; font-size: 3em; text-shadow: 0 2px 2px black;">DAVM Launcher</h1>
+          </div>
+        </div>
+        <div class="pure-u-1-3 pure-menu">
+          <span class="pure-menu-heading" style="text-align:center">Examples</span>
+          <form method="get" action="runOmega">
+            <ul id="omegaList" class="pure-menu-list">
+              {% for item in omegaList.keys()|sort %}
+              <li class="pure-menu-item" id="currentDemo">
+                <button {% if currentDemo %}disabled {% endif %}type="submit" name="button" value="{{ omegaList[item] }}" class="pure-button {% if currentDemo %}pure-button-active {% endif %}{% if currentDemo == omegaList[item] %}" style="background: #4C3"{% endif %}">
+                {{ item }}
+                </button>
+              </li>
+              {% endfor %}
+            </ul>
+          </form>
+          </div>
+          <div class="pure-u-1-3 pure-menu">
+            <span class="pure-menu-heading" style="text-align:center">Movie Demos</span>
+            <form method="get" action="runMovie">
+              <ul id="movieList" class="pure-menu-list">
+                {% for item in movieList.keys()|sort %}
+                <li class="pure-menu-item" id="currentDemo">
+                  <button {% if currentDemo %}disabled {% endif %}type="submit" name="button" value="{{ movieList[item] }}" class="pure-button  {% if currentDemo %}pure-button-active {% endif %}{% if currentDemo == movieList[item] %}" style="background: #4C3{% endif %}">
+                  {{ item }}
+                  </button>
+                </li>
+                {% endfor %}
+              </ul>
+            </form>
+          </div>
+          <div class="pure-u-1-3 pure-menu">
+            <span class="pure-menu-heading" style="text-align:center">Stop Demo</span>
+            <form method="get" action="stopIt" align="center">
+              <ul id="stopButton" class="pure-menu-list">
+                <li class="pure-menu-item" id="currentDemo">
+                  <button type="submit" class="pure-button {% if currentDemo %}" style="background: #B22;"{% endif %}">
+                  Interrupt Demo
+                  </button>
+                </li>
+              </ul>
+            </form>
+            <span class="pure-menu-heading" style="text-align:center">Scripts</span>
+            <form method="get" action="runShellScript" align="center">
+              <ul id="scripts" class="pure-menu-list">
+                {% for key in scripts.keys()|sort %}
+                <li class="pure-menu-item" id="currentScript">
+                  {% for item in scripts[key] %}
+                  <button type="submit" name="button" value="{{ item }}" class="pure-button">
+                  {{ key }} {{ loop.cycle('On', 'Off') }}
+                  </button>
+                  {% endfor %}<p style="font-size:25%;">
+                </li>
+                {% endfor %}
+              </ul>
+            </form>
+          <span class="pure-menu-heading" style="text-align:center">Movie Controls</span>
+          <form method="get" action="runScript" align="center">
+            <!--        <form method="get" action="#" method="post"> -->
+            <ul id="scripts" class="pure-menu-list">
+              <li class="pure-menu-item" id="currentDemo">
+                <button type="submit" name="bino" value="toggle-pause" class="pure-button">
+                Start/Stop Movie
+                </button><p style="font-size:25%;">
+              </li>
+              <li>
+                <button type="submit" name="bino" value="seekB" class="pure-button">
+                Rew
+                </button>
+                <button type="submit" name="bino" value="seekF" class="pure-button">
+                Fwd
+                </button><p style="font-size:25%;">
+              </li>
+              <li>
+                <button type="submit" name="bino" value="rewind" class="pure-button">
+                Restart
+                </button>
+                <input type="hidden" name="movie" value="{{ currentDemo }}"><p style="font-size:25%;">
+              </li>
+            </ul>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!--    <a style="font-size: 80%" class="pure-button" href="/launch">Launch Night</a> -->
+  </body>
+</html>
