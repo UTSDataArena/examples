@@ -75,6 +75,7 @@ class GeometryFile():
 		self.modelInfos.append(modelInfo)
 
 		getSceneManager().loadModel(modelInfo)
+
 		newModel = StaticObject.create(fileToLoad)
 		newModel.setName(fileToLoad)
 
@@ -89,7 +90,7 @@ class GeometryFile():
                 self.pivotPoint = list(-newModel.getBoundCenter())
 
                 #: Use parent object to apply correct rotation on initially translated objects.
-                self.model = SceneNode.create("Parent")
+                self.model = SceneNode.create("ParentOf_" + fileToLoad)
                 self.model.addChild(newModel)
 
         def updateModel(self, newRotation, newPosition):
