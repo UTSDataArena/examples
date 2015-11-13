@@ -1,0 +1,514 @@
+EPBC_Status,FFG_Status,DSE_Advisory,Origin,Scientific,Common_Name,Count_of_Sightings,Taxon_Id
+,,,*,Acridotheres tristis,Common Myna,563,10998
+,,,*,Alauda arvensis,European Skylark,612,10993
+,,,*,Anas platyrhynchos,Northern Mallard,1,10948
+,,,*,Canis lupus familiaris,Dog,1,11836
+,,,*,Capra hircus,Goat (feral),1,11521
+,,,*,Carassius auratus,Goldfish,18,4711
+,,,*,Carduelis chloris,European Greenfinch,470,10997
+,,,*,Columba livia,Rock Dove,1,10957
+,,,*,Cyprinus carpio,Carp,22,4713
+,,,*,Felis catus,Cat,1,11536
+,,,*,Gambusia holbrooki,Eastern Gambusia,27,4771
+,,,*,Lepus europeaus,European Hare,1,11511
+,,,*,Mus musculus,House Mouse,1,11412
+,,,*,Oncorhynchus mykiss,Rainbow Trout,2,4676
+,,,*,Oncorhynchus tshawytscha,Chinook Salmon,1,4677
+,,,*,Oryctolagus cuniculus,European Rabbit,1,11510
+,,,*,Passer domesticus,House Sparrow,1104,10995
+,,,*,Passer montanus,Eurasian Tree Sparrow,1,10994
+,,,*,Perca fluviatilis,Redfin,27,4888
+,,,*,Purpureicephalus spurius,Red-capped Parrot,1,10290
+,,,*,Rattus norvegicus,Brown Rat,1,11409
+,,,*,Rattus rattus,Black Rat,1,11408
+,,,*,Salmo trutta,Brown Trout,27,4680
+,,,*,Streptopelia chinensis,Spotted Turtle-Dove,781,10989
+,,,*,Sturnus vulgaris,Common Starling,1,10999
+,,,*,Turdus merula,Common Blackbird,1013,10991
+,,,*,Turdus philomelos,Song Thrush,1,10992
+,,,*,Vulpes vulpes,Red Fox,108,528552
+,L,cr,,Acrodipsas myrmecophila,Small Ant Blue,1,15007
+EN,L,cr,,Anthochaera phrygia,Regent Honeyeater,1,10603
+,L,cr,,Ardea intermedia,Intermediate Egret,1,10186
+,L,cr,,Ardeotis australis,Australian Bustard,1,10176
+CR,L,cr,,Neophema chrysogaster,Orange-bellied Parrot,1,10305
+VU,L,cr,,Pedionomus torquatus,Plains-wanderer,1,10020
+EN,L,cr,,Perameles gunnii,Eastern Barred Bandicoot,37,11098
+VU,L,cr,,Rostratula benghalensis australis,Australian Painted Snipe,1,10170
+,L,cr,,Tringa brevipes,Grey-tailed Tattler,1,10155
+,L,dd,,Melanotaenia fluviatilis,Murray Rainbowfish,2,4774
+,L,en,,Acrodipsas brisbanensis,Large Ant Blue,1,15006
+,L,en,,Botaurus poiciloptilus,Australasian Bittern,1,10197
+,L,en,,Burhinus grallarius,Bush Stone-curlew,1,10174
+,L,en,,Calidris tenuirostris,Great Knot,1,10165
+,L,en,,Coturnix chinensis victoriae,King Quail,1,10012
+VU,L,en,,Delma impar,Striped Legless Lizard,1,12159
+VU,L,en,,Diomedea exulans,Wandering Albatross,1,10086
+,L,en,,Egretta garzetta nigripes,Little Egret,1,10185
+,L,en,,Gelochelidon nilotica macrotarsa,Gull-billed Tern,1,10111
+,L,en,,Ixobrychus minutus dubius,Little Bittern,1,10195
+EN,L,en,,Lathamus discolor,Swift Parrot,1,10309
+VU,L,en,,Litoria raniformis,Growling Grass Frog,162,13207
+VU,L,en,,Maccullochella peelii,Murray Cod,1,4871
+EN,L,en,,Macquaria australasica,Macquarie Perch,4,4874
+,L,en,,Ninox connivens connivens,Barking Owl,1,10246
+,L,en,,Oxyura australis,Blue-billed Duck,264,10216
+,L,en,,Pezoporus wallicus wallicus,Ground Parrot,1,10311
+,L,en,,Pomatostomus temporalis temporalis,Grey-crowned Babbler,1,10443
+,L,en,,Pseudophryne bibronii,Brown Toadlet,128,13117
+,L,en,,Sternula nereis nereis,Fairy Tern,1,10118
+,L,en,,Stictonetta naevosa,Freckled Duck,110,10214
+,L,en,,Tyto novaehollandiae novaehollandiae,Masked Owl,11,10250
+,L,en,,Xenus cinereus,Terek Sandpiper,1,10160
+,,nt,,Alcedo azurea,Azure Kingfisher,7,10319
+,L,nt,,Anseranas semipalmata,Magpie Goose,1,10199
+,,nt,,Calidris alba,Sanderling,1,10166
+,,nt,,Calidris canutus,Red Knot,1,10164
+,,nt,,Calidris melanotos,Pectoral Sandpiper,1,10978
+,,nt,,Calidris subminuta,Long-toed Stint,1,10965
+,,nt,,Cereopsis novaehollandiae,Cape Barren Goose,1,10198
+,,nt,,Chlidonias hybridus javanicus,Whiskered Tern,1,10110
+,,nt,,Chlidonias leucopterus,White-winged Black Tern,1,10109
+,,nt,,Chrysococcyx osculans,Black-eared Cuckoo,23,10341
+,,nt,,Cinclosoma punctatum,Spotted Quail-thrush,1,10436
+,,nt,,Circus assimilis,Spotted Harrier,33,10218
+,,nt,,Climacteris picumnus victoriae,Brown Treecreeper (south-eastern ssp.),1,60555
+,,nt,,Coturnix ypsilophora australis,Brown Quail,1,10010
+,L,nt,,Dasyornis broadbenti caryochrus,Rufous Bristlebird (Otways subsp.),1,19011
+,,nt,,Gallinago hardwickii,Latham's Snipe,1,10168
+,L,nt,,Geopelia cuneata,Diamond Dove,1,10031
+,,nt,,Haematopus fuliginosus,Sooty Oystercatcher,1,10131
+,L,nt,,Hydroprogne caspia,Caspian Tern,1,10112
+EN,L,nt,,Isoodon obesulus obesulus,Southern Brown Bandicoot,1,61092
+,,nt,,Larus pacificus pacificus,Pacific Gull,1,60126
+VU,L,nt,,Macronectes halli,Northern Giant-Petrel,1,10937
+,L,nt,,Melanodryas cucullata cucullata,Hooded Robin,1,10385
+,,nt,,Melithripterus gularis gularis,Black-chinned Honeyeater,1,10580
+,,nt,,Myotis macropus,Southern Myotis,1,11357
+VU,L,nt,,Nannoperca obscura,Yarra Pygmy Perch,4,4882
+,,nt,,Numenius madagascariensis,Eastern Curlew,1,10149
+,,nt,,Nycticorax caledonicus hillii,Nankeen Night Heron,1,10192
+,,nt,,Pelecanoides urinatrix,Common Diving-Petrel,1,10085
+,,nt,,Phalacrocorax fuscescens,Black-faced Cormorant,1,10098
+,,nt,,Phalacrocorax varius,Pied Cormorant,1,10099
+,,nt,,Plegadis falcinellus,Glossy Ibis,1,10178
+,,nt,,Pluvialis fulva,Pacific Golden Plover,1,10137
+,,nt,,Pluvialis squatarola,Grey Plover,1,10136
+,,nt,,Pseudemoia rawlinsoni,Glossy Grass Skink,1,12683
+,,nt,,Sminthopsis crassicaudata,Fat-tailed Dunnart,20,11072
+,,nt,,Sterna striata,White-fronted Tern,1,10114
+,,nt,,Stiltia isabella,Australian Pratincole,1,10173
+,,nt,,Todiramphus pyrropygia pyrropygia,Red-backed Kingfisher,2,10325
+,,nt,,Turnix velox,Little Button-quail,1,10018
+,L,rx,,Ambassis agassizii,Agassizs Chanda Perch,1,4864
+,L,vu,,Accipiter novaehollandiae novaehollandiae,Grey Goshawk,1,10220
+,,vu,,Actitis hypoleucos,Common Sandpiper,1,10157
+,,vu,,Anas rhynchotis,Australasian Shoveler,1,10212
+,L,vu,,Ardea modesta,Eastern Great Egret,1,10187
+,,vu,,Aythya australis,Hardhead,1,10215
+,,vu,,Biziura lobata,Musk Duck,1,10217
+,L,vu,,Calamanthus pyrrhopygius,Chestnut-rumped Heathwren,1,10498
+,,vu,,Charadrius leschenaultii,Greater Sand Plover,1,10141
+,,vu,,Charadrius mongolus,Lesser Sand Plover,1,10139
+,L,vu,,Chthonicola sagittatus,Speckled Warbler,1,10504
+,,vu,,Engaeus fultoni,Otway Burrowing Cray,1,1674
+,,vu,,Falco subniger,Black Falcon,48,10238
+,L,vu,,Grantiella picta,Painted Honeyeater,1,10598
+,L,vu,,Grus rubicunda,Brolga,1,10177
+,L,vu,,Haliaeetus leucogaster,White-bellied Sea-Eagle,32,10226
+,L,vu,,Hesperilla flavescens flavescens,Yellow Sedge-skipper,1,65005
+,L,vu,,Lewinia pectoralis pectoralis,Lewin's Rail,1,10045
+,L,vu,,Lophocroa leadbeateri,Major Mitchell's Cockatoo,1,10270
+,L,vu,,Lophoictinia isura,Square-tailed Kite,1,10230
+,,vu,,Macquaria ambigua,Golden Perch,1,4873
+EN,L,vu,,Macronectes giganteus,Southern Giant-Petrel,1,10929
+,,vu,,Neophema elegans,Elegant Parrot,4,10307
+,L,vu,,Ninox strenua,Powerful Owl,44,10248
+,,vu,,Numenius phaeopus,Whimbrel,1,10150
+VU,,vu,,Pachyptila turtur,Fairy Prion,1,10083
+,,vu,,Pelagodroma marina,White-faced Storm-Petrel,1,10065
+,L,vu,,Phascogale tapoatafa tapoatafa,Brush-tailed Phascogale,5,11017
+,,vu,,Platalea regia,Royal Spoonbill,1,10181
+,L,vu,,Porzana pusilla palustris,Baillon's Crake,1,10050
+VU,L,vu,,Prototroctes maraena,Australian Grayling,41,4686
+VU,L,vu,,Pteropus poliocephalus,Grey-headed Flying-fox,1,11280
+,,vu,,Sminthopsis murina murina,Common Dunnart,1,11061
+,L,vu,,Stagonopleura guttata,Diamond Firetail,1,10652
+,L,vu,,Sternula albifrons sinensis,Little Tern,1,10117
+VU,L,vu,,Thalassarche cauta,Shy Albatross,1,10091
+VU,L,vu,,Thalassarche chlororhynchos,Yellow-nosed Albatross,1,10089
+VU,L,vu,,Thalassarche chrysostoma,Grey-headed Albatross,1,10090
+VU,,vu,,Thalassarche melanophris melanophris,Black-browed Albatross,1,10088
+,L,vu,,Thinornis rubricollis rubricollis,Hooded Plover,1,10138
+,,vu,,Tringa glareola,Wood Sandpiper,1,10154
+,L,vu,,Turnix pyrrhothorax,Red-chested Button-quail,1,10019
+,,,,Acanthagenys rufogularis,Spiny-cheeked Honeyeater,1,10640
+,,,,Acanthiza chrysorrhoa,Yellow-rumped Thornbill,1,10486
+,,,,Acanthiza lineata,Striated Thornbill,1,10470
+,,,,Acanthiza nana,Yellow Thornbill,1,10471
+,,,,Acanthiza pusilla,Brown Thornbill,1,10475
+,,,,Acanthiza reguloides,Buff-rumped Thornbill,1,10484
+,,,,Acanthopagrus butcheri,Black Bream,14,4918
+,,,,Acanthorhynchus tenuirostris,Eastern Spinebill,1,10591
+,,,,Accipiter cirrhocephalus,Collared Sparrowhawk,62,10222
+,,,,Accipiter fasciatus,Brown Goshawk,398,10221
+,,,,Acritoscincus duperreyi,Eastern Three-lined Skink,1,12682
+,,,,Acrobates pygmaeus,Feathertail Glider,1,11147
+,,,,Acrocephalus stentoreus,Clamorous Reed Warbler,1,10524
+,,,,Aegotheles cristatus,Australian Owlet-nightjar,56,10317
+,,,,Afurcagobius tamarensis,Tamar River Goby,4,5018
+,,,,Aldrichetta forsteri,Yellow-eye Mullet,18,4960
+,,,,Alisterus scapularis,Australian King-Parrot,1,10281
+,,,,Amarinus lacustris,Freshwater Spider Crab,1,1701
+,,,,Ammotretis rostratus,Longsnouted Flounder,10,5071
+,,,,Amphibolurus muricatus,Tree Dragon,1,12194
+,,,,Anas castanea,Chestnut Teal,1039,10210
+,,,,Anas clypeata,Northern Shoveler,1,10905
+,,,,Anas gracilis,Grey Teal,867,10211
+,,,,Anas querquedula,Garganey,1,10209
+,,,,Anas spp.,Unidentified Ducks,1,9903
+,,,,Anas superciliosa,Pacific Black Duck,1,10208
+,,,,Anguilla australis,Short-finned Eel,74,4651
+,,,,Anguilla reinhardtii,Longfinned Eel,1,4652
+,,,,Anhinga novaehollandiae,Darter,1,10101
+,,,,Anous stolidus,Common Noddy,1,10122
+,,,,Anser anser,Domestic Goose,4,528558
+,,,,Antechinus agilis,Agile Antechinus,9,11028
+,,,,Anthochaera carunculata,Red Wattlebird,1,10638
+,,,,Anthochaera chrysoptera,Little Wattlebird,1,10637
+,,,,Anthus novaeseelandiae,Australasian Pipit,1,10647
+,,,,Aphelocephala leucopsis,Southern Whiteface,1,10466
+,,,,Apus pacificus,Fork-tailed Swift,34,10335
+,,,,Aquila audax,Wedge-tailed Eagle,1,10224
+,,,,Ardea ibis,Cattle Egret,1,10977
+,,,,Ardea pacifica,White-necked Heron,1,10189
+,,,,Arenaria interpres,Ruddy Turnstone,1,10129
+,,,,Arenigobius bifrenatus,Bridled Goby,3,5020
+,,,,Argyrosomus japonicus,Mulloway,6,4925
+,,,,Arripis georgianus,Australian Herring,4,4910
+,,,,Arripis trutta,Eastern Australian Salmon,8,4911
+,,,,Artamus cyanopterus,Dusky Woodswallow,1,10547
+,,,,Artamus personatus,Masked Woodswallow,1,10544
+,,,,Artamus superciliosus,White-browed Woodswallow,1,10545
+,,,,Atherinason microstoma,Smallmouthed Hardyhead,11,4782
+,,,,Austrelaps superbus,Lowland Copperhead,10,12973
+,,,,Barnardius zonarius zonarius,Australian Ringneck,1,60294
+,,,,Cacatua galerita,Sulphur-crested Cockatoo,672,10269
+,,,,Cacatua sanguinea,Little Corella,20,10271
+,,,,Cacatua tenuirostris,Long-billed Corella,83,10272
+,,,,Cacomantis flabelliformis,Fan-tailed Cuckoo,1,10338
+,,,,Cacomantis variolosus,Brush Cuckoo,8,10339
+,,,,Calamanthus fuliginosus,Striated Fieldwren,1,10500
+,,,,Calidris acuminata,Sharp-tailed Sandpiper,1,10163
+,,,,Calidris bairdii,Baird's Sandpiper,1,10890
+,,,,Calidris ferruginea,Curlew Sandpiper,1,10161
+,,,,Calidris fuscicollis,White-rumped Sandpiper,1,10849
+,,,,Calidris himantopus,Stilt Sandpiper,1,10827
+,,,,Calidris melanotus X ferruginea,Cox's Sandpiper,1,60822
+,,,,Calidris minuta,Little Stint,1,10857
+,,,,Calidris ruficollis,Red-necked Stint,1,10162
+,,,,Callocephalon fimbriatum,Gang-gang Cockatoo,1,10268
+,,,,Calyptorhynchus funereus,Yellow-tailed Black-Cockatoo,126,10267
+,,,,Carduelis carduelis,European Goldfinch,1,528559
+,,,,Chalinolobus gouldii,Gould's Wattled Bat,1,11349
+,,,,Chalinolobus morio,Chocolate Wattled Bat,1,11351
+,,,,Charadrius bicinctus,Double-banded Plover,1,10140
+,,,,Charadrius dubius,Little Ringed Plover,1,10851
+,,,,Charadrius hiaticula,Ringed Plover,1,10895
+,,,,Charadrius ruficapillus,Red-capped Plover,1,10143
+,,,,Charadrius veredus,Oriental Plover,1,10142
+,,,,Chelodina longicollis,Common Long-necked Turtle,1,5134
+,,,,Chenonetta jubata,Australian Wood Duck,1,10202
+,,,,Cheramoeca leucosternus,White-backed Swallow,1,10358
+,,,,Cherax destructor destructor,Common Yabby,1,1608
+,,,,Christinus marmoratus,Marbled Gecko,1,12126
+,,,,Chroicocephalus novaehollandiae,Silver Gull,1,10125
+,,,,Chrysococcyx basalis,Horsfield's Bronze-Cuckoo,1,10342
+,,,,Chrysococcyx lucidus,Shining Bronze-Cuckoo,242,10344
+,,,,Cincloramphus cruralis,Brown Songlark,1,10508
+,,,,Cincloramphus mathewsi,Rufous Songlark,1,10509
+,,,,Circus approximans,Swamp Harrier,494,10219
+,,,,Cisticola exilis,Golden-headed Cisticola,1,10525
+,,,,Cladorhynchus leucocephalus,Banded Stilt,1,10147
+,,,,Colluricincla harmonica,Grey Shrike-thrush,1,10408
+,,,,Columba leucomela,White-headed Pigeon,1,10028
+,,,,Coracina novaehollandiae,Black-faced Cuckoo-shrike,1,10424
+,,,,Coracina papuensis,White-bellied Cuckoo-shrike,1,10425
+,,,,Coracina tenuirostris,Common Cicadabird,1,10429
+,,,,Corcorax melanorhamphos,White-winged Chough,1,10693
+,,,,Cormobates leucophaeus,White-throated Treecreeper,1,10558
+,,,,Corvus coronoides,Australian Raven,1,10930
+,,,,Corvus mellori,Little Raven,1,10954
+,,,,Corvus tasmanicus,Forest Raven,1,10868
+,,,,Coturnix pectoralis,Stubble Quail,1,10009
+,,,,Cracticus nigrogularis,Pied Butcherbird,1,10700
+,,,,Cracticus torquatus,Grey Butcherbird,1,10702
+,,,,Crinia signifera,Common Froglet,1,13134
+,,,,Ctenotus robustus,Large Striped Skink,1,12375
+,,,,Cuculus pallidus,Pallid Cuckoo,162,10337
+,,,,Cygnus atratus,Black Swan,1,10203
+,,,,Dacelo novaeguineae,Laughing Kookaburra,1,10322
+,,,,Daphoenositta chrysoptera,Varied Sittella,1,10549
+,,,,Daption capense,Cape Petrel,1,10080
+,,,,Delphinus delphis,Common Dolphin,1,11616
+,,,,Dendrocygna eytoni,Plumed Whistling-Duck,1,10205
+,,,,Dicaeum hirundinaceum,Mistletoebird,1,10564
+,,,,Dromaius novaehollandiae,Emu,1,10001
+,,,,Drysdalia coronoides,White-lipped Snake,1,12665
+,,,,Egernia cunninghami,Cunningham's Skink,1,12408
+,,,,Egernia saxatilis intermedia,Black Rock Skink,1,62938
+,,,,Egretta novaehollandiae,White-faced Heron,1,10188
+,,,,Elanus axillaris,Black-shouldered Kite,453,10232
+,,,,Elanus scriptus,Letter-winged Kite,1,10233
+,,,,Elseyornis melanops,Black-fronted Dotterel,1,10144
+,,,,Empididae SRV sp. 7,Dance Flies,1,4578
+,,,,Engaeus cunicularius,Granular Burrowing Cray,1,1680
+,,,,Engraulis australis,Australian Anchovy,2,4672
+,,,,Eolophus roseicapilla,Galah,800,10273
+,,,,Eopsaltria australis,Eastern Yellow Robin,1,10392
+,,,,Epthianura albifrons,White-fronted Chat,1,10448
+,,,,Erythrogonys cinctus,Red-kneed Dotterel,1,10132
+,,,,Euastacus yarraensis,Southern Victorian Spiny Crayfish,1,1645
+,,,,Eudynamys orientalis,Eastern Koel,1,10347
+,,,,Eudyptula minor,Little Penguin,74,10005
+,,,,Eulamprus tympanum tympanum,Southern Water Skink,1,62956
+,,,,Eurostopodus mystacalis,White-throated Nightjar,13,10330
+,,,,Eurystomus orientalis,Dollarbird,10,10318
+,,,,Falco berigora,Brown Falcon,597,10239
+,,,,Falco cenchroides,Nankeen Kestrel,1,10240
+,,,,Falco longipennis,Australian Hobby,195,10235
+,,,,Falco peregrinus,Peregrine Falcon,1,10237
+,,,,Falcunculus frontatus,Crested Shrike-tit,1,10416
+,,,,Fulica atra,Eurasian Coot,1,10059
+,,,,Fulmarus glacialoides,Southern Fulmar,1,10074
+,,,,Gadopsis marmoratus,River Blackfish,4,4949
+,,,,Galaxias brevipinnis,Broadfin Galaxias,8,4694
+,,,,Galaxias maculatus,Common Galaxias,57,4696
+,,,,Galaxias truttaceus,Spotted Galaxias,28,4693
+,,,,Gallinula tenebrosa,Dusky Moorhen,1,10056
+,,,,Gallinula ventralis,Black-tailed Native-hen,1,10055
+,,,,Gallirallus philippensis,Buff-banded Rail,1,10046
+,,,,Geocrinia victoriana,Victorian Smooth Froglet,1,13033
+,,,,Geopelia striata,Peaceful Dove,1,10030
+,,,,Geotria australis,Pouched Lamprey,1,4601
+,,,,Gerygone fusca,Western Gerygone,1,10463
+,,,,Gerygone olivacea,White-throated Gerygone,1,10453
+,,,,Girella tricuspidata,Luderick,12,4930
+,,,,Glareola maldivarum,Oriental Pratincole,1,10172
+,,,,Globicephala melas,Long-finned Pilot Whale,1,11606
+,,,,Glossopsitta concinna,Musk Lorikeet,1,10258
+,,,,Glossopsitta porphyrocephala,Purple-crowned Lorikeet,375,10259
+,,,,Glossopsitta pusilla,Little Lorikeet,102,10260
+,,,,Gobiopterus semivestitus,Glass Goby,1,5027
+,,,,Grallina cyanoleuca,Magpie-lark,1,10415
+,,,,Grampus griseus,Risso's Dolphin,1,11609
+,,,,Gymnapistes marmoratus,Soldierfish,2,4840
+,,,,Gymnorhina tibicen,Australian Magpie,1,10705
+,,,,Haematopus longirostris,Pied Oystercatcher,1,10130
+,,,,Haliastur sphenurus,Whistling Kite,603,10228
+VU,,,,Halobaena caerulea,Blue Petrel,1,10081
+,,,,Hieraaetus morphnoides,Little Eagle,193,10225
+,,,,Himantopus himantopus,Black-winged Stilt,1,528555
+,,,,Hirundapus caudacutus,White-throated Needletail,79,10334
+,,,,Hydromys chrysogaster,Water Rat,1,11415
+,,,,Hydrurga leptonyx,Leopard Seal,3,11549
+,,,,Hyperlophus vittatus,Sandy Sprat,3,4659
+,,,,Kogia breviceps,Pygmy Sperm Whale,2,11581
+,,,,Lalage sueurii,White-winged Triller,1,10430
+,,,,Lampropholis guichenoti,Garden Skink,1,12451
+,,,,Larus crassirostris,Black-tailed Gull,1,10856
+,,,,Larus dominicanus,Kelp Gull,1,10981
+,,,,Lerista bougainvillii,Bougainville's Skink,1,12475
+,,,,Lichenostomus chrysops,Yellow-faced Honeyeater,1,10614
+,,,,Lichenostomus fuscus,Fuscous Honeyeater,1,10613
+,,,,Lichenostomus leucotis,White-eared Honeyeater,1,10617
+,,,,Lichenostomus melanops,Yellow-tufted Honeyeater,1,10619
+,,,,Lichenostomus ornatus,Yellow-plumed Honeyeater,1,10622
+,,,,Lichenostomus penicillatus,White-plumed Honeyeater,1,10625
+,,,,Lichenostomus virescens,Singing Honeyeater,1,10608
+,,,,Limicola falcinellus,Broad-billed Sandpiper,1,10167
+,,,,Limnodynastes dumerilii,Southern Bullfrog (ssp. unknown),58,13058
+,,,,Limnodynastes dumerilii dumerilii,Pobblebonk Frog,1,63913
+,,,,Limnodynastes dumerilii insularis,Pobblebonk Frog,1,63914
+,,,,Limnodynastes peronii,Striped Marsh Frog,10,13061
+,,,,Limnodynastes tasmaniensis,Spotted Marsh Frog (race unknown),1,13063
+,,,,Limnodynastes tasmaniensis NCR,Spotted Marsh Frog NCR,1,63917
+,,,,Limnodynastes tasmaniensis SCR,Spotted Marsh Frog SCR,1,63918
+,,,,Limosa lapponica,Bar-tailed Godwit,1,10153
+,,,,Limosa limosa,Black-tailed Godwit,1,528553
+,,,,Liopholis whitii GROUP,White's Skink,1,62430
+,,,,Litoria ewingii,Southern Brown Tree Frog,1,13182
+,,,,Litoria ewingii SOUTHERN,Southern Brown Tree Frog SOUTHERN,1,63903
+,,,,Litoria verreauxii (ssp. unknown),Unknown Tree Frog,1,13215
+,,,,Litoria verreauxii verreauxii,Verreaux's Tree Frog,1,63906
+,,,,Lugensa brevirostris,Kerguelen Petrel,1,10935
+,,,,Macquaria colonorum,Estuary Perch,15,4875
+,,,,Macronectes sp.,Giant-Petrel species,1,10079
+,,,,Macropus giganteus,Eastern Grey Kangaroo,1,11265
+,,,,Malacorhynchus membranaceus,Pink-eared Duck,188,10213
+,,,,Malurus cyaneus,Superb Fairy-wren,1,10529
+,,,,Manorina melanocephala,Noisy Miner,1,10634
+,,,,Manorina melanophrys,Bell Miner,1,10633
+,,,,Megalurus gramineus,Little Grassbird,1,10522
+,,,,Melithreptus brevirostris,Brown-headed Honeyeater,1,10583
+,,,,Melithreptus lunatus,White-naped Honeyeater,1,10578
+,,,,Melopsittacus undulatus,Budgerigar,7,10310
+,,,,Merops ornatus,Rainbow Bee-eater,151,10329
+,,,,Microcarbo melanoleucos,Little Pied Cormorant,1,10100
+,,,,Microeca fascinans,Jacky Winter,1,10377
+,,,,Milvus migrans,Black Kite,23,10229
+,,,,Mirafra javanica,Horsfield's Bushlark,1,10648
+,,,,Misc No Taxa found,No Taxa found,1,68998
+,,,,Monarcha melanopsis,Black-faced Monarch,1,10373
+,,,,Mormopterus sp. 2,Eastern Freetail Bat,1,11839
+,,,,Morus serrator,Australasian Gannet,1,10104
+,,,,Mugil cephalus,Sea Mullet,8,4964
+,,,,Myiagra cyanoleuca,Satin Flycatcher,1,10366
+,,,,Myiagra inquieta,Restless Flycatcher,1,10369
+,,,,Myiagra rubecula,Leaden Flycatcher,1,10365
+,,,,Myzomela sanguinolenta,Scarlet Honeyeater,1,10586
+,,,,Nannoperca australis,Southern Pygmy Perch,5,4884
+,,,,Nannoscincus maccoyi,McCoy's Skink,1,12444
+,,,,Neobatrachus sudelli,Common Spadefoot Toad,42,13086
+,,,,Neochmia temporalis,Red-browed Finch,1,10662
+,,,,Neophema chrysostoma,Blue-winged Parrot,122,10306
+,,,,Ninox novaeseelandiae,Southern Boobook,95,10242
+,,,,Niveoscincus metallicus,Metallic Skink,4,12462
+,,,,Notechis scutatus,Tiger Snake,45,12681
+,,,,Numenius minutus,Little Curlew,1,10151
+,,,,Nyctophilus geoffroyi,Lesser Long-eared Bat,1,11335
+,,,,Nymphicus hollandicus,Cockatiel,1,10274
+,,,,Oceanites oceanicus,Wilson's Storm-Petrel,1,10063
+,,,,Ocyphaps lophotes,Crested Pigeon,1,10043
+,,,,Orcinus orca,Killer Whale,1,11600
+,,,,Oriolus sagittatus,Olive-backed Oriole,1,10671
+,,,,Ornithorhynchus anatinus,Platypus,1,5136
+,,,,Pachycephala inornata,Gilbert's Whistler,1,10403
+,,,,Pachycephala olivacea,Olive Whistler,1,10405
+,,,,Pachycephala pectoralis,Golden Whistler,1,10398
+,,,,Pachycephala rufiventris,Rufous Whistler,1,10401
+,,,,Pachyptila belcheri,Slender-billed Prion,1,10942
+,,,,Pachyptila desolata,Antarctic Prion,1,10084
+,,,,Pachyptila salvini,Salvin's Prion,1,10941
+,,,,Pandion cristatus,Osprey,2,10241
+,,,,Parasuta flagellum,Little Whip Snake,1,12727
+,,,,Paratya australiensis,Freshwater Shrimp,43,1557
+,,,,Pardalotus punctatus,Spotted Pardalote,1,10565
+,,,,Pardalotus striatus,Striated Pardalote,1,10976
+,,,,Pelecanus conspicillatus,Australian Pelican,1,10106
+,,,,Petaurus breviceps,Sugar Glider,22,11138
+,,,,Petrochelidon ariel,Fairy Martin,1,10360
+,,,,Petrochelidon neoxena,Welcome Swallow,1503,10357
+,,,,Petrochelidon nigricans,Tree Martin,1,10359
+,,,,Petroica boodang,Scarlet Robin,1,10380
+,,,,Petroica goodenovii,Red-capped Robin,1,10381
+,,,,Petroica phoenicea,Flame Robin,1,10382
+,,,,Petroica rodinogaster,Pink Robin,1,10383
+,,,,Petroica rosea,Rose Robin,1,10384
+,,,,Phalacrocorax carbo,Great Cormorant,1,10096
+,,,,Phalacrocorax sulcirostris,Little Black Cormorant,1,10097
+,,,,Phalaropus lobatus,Red-necked Phalarope,1,10932
+,,,,Phaps chalcoptera,Common Bronzewing,1,10034
+,,,,Phaps elegans,Brush Bronzewing,1,10035
+,,,,Phascolarctos cinereus,Koala,173,11162
+,,,,Philemon corniculatus,Noisy Friarbird,1,10645
+,,,,Philomachus pugnax,Ruff,1,10934
+,,,,Philypnodon grandiceps,Flat-headed Gudgeon,31,5060
+,,,,Phylidonyris albifrons,White-fronted Honeyeater,1,10594
+,,,,Phylidonyris melanops,Tawny-crowned Honeyeater,1,10593
+,,,,Phylidonyris novaehollandiae,New Holland Honeyeater,1,10631
+,,,,Phylidonyris pyrrhoptera,Crescent Honeyeater,1,10630
+,,,,Platalea flavipes,Yellow-billed Spoonbill,1,10182
+,,,,Platelea sp.,Unidentified Spoonbill,1,9906
+,,,,Platycercus elegans,Crimson Rosella,459,10282
+,,,,Platycercus eximius,Eastern Rosella,1,10288
+,,,,Platycercus sp.,Rosella species,1,10838
+,,,,Podargus strigoides,Tawny Frogmouth,1,10313
+,,,,Podiceps cristatus,Great Crested Grebe,1,10060
+,,,,Poliocephalus poliocephalus,Hoary-headed Grebe,1,10062
+,,,,Pomatomus saltatrix,Tailor,8,4899
+,,,,Pomatostomus superciliosus,White-browed Babbler,1,10445
+,,,,Porphyrio porphyrio,Purple Swamphen,1,10058
+,,,,Porzana fluminea,Australian Spotted Crake,1,10049
+,,,,Porzana tabuensis,Spotless Crake,1,10051
+,,,,Psephotus haematonotus,Red-rumped Parrot,1,10295
+,,,,Psephotus varius,Mulga Parrot,1,10296
+,,,,Pseudaphritis urvillii,Tupong,27,4985
+,,,,Pseudechis porphyriacus,Red-bellied Black Snake,1,12693
+,,,,Pseudemoia entrecasteauxii,Southern Grass Skink,1,12994
+,,,,Pseudemoia form cryodoma/pagenstecheri,Grass skink FORM (P.pag/cry),1,12948
+,,,,Pseudemoia pagenstecheri,Tussock Skink,1,12993
+,,,,Pseudocaranx georgianus,Silver Trevally,11,4902
+,,,,Pseudocheirus peregrinus,Common Ringtail Possum,44,11129
+,,,,Pseudogobius olorum,Southern Blue-spotted Goby,1,5039
+,,,,Pseudonaja textilis,Eastern Brown Snake,1,12699
+,,,,Pterodroma lessonii,White-headed Petrel,1,10077
+,,,,Pterodroma macroptera,Great-winged Petrel,1,10075
+,,,,Pterodroma nigripennis,Black-winged Petrel,1,10955
+,,,,Puffinus carneipes,Flesh-footed Shearwater,1,10072
+,,,,Puffinus gavia,Fluttering Shearwater,1,10068
+,,,,Puffinus grisea,Sooty Shearwater,1,10070
+,,,,Puffinus huttoni,Hutton's Shearwater,1,10913
+,,,,Puffinus tenuirostris,Short-tailed Shearwater,1,10071
+,,,,Rankinia diemensis,Mountain Dragon,1,12182
+,,,,Rattus lutreolus,Swamp Rat,1,11398
+,,,,Recurvirostra novaehollandiae,Red-necked Avocet,1,10148
+,,,,Retropinna semoni,Australian Smelt,29,4683
+,,,,Rhinoplocephalus nigrescens,Eastern Small-eyed Snake,1,12650
+,,,,Rhipidura albiscarpa,Grey Fantail,1,10361
+,,,,Rhipidura leucophrys,Willie Wagtail,1,10364
+,,,,Rhipidura rufifrons,Rufous Fantail,1,10362
+,,,,Rhombosolea tapirina,Greenback Flounder,13,5073
+,,,,Sericornis frontalis,White-browed Scrubwren,1,10488
+,,,,Sillaginodes punctatus,King George Whiting,8,4891
+,,,,Smicrornis brevirostris,Weebill,1,10465
+,,,,Stagonopleura bella,Beautiful Firetail,1,10650
+,,,,Steganopus tricolor,Wilson's Phalarope,1,10886
+,,,,Stercorarius longicaudus,Long-tailed Jaeger,1,10933
+,,,,Stercorarius parasiticus,Arctic Jaeger,1,10128
+,,,,Stercorarius pomarinus,Pomarine Jaeger,1,10945
+,,,,Stercorarius skua,Great Skua,1,10980
+,,,,Sterna hirundo,Common Tern,1,10953
+,,,,Sterna paradisaea,Arctic Tern,1,10952
+,,,,Stigmatopora argus,Spotted Pipefish,1,4821
+,,,,Stipiturus malachurus,Southern Emu-wren,1,10526
+,,,,Stratiomyidae EPA sp. 3,Soldier Flies,1,4570
+,,,,Strepera graculina,Pied Currawong,1,10694
+,,,,Strepera versicolor,Grey Currawong,1,10697
+,,,,Sugamel niger,Black Honeyeater,1,10589
+,,,,Tachybaptus novaehollandiae,Australasian Grebe,1,10061
+,,,,Tachyglossus aculeatus,Short-beaked Echidna,1,11003
+,,,,Tadarida australis,White-striped Freetail Bat,1,11324
+,,,,Tadorna tadornoides,Australian Shelduck,1,10207
+,,,,Taeniopygia guttata,Zebra Finch,1,10653
+,,,,Tandanus tandanus,Freshwater Catfish,1,528545
+,,,,Tasmanogobius lasti,Lagoon Goby,5,5044
+,,,,Tetractenos glaber,Smooth Toadfish,2,5107
+,,,,Thalasseus bergii,Crested Tern,1,10115
+,,,,Thalassoica antarctica,Antarctic Petrel,1,10949
+,,,,Threskiornis molucca,Australian White Ibis,1,10179
+,,,,Threskiornis spinicollis,Straw-necked Ibis,1,10180
+,,,,Tiliqua nigrolutea,Blotched Blue-tongued Lizard,3,12578
+,,,,Tiliqua scincoides,Common Blue-tongued Lizard,1,12580
+,,,,Tipulidae EPA sp. 13,,1,4542
+,,,,Tipulidae SRV sp. 28,,1,4554
+,,,,Todiramphus sanctus,Sacred Kingfisher,1,10326
+,,,,Trichoglossus chlorolepidotus,Scaly-breasted Lorikeet,16,10256
+,,,,Trichoglossus haematodus,Rainbow Lorikeet,218,10254
+,,,,Trichosurus vulpecula,Common Brushtail Possum,72,11113
+,,,,Tringa flavipes,Lesser Yellowlegs,1,10809
+,,,,Tringa nebularia,Common Greenshank,1,10158
+,,,,Tringa stagnatilis,Marsh Sandpiper,1,10159
+,,,,Tryngites subruficollis,Buff-breasted Sandpiper,1,10887
+,,,,Turnix varia,Painted Button-quail,1,10014
+,,,,Tursiops truncatus,Bottlenose Dolphin,2,11612
+,,,,Tyto javanica,Pacific Barn Owl,1,10249
+,,,,Tyto longimembris,Eastern Grass Owl,4,10252
+,,,,Vanellus miles,Masked Lapwing,1,10133
+,,,,Vanellus tricolor,Banded Lapwing,1,10135
+,,,,Vespadelus darlingtoni,Large Forest Bat,1,11381
+,,,,Vespadelus regulus,Southern Forest Bat,1,11378
+,,,,Vespadelus vulturnus,Little Forest Bat,1,11379
+,,,,Wallabia bicolor,Black Wallaby,1,11242
+,,,,Zoothera lunulata,Bassian Thrush,1,10779
+,,,,Zosterops lateralis,Silvereye,1,10574
