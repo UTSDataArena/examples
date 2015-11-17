@@ -13,7 +13,7 @@ uiroot = ui.getUi()
 if(isMaster()):
 	ww = WebView.create(width, height)
 	ww.loadUrl("http://www.exposedata.com/parallel/")
-	#ww.loadUrl("file://data/index.htm")
+	#ww.loadUrl("file://gene/index.htm")
 	#ww.setZoom(200)
 	frame = WebFrame.create(uiroot)
 	frame.setView(ww)
