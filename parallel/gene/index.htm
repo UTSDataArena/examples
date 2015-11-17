@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head>
   <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
-  <title>Weather Data - Parallel Coordinates</title>
+  <title>Gene Data - Parallel Coordinates</title>
 
   <script type="text/javascript" src="index_files/d3.js"></script>
   <script type="text/javascript" src="index_files/d3_002.js"></script>
@@ -25,13 +25,13 @@
   <script src="index_files/grid.js"></script>
   <script src="index_files/pie.js"></script>
   <script src="index_files/options.js"></script>
-  <script src="index_files/weather.js"></script>
+  <script src="index_files/myData.js"></script>
   <link rel="stylesheet" href="index_files/style.css" type="text/css" charset="utf-8">
 <style type="text/css" rel="stylesheet">.slickgrid_108761 .slick-header-column { left: 1000px; } .slickgrid_108761 .slick-top-panel { height:25px; } .slickgrid_108761 .slick-headerrow-columns { height:25px; } .slickgrid_108761 .slick-cell { height:22px; } .slickgrid_108761 .slick-row { width:1620px; height:25px; } .slickgrid_108761 .lr { float:none; position:absolute; } .slickgrid_108761 .l0 { left: 0px; } .slickgrid_108761 .r0 { right: 1300px; } .slickgrid_108761 .l1 { left: 320px; } .slickgrid_108761 .r1 { right: 1120px; } .slickgrid_108761 .l2 { left: 500px; } .slickgrid_108761 .r2 { right: 1040px; } .slickgrid_108761 .l3 { left: 580px; } .slickgrid_108761 .r3 { right: 960px; } .slickgrid_108761 .l4 { left: 660px; } .slickgrid_108761 .r4 { right: 880px; } .slickgrid_108761 .l5 { left: 740px; } .slickgrid_108761 .r5 { right: 800px; } .slickgrid_108761 .l6 { left: 820px; } .slickgrid_108761 .r6 { right: 720px; } .slickgrid_108761 .l7 { left: 900px; } .slickgrid_108761 .r7 { right: 640px; } .slickgrid_108761 .l8 { left: 980px; } .slickgrid_108761 .r8 { right: 560px; } .slickgrid_108761 .l9 { left: 1060px; } .slickgrid_108761 .r9 { right: 480px; } .slickgrid_108761 .l10 { left: 1140px; } .slickgrid_108761 .r10 { right: 400px; } .slickgrid_108761 .l11 { left: 1220px; } .slickgrid_108761 .r11 { right: 320px; } .slickgrid_108761 .l12 { left: 1300px; } .slickgrid_108761 .r12 { right: 240px; } .slickgrid_108761 .l13 { left: 1380px; } .slickgrid_108761 .r13 { right: 160px; } .slickgrid_108761 .l14 { left: 1460px; } .slickgrid_108761 .r14 { right: 80px; } .slickgrid_108761 .l15 { left: 1540px; } .slickgrid_108761 .r15 { right: 0px; }</style></head>
 
 <body>
 <div id="nav">
-  <h1>Data - Parallel Coordinates</h1>
+  <h1>Gene Data - Parallel Coordinates</h1>
   <div class="widget right toggle">
 	  <input min="0" max="1" value="0.2" step="0.01" name="power" list="powers" id="line_opacity" type="range">
    <br>
@@ -41,14 +41,13 @@
   <div><a href="#" id="inverted" class="right toggle">Dark</a></div>
   <div><a href="#" id="no_ticks" class="right toggle">Hide Ticks</a></div>
   <p class="intro left clear">
-    An interactive visualization of Australian weather data.
-
+    An interactive visualization of Paul Kennedy's Child Leukemia data.
     For information on parallel coordinates, read this <a href="http://eagereyes.org/techniques/parallel-coordinates">tutorial</a>.
   </p>
 </div>
 <div id="main">
   <div class="widgets">
-    <h3>Weather data</h3>
+    <h3>Gene data</h3>
     <div id="totals" class="widget right">Total Selected<br><svg height="80" width="100"></svg></div>
     <div id="pie" class="widget right">Group Breakdown<br><svg height="80" width="100"></svg></div>
     <a href="#" id="export_selected" class="button green filter_control">Export</a>
@@ -67,49 +66,39 @@
     var dimensions = new Filter();
     var highlighter = new Selector();
 
-    dimensions.set({data: weatherData });
+    dimensions.set({data: myData });
 
-    var columns = _(weatherData[0]).keys();
-    var axes = columns;
+    var columns = _(myData[0]).keys();
+    var axes = _(columns).without('name', 'group', 'Gender');
 
-    var locations = [
-		"Canberra",
-		"Sydney",
-		"Brisbane",
-		"Melbourne",
-		"Perth",
-		"Adelaid",
-		"Hobart",
-		"Darwin"
+    var patientGroups = [
+		"Male",
+		"Female",
+		"Unspecified"
     ];
 
     var colors = {
-      "Canberra" : '#ff7f0e',
-      "Sydney" : '#aec7e8',
-      "Brisbane" : '#ffbb78',
-      "Melbourne" : '#d62728',
-      "Perth" : '#98df8a',
-      "Adelaid" : '#2ca02c',
-      "Hobart" : '#ff9896',
-      "Darwin" : '#9467bd'
+      "Male" : '#ff7f0e',
+      "Female" : '#aec7e8',
+      "Unspecified" : '#555',
     };
 
-    _(locations).each(function(group) {
+    _(patientGroups).each(function(group) {
       $('#legend').append("<div class='item'><div class='color' style='background: " + colors[group] + "';></div><div class='key'>" + group + "</div></div>");
     });
 
     var pc = parallel(dimensions, colors);
-    var pie = piegroups(weatherData, locations, colors, 'location');
+    var pie = piegroups(myData, patientGroups, colors, 'group');
     var totals = pietotals(
       ['in', 'out'],
-      [_(weatherData).size(), 0]
+      [_(myData).size(), 0]
     );
 
     var slicky = new grid({
       model: dimensions,
       selector: highlighter,
       width: $('body').width(),
-      columns: columns
+      columns: _(columns).without('group')
     });
 
     // vertical full screen
