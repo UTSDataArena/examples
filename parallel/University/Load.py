@@ -1,70 +1,44 @@
 from webView import WebView, WebFrame
 from euclid import Vector2, Vector3
-from omega import SceneNode, getDefaultCamera, getEvent, ServiceType
+from omega import SceneNode, getDefaultCamera, getEvent, ServiceType, ImageFormat, Color
+from omegaToolkit import ImageBroadcastModule, Container, ContainerLayout, Label, Image
 
-width = 1448
-height = 1000
+width = 1280
+height = 1720
+distance = 20
 
 
 cam = getDefaultCamera()
 cam.setEyeSeparation(0)
 
-ww = None
+fileprefix = "file:///local/examples/parallel/University/"
+files = [
+    "CompetitiveGrantsIncome/Commonwealth",
+    "CompetitiveGrantsIncome/Total",
+    "CompetitiveGrantsIncome/NonCommonwealth",
+]
 
+myNode = SceneNode.create("myNode")
 ui = UiModule.createAndInitialize()
 
 cont = Container.create(ContainerLayout.LayoutFree, ui.getUi())
-
-myNode = SceneNode.create("myNode")
-
+cont.setWidth(len(files)*(width+distance))
+cont.setHeight(height)
 c3d = cont.get3dSettings()
 c3d.enable3d = True
-c3d.position = Vector3(-2, 2.5, -4) # orig
+c3d.position = Vector3(-2.3, 2.5, -5)
 c3d.scale = 0.001
 c3d.node = myNode
 
-ww = WebView.create(width, height)
-#ww.setZoom(200)
-ww.loadUrl("file:///local/examples/parallel/University/CompetitiveGrantsIncome/Commonwealth/index.html")
-frame = WebFrame.create(cont)
-frame.setView(ww)
-
-
-cont2 = Container.create(ContainerLayout.LayoutFree, ui.getUi())
-
-myNode2 = SceneNode.create("myNode2")
-
-c3d = cont2.get3dSettings()
-c3d.enable3d = True
-c3d.position = Vector3(-0.5, 2.5, -4) # orig
-c3d.scale = 0.001
-c3d.node = myNode2
-
-ww = WebView.create(width, height)
-#ww.setZoom(200)
-ww.loadUrl("file:///local/examples/parallel/University/CompetitiveGrantsIncome/Total/index.html")
-frame = WebFrame.create(cont2)
-frame.setView(ww)
-
-
-
-cont3 = Container.create(ContainerLayout.LayoutFree, ui.getUi())
-
-myNode3 = SceneNode.create("myNode3")
-
-c3d = cont3.get3dSettings()
-c3d.enable3d = True
-c3d.position = Vector3(1, 2.5, -4) # orig
-c3d.scale = 0.001
-c3d.node = myNode3
-
-ww = WebView.create(width, height)
-#ww.setZoom(200)
-ww.loadUrl("file:///local/examples/parallel/University/CompetitiveGrantsIncome/NonCommonwealth/index.html")
-frame = WebFrame.create(cont3)
-frame.setView(ww)
-
-ImageBroadcastModule.instance().addChannel(ww, "webpage", ImageFormat.FormatNone)
+views = []
+frames = []
+for i in range(0,len(files)):
+    views.append(WebView.create(width, height))
+    views[i].loadUrl(fileprefix + files[i] + "/index.html")
+    frames.append(WebFrame.create(cont))
+    frames[i].setView(views[i])
+    frames[i].setPosition(Vector2(i*(width+distance), 0))
+    ImageBroadcastModule.instance().addChannel(views[i], "webpage" + str(i), ImageFormat.FormatNone)
 
 cursorImg = loadImage('/da/sw/omegalib/myCursor.png')
 cursorClickImg = loadImage('/da/sw/omegalib/myCursor_click.png')
