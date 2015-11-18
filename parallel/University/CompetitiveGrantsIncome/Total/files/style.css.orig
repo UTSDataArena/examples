@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Lucida Grande", arial, helvetica, clean, sans-serif;
-  font-size: 15px;
+  font-size: 13px;
   line-height: 1.35em;
   color: #222;
   background: #fff;
@@ -55,7 +55,7 @@ p {
   float: left;
   clear: left;
   margin: 0 200px 0 12px;
-  font-size: 15px;
+  font-size: 11px;
   line-height: 1.6em;
 }
 #legend .item {
@@ -241,7 +241,7 @@ p {
   margin-bottom: 20px;
 }
 #parallel svg {
-  font: 18px sans-serif;
+  font: 10px sans-serif;
 }
 
 .background path {
@@ -256,7 +256,7 @@ p {
 .highlight path {
   fill: none;
   stroke: darkolivegreen;
-  stroke-width: 8.5;
+  stroke-width: 1.5;
   stroke-opacity: .2;
 }
 
@@ -273,7 +273,6 @@ p {
 .axis line, .axis path {
   fill: none;
   stroke: #000;
-  stroke-width: 4px;
   shape-rendering: crispEdges;
 }
 
