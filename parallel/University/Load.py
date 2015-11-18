@@ -3,9 +3,9 @@ from euclid import Vector2, Vector3
 from omega import SceneNode, getDefaultCamera, getEvent, ServiceType, ImageFormat, Color, isMaster, PixelData
 from omegaToolkit import ImageBroadcastModule, Container, ContainerLayout, Label, Image
 
-width = 1280
+width = 2680
 height = 1720
-distance = 20
+distance = 0
 
 cam = getDefaultCamera()
 cam.setEyeSeparation(0)
@@ -13,8 +13,9 @@ cam.setEyeSeparation(0)
 fileprefix = "file:///local/examples/parallel/University/"
 files = [
     "CompetitiveGrantsIncome/Commonwealth",
-    "CompetitiveGrantsIncome/Total",
     "CompetitiveGrantsIncome/NonCommonwealth",
+    "CompetitiveGrantsIncome/Total",
+    #"CompetitiveGrantsIncome/RuralRD",
 ]
 
 myNode = SceneNode.create("myNode")
@@ -25,13 +26,13 @@ cont.setWidth(len(files)*(width+distance))
 cont.setHeight(height)
 c3d = cont.get3dSettings()
 c3d.enable3d = True
-c3d.position = Vector3(-2.3, 2.5, -5)
+#c3d.position = Vector3(-1.5, 2.85, -3) # desktop
+c3d.position = Vector3(-4, 2.7, -3) # dablab
 c3d.scale = 0.001
 c3d.node = myNode
 
 views = []
 frames = []
-
 
 for i in range(0,len(files)):
     if isMaster():
@@ -42,9 +43,8 @@ for i in range(0,len(files)):
     else:
         views.append(PixelData.create(width, height, PixelFormat.FormatRgba))
 	frames.append(Image.create(cont))
-	#frame[i].setDestRect(0, 0, width + 12, height + 12)
-	frame[i].setDestRect(0, 0, width, height)
-	frame[i].setData(views[i])
+	frames[i].setDestRect(0, 0, width, height)
+	frames[i].setData(views[i])
     frames[i].setPosition(Vector2(i*(width+distance), 0))
     ImageBroadcastModule.instance().addChannel(views[i], "webpage" + str(i), ImageFormat.FormatNone)
 
