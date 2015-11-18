@@ -1,12 +1,11 @@
 from webView import WebView, WebFrame
 from euclid import Vector2, Vector3
-from omega import SceneNode, getDefaultCamera, getEvent, ServiceType, ImageFormat, Color
+from omega import SceneNode, getDefaultCamera, getEvent, ServiceType, ImageFormat, Color, isMaster, PixelData
 from omegaToolkit import ImageBroadcastModule, Container, ContainerLayout, Label, Image
 
 width = 1280
 height = 1720
 distance = 20
-
 
 cam = getDefaultCamera()
 cam.setEyeSeparation(0)
@@ -33,34 +32,19 @@ c3d.node = myNode
 views = []
 frames = []
 
-# Code for clustered setups:
-#if(isMaster()):
-	#ww = WebView.create(width, height)
-	##ww.setZoom(200)
-	#ww.loadUrl("http://exposedata.com/parallel/")
-	##ww.loadUrl("file:///da/proj/parallelCoords/ParallelCoordinates/NutrientContents-ParallelCoordinates.htm")
-	##ww.loadUrl("file:///da/proj/parallelCoords/merged/merged.htm")
-	## neat webgl aquarium demo
-	###ww.loadUrl("http://webglsamples.googlecode.com/hg/aquarium/aquarium.html")
-	##frame = WebFrame.create(uiroot)
-	#frame = WebFrame.create(cont)
-	#frame.setView(ww)
-#else:
-	##ww = PixelData.create(width, height, PixelFormat.FormatRgb) # rgb for jpeg
-	#ww = PixelData.create(width, height, PixelFormat.FormatRgba) # rgba for png and no compression
-	#frame = Image.create(cont)
-	#frame.setDestRect(0, 0, width + 12, height + 12)
-	#frame.setData(ww)
-
-#ImageBroadcastModule.instance().addChannel(ww, "webpage", ImageFormat.FormatNone)
-
-
 
 for i in range(0,len(files)):
-    views.append(WebView.create(width, height))
-    views[i].loadUrl(fileprefix + files[i] + "/index.html")
-    frames.append(WebFrame.create(cont))
-    frames[i].setView(views[i])
+    if isMaster():
+        views.append(WebView.create(width, height))
+        views[i].loadUrl(fileprefix + files[i] + "/index.html")
+        frames.append(WebFrame.create(cont))
+        frames[i].setView(views[i])
+    else:
+        views.append(PixelData.create(width, height, PixelFormat.FormatRgba))
+	frames.append(Image.create(cont))
+	#frame[i].setDestRect(0, 0, width + 12, height + 12)
+	frame[i].setDestRect(0, 0, width, height)
+	frame[i].setData(views[i])
     frames[i].setPosition(Vector2(i*(width+distance), 0))
     ImageBroadcastModule.instance().addChannel(views[i], "webpage" + str(i), ImageFormat.FormatNone)
 
