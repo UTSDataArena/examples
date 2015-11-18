@@ -32,6 +32,30 @@ c3d.node = myNode
 
 views = []
 frames = []
+
+# Code for clustered setups:
+#if(isMaster()):
+	#ww = WebView.create(width, height)
+	##ww.setZoom(200)
+	#ww.loadUrl("http://exposedata.com/parallel/")
+	##ww.loadUrl("file:///da/proj/parallelCoords/ParallelCoordinates/NutrientContents-ParallelCoordinates.htm")
+	##ww.loadUrl("file:///da/proj/parallelCoords/merged/merged.htm")
+	## neat webgl aquarium demo
+	###ww.loadUrl("http://webglsamples.googlecode.com/hg/aquarium/aquarium.html")
+	##frame = WebFrame.create(uiroot)
+	#frame = WebFrame.create(cont)
+	#frame.setView(ww)
+#else:
+	##ww = PixelData.create(width, height, PixelFormat.FormatRgb) # rgb for jpeg
+	#ww = PixelData.create(width, height, PixelFormat.FormatRgba) # rgba for png and no compression
+	#frame = Image.create(cont)
+	#frame.setDestRect(0, 0, width + 12, height + 12)
+	#frame.setData(ww)
+
+#ImageBroadcastModule.instance().addChannel(ww, "webpage", ImageFormat.FormatNone)
+
+
+
 for i in range(0,len(files)):
     views.append(WebView.create(width, height))
     views[i].loadUrl(fileprefix + files[i] + "/index.html")
