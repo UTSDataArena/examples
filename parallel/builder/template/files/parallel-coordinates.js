@@ -99,7 +99,7 @@
       // Add an axis and title.
       g.append("svg:g")
           .attr("class", "axis")
-          .each(function(d) { d3.select(this).call(axis.scale(y[d])); })
+          .each(function(d) { d3.select(this).call(axis.scale(y[d]).ticks(5)); })
         .append("svg:text")
           .attr("text-anchor", "middle")
           .attr("y", -9)
