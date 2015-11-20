@@ -192,3 +192,51 @@ class OTL(Geometry):
                 self.model = SceneNode.create("Parent")
                 self.model.addChild(staticObject)
                 self.reset()
+
+from webView import WebView, WebFrame
+from euclid import Vector2
+from omega import ImageFormat, isMaster, PixelData, PixelFormat, ImageFormat
+from omegaToolkit import ImageBroadcastModule, Image
+
+class Canvas(GeometryFile):
+        """Encapsulates a webpage"""
+
+        def __init__(self, url, width, height):
+                """Initialize new webpage with file or http descriptor."""
+                GeometryFile.__init__(self, None)
+                self.url = url
+                self.width = width
+                self.height = height
+
+        def loadModel(self, fileToLoad):
+                # reset inherited member
+                self.modelInfos = None
+                self.textured = None
+
+        def reset(self):
+                # not working because of missing child node
+                pass
+
+        def setModel(self, container):
+                """Called from Handler to add data in container."""
+                frame = None
+                view = None
+                if isMaster():
+                    view = WebView.create(self.width, self.height)
+                    view.loadUrl(self.url)
+                    frame = WebFrame.create(container)
+                    frame.setView(view)
+                else:
+                    view = PixelData.create(self.width, self.height, PixelFormat.FormatRgba)
+                    frame = Image.create(container)
+                    frame.setDestRect(0, 0, self.width, self.height)
+                    frame.setData(view)
+                position = Vector2(*self.initialPosition[:1])
+                frame.setPosition(position)
+                ImageBroadcastModule.instance().addChannel(view, self.url, ImageFormat.FormatNone)
+                #self.pivotPoint = list(-frame.getBoundCenter())
+
+                #: Use parent object to apply correct rotation on initially translated objects.
+                #self.model = SceneNode.create("Parent")
+                # seems to be a different node though
+                self.model = container.get3dSettings().node
