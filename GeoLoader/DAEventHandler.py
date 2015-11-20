@@ -410,3 +410,123 @@ class OTLHandler(DAEventHandler):
                         self.nextFrame(-self.framesPerSec -1)
                 if e.isKeyDown(ord(' ')):
                         self.play = not self.play
+
+
+
+from euclid import Vector2, Vector3
+from omega import Color, loadImage, SceneNode
+from omegaToolkit import Container, ContainerLayout, Label, Image, UiModule
+
+class CanvasHandler(DAEventHandler):
+
+        def __init__(self):
+                DAEventHandler.__init__(self)
+                self.cursors = []
+                self.distance = 0
+
+
+                ui = UiModule.createAndInitialize()
+                node = SceneNode.create("container")
+                self.geos.append(node)
+
+                self.container = Container.create(ContainerLayout.LayoutFree, ui.getUi())
+                c3d = self.container.get3dSettings()
+                c3d.enable3d = True
+                c3d.position = Vector3(-4, 2.7, -3) # dablab
+                c3d.scale = 0.001
+                c3d.node = node
+
+                self.cursorImg = loadImage('/da/sw/omegalib/myCursor.png')
+                self.cursorClickImg = loadImage('/da/sw/omegalib/myCursor_click.png')
+
+        def addGeo(self, canvas):
+                """Loads canvas and set position in container."""
+                #DAEventHandler.addGeo(self, canvas)
+
+                # Update container size and position canvas
+                width = canvas.width
+                height = canvas.height
+                self.container.setWidth(self.container.getWidth() + width + self.distance)
+                if (self.container.getHeight() < height):
+                    self.container.setHeight(height)
+
+                canvas.initialPosition = [ self.container.getWidth() - width, 0, 0]
+                canvas.setModel(self.container)
+
+        def addCursor(self, name, color):
+                cursor = Image.create(cont)
+                label = Label.create(cont)
+                label.setText(name)
+                label.setFont('fonts/arial.ttf 18')
+                label.setColor(Color('white'))
+                label.setPosition(Vector2(32, 12))
+                label.setFillEnabled(True)
+                label.setFillColor(Color(color))
+
+                if len(self.cursors) == 0:
+                        cursor.setSize(Vector2(32, 32))
+                        cursor.setData(cursorImg)
+                else:
+                        cursor.setData(loadImage('/da/sw/omegalib/myCursor_' + str(i + 1) + '.png'))
+                        cursor.setSize(Vector2(24, 24))
+                self.cursors.append((cursor, label))
+
+        def diff(q1, q2):
+                return ((abs(q2.w) + abs(q2.x) + abs(q2.y) + abs(q2.z)) -
+                         (abs(q1.w) + abs(q1.x) + abs(q1.y) + abs(q1.z)))
+
+        def onEvent():
+                print "in canvas handler"
+                DAEventHandler.onEvent(self)
+
+                prevDiffAmt = 0.0
+                prevOrientations = [[Quaternion()]] * len(self.cursors)
+
+                e = getEvent()
+
+                if e.getServiceType() == ServiceType.Mocap:
+                        if e.getExtraDataItems() >= 2:
+                                point = Vector2(e.getExtraDataInt(0), e.getExtraDataInt(1))
+                                if e.getUserId() > len(self.cursors):
+                                        return
+
+                                #po = prevOrientations[e.getUserId() - 1]
+                                po = Quaternion()
+
+                                for a in prevOrientations[e.getUserId() - 1]:
+                                        #a.w *= (1.0 / len(prevOrientations[e.getUserId() - 1]))
+                                        #po *= a
+                                        po.w += a.w
+                                        po.x += a.x
+                                        po.y += a.y
+                                        po.z += a.z
+
+                                po.w /= 1.0 * len(prevOrientations[e.getUserId() - 1])
+                                po.x /= 1.0 * len(prevOrientations[e.getUserId() - 1])
+                                po.y /= 1.0 * len(prevOrientations[e.getUserId() - 1])
+                                po.z /= 1.0 * len(prevOrientations[e.getUserId() - 1])
+
+                                aa = e.getOrientation()
+                                diffAmt = diff(aa, po)
+
+                                diffChange = abs(diffAmt - prevDiffAmt)
+
+                                # TODO use change in diff from average of previous quats to compare against
+                                if diffChange < 0.075:
+                                        print "diff change:", diffChange
+#                                        cursors[e.getUserId() - 1].setPosition(point)
+#                                        labels[e.getUserId() - 1].setPosition(point + Vector2(32, 12))
+
+                                prevDiffAmt = diffAmt
+
+                                prevOrientations[e.getUserId() - 1].append(e.getOrientation())
+                                if len(prevOrientations[e.getUserId() - 1]) >= 4:
+                                        prevOrientations[e.getUserId() - 1].pop(0)
+
+                        if (e.getUserId() == 1):
+                                vec = e.getOrientation() * Vector3(0, 1, 0)
+
+                                if vec[1] < -0.6:
+                                        self.cursors[e.getUserId() - 1][0].setData(self.cursorClickImg)
+                                else:
+                                        self.cursors[e.getUserId() - 1][0].setData(self.cursorImg)
