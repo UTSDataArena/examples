@@ -12,7 +12,7 @@ class DAEventHandler():
                 """The constructor provides several tuning parameters."""
                 defCam = getDefaultCamera()
                 defCam.setControllerEnabled(False)
-                defCam.setNearFarZ(0.001, 100)
+                defCam.setNearFarZ(0.001, 1000)
 
                 #: Absolute position and orientation of camera, headOffset is added.
                 self.initialCamRotation = list(quaternionToEulerDeg(defCam.getOrientation()))

@@ -12,7 +12,7 @@ examples = [
 
 geo = OTL(examples[0])
 handler = OTLHandler()
-handler.initialCamPosition = [0, -3, 0]
+handler.initialCamPosition = [0, -3, 4]
 handler.resetCamera()
 
 handler.allowXRot = False
