@@ -11,11 +11,11 @@ fileToLoad2 = "/local/examples/box/box_translated.obj"
 
 geo = GeometryFile(fileToLoad)
 geo2 = GeometryFile(fileToLoad2)
-geo2.initialPosition = [1, 0, 0]
+geo2.initialPosition = [2, 0, 0]
 geo2.reset()
 
 handler = DAEventHandler()
-handler.initialCamPosition = [0, 0, 3]
+handler.initialCamPosition = [1, 0, 5]
 handler.resetCamera()
 
 handler.addGeo(geo)

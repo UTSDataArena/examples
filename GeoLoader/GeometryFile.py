@@ -69,7 +69,6 @@ class GeometryFile():
 		modelInfo = ModelInfo()
 		modelInfo.name = fileToLoad
 		modelInfo.path = fileToLoad
-		modelInfo.size = 1.0
                 # optimising takes a LONG time..
 		modelInfo.optimize = False 
 		self.modelInfos.append(modelInfo)
