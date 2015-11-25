@@ -18,7 +18,7 @@ import mock
 
 # from http://stackoverflow.com/questions/20723009/any-simple-python-module-documentation-generator-that-does-not-try-to-run-import
 # and followed links
-MOCK_MODULES = ['euclid', 'omega', 'cyclops']
+MOCK_MODULES = ['euclid', 'omega', 'cyclops', 'daHEngine']
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = mock.Mock()
 
