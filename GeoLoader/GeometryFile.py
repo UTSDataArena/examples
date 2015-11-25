@@ -1,4 +1,5 @@
-from omega import SceneNode, quaternionFromEulerDeg
+from euclid import Vector3
+from omega import SceneNode, quaternionFromEulerDeg, Space
 from cyclops import ModelInfo, StaticObject, getSceneManager
 
 class GeometryFile():
@@ -19,12 +20,11 @@ class GeometryFile():
 
                 self.model = None
 
-                # private variable
-                self.position = [0, 0, 0]
-
                 #: Changing initial position/rotation requires reset() call.
 		self.initialRotation = [0, 0, 0]
 		self.initialPosition = [0, 0, 0]
+
+                self.cameraPosition = [0, 0, 0]
 
                 #: Specifies rotation point of the object, requires reset(). (default: center of bounding box)
                 self.pivotPoint = [0, 0, 0]
@@ -53,13 +53,12 @@ class GeometryFile():
                 
                 Update pivot point and set configured initialRotation/Position, redraw with updateModel().
                 """
+                if self.model is None: return
 
                 self.model.getChildByIndex(0).setPosition(*self.pivotPoint)
 
-                self.position = self.initialPosition
+                self.model.setPosition(*self.initialPosition)
                 self.model.setOrientation(quaternionFromEulerDeg(*self.initialRotation))
-
-                self.updateModel([0, 0, 0], [0, 0, 0])
 
 	def loadModel(self, fileToLoad):
                 """Loads a geometry model from the given file.
@@ -105,42 +104,34 @@ class GeometryFile():
                 #TODO: clamping the rotation does not work with Quaternions, omegalib conversion seems not precise
                 # First try: convert quaternion to euler, clamp and apply result
                 # Result: Object moves around without dragging (rounded conversiona?)
-                #currentRotation = list(quaternionToEulerDeg(self.model.getOrientation()))
-                #angles = [
-                #        min(max(newRotation[0] + currentRotation[0], -self.xRotClamp), self.xRotClamp),
-                #        min(max(newRotation[1] + currentRotation[1], -self.yRotClamp), self.yRotClamp),
-                #        min(max(newRotation[2] + currentRotation[2], -self.zRotClamp), self.zRotClamp)
-                #]
-                #    self.model.setOrientation(quaternionFromEulerDeg(*angles))
-                #
                 # second try: only apply new rotation if total converted rotation is in interval
                 # Result: Sometimes box is moving without interaction
                 #       converted eulerDeg are different for same rotation which results in more rotation than allowed
                 #
-                #currentRotation = list(quaternionToEulerDeg(quaternionFromEulerDeg(*newRotation) * self.model.getOrientation()))
-                #
-                #print currentRotation 
-                #self.model.setOrientation(quaternionFromEulerDeg(*angles) * self.model.getOrientation())
-                #if (abs(currentRotation[0]) < self.xRotClamp and
-                #    abs(currentRotation[1]) < self.yRotClamp and
-                #    abs(currentRotation[2]) < self.zRotClamp):
-                #    self.model.setOrientation(quaternionFromEulerDeg(*newRotation) * self.model.getOrientation())
 
                 angles = [
                         min(max(newRotation[0], -self.xRotClamp), self.xRotClamp),
                         min(max(newRotation[1], -self.yRotClamp), self.yRotClamp),
                         min(max(newRotation[2], -self.zRotClamp), self.zRotClamp)
                 ]
+                oldPosition = self.model.getPosition()
+                position = [0, 0, 0]
+                for i in range(0,3):
+                    position[i] = oldPosition[i] + newPosition[i] - self.cameraPosition[i]
 
-                self.model.setOrientation(quaternionFromEulerDeg(*angles) * self.model.getOrientation())
+                if position[0] > self.xMoveClamp or position[0] < -self.xMoveClamp:
+                    newPosition[0] = 0
+                if position[1] > self.yMoveClamp or position[1] < -self.yMoveClamp:
+                    newPosition[1] = 0
+                if position[2] > self.zMoveClamp or position[2] < -self.zMoveClamp:
+                    newPosition[2] = 0
 
-                self.position = [
-                        min(max(self.position[0] + newPosition[0], -self.xMoveClamp), self.xMoveClamp),
-                        min(max(self.position[1] + newPosition[1], -self.yMoveClamp), self.yMoveClamp),
-                        min(max(self.position[2] + newPosition[2], -self.zMoveClamp), self.zMoveClamp)
-                ]
+                # use world space, since camera always aligned with that
+                self.model.rotate(Vector3(1,0,0), angles[0], Space.World)
+                self.model.rotate(Vector3(0,1,0), angles[1], Space.World)
+                self.model.rotate(Vector3(0,0,1), angles[2], Space.World)
 
-                self.model.setPosition(*self.position)
+                self.model.translate(Vector3(*newPosition), Space.World)
 
 
 class OTL(GeometryFile):
@@ -166,8 +157,3 @@ class OTL(GeometryFile):
                 self.model = SceneNode.create("Parent")
                 self.model.addChild(staticObject)
                 self.reset()
-
-        def reset(self):
-                """First call super class when model is set."""
-                if self.model is not None:
-                        GeometryFile.reset(self)
