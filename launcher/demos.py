@@ -9,23 +9,20 @@ omegalibDemos = {
 	"DAB Fashion Show": "fs.solo.sound",
 	"Pong": "p",
 	"Parallel Coordinates": "pcm",
-	"Motion Capture movies": "dance",
-	"Storm Surfers": "bondi.solo",
+        "Earth": "earth/LoadEarth.py",
+        "Motion Capture": "box/LoadOTL.py",
+        "Bar Chart": "barchart/LoadBarChart.py",
         "Box": "box/LoadBox.py",
-        "Earth": "earth/earth.py",
-        "Parallel Coords": "parallel/DAParallelCoords.py",
-        "Mocap": "box/loadBox.py",
     },
 }
 
 movieDemos = {
-	"Spitzer Spectroscopy": "SpitzerL2_HighRes.mp4",
-	"Spitzer Labels (Large)": "videoSpitzer.labelsLarge.mp4",
-	"Spitzer Labels (Small)": "videoSpitzer.labelsSmall.mp4",
-	"Bacteria Trails": "bacteria_trailD.mp4",
-	"Parasites": "parasite.drishti.2.mkv",
-	"Zebedee Flight": "06a.zebedee_mvi_0058.mp4",
-	"Motion Capture": "dancer3.mkv",
+	"Spitzer Spectroscopy": "SpitzerL2_vm.mp4",
+	"Spitzer Labels": "videoSpitzer.label_vm.mp4",
+	"Bacteria Trails": "bacteria_trailD_vm.mp4",
+	"Parasites": "parasite.drishti.2_vm.mkv",
+	"Zebedee Flight": "06a.zebedee_mvi_0058_vm.mp4",
+	"Motion Capture": "dancer3_vm.mkv",
 }
 
 scripts = {
