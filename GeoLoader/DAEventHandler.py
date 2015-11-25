@@ -1,5 +1,5 @@
-from omega import getDefaultCamera, getEvent, ServiceType, EventFlags, EventType, isStereoEnabled, toggleStereo, quaternionFromEulerDeg, quaternionToEulerDeg, SceneNode
-from daHEngine import HoudiniEngine
+from omega import getDefaultCamera, getEvent, ServiceType, EventFlags, EventType, isStereoEnabled, toggleStereo, quaternionFromEulerDeg, SceneNode
+from euclid import Vector3
 
 class DAEventHandler():
         """This class encapsulates the navigation interaction with geometry loaded into omegalib.
@@ -7,28 +7,37 @@ class DAEventHandler():
         An instance of DAEventHandler can load several `GemoetryFile` objects.
         The functions `onEvent()` and `onUpdate()` are registered at the omegalib callbacks.
         Interaction with the loaded objects is then provided via mouse, keyboard or Space Navigator.
+
+        self.objects and self.cameraObject stay always on position [0,0,0] which is the pivot point for the camera.
+        Instead of moving the camera, all objects in self.objects are moved.
+        Rotation is applied either on cameraObject (in cameraControl) or self.objects.
+        This aligns the view always with the intuitive coordinat system (x: horizontal, y: vertical, z: depth).
         """
         def __init__(self):
                 """The constructor provides several tuning parameters."""
+                self.geos = []
+                #: Parent all objects to apply camera rotation, while camera stays the same.
+                self.objects = SceneNode.create("objects")
+
                 defCam = getDefaultCamera()
                 defCam.setControllerEnabled(False)
                 defCam.setNearFarZ(0.001, 1000)
-
-                #: Absolute position and orientation of camera, headOffset is added.
-                self.initialCamRotation = list(quaternionToEulerDeg(defCam.getOrientation()))
-                self.initialCamPosition = list(defCam.getPosition())
                 defCam.setPosition(-defCam.getHeadOffset())
 
+                #: Absolute position and orientation of camera, headOffset is substracted.
+                #: View in negative Z
+                self.initialCamRotation = [0, 0, 0]
+                self.initialCamPosition = [0, 0, 0]
+
+                #: Parent camera to abstract from headOffset
                 self.cameraObject = SceneNode.create("Camera")
                 self.cameraObject.addChild(defCam)
-                self.resetCamera()
 
                 self.cameraControl = False
 
-                self.geos = []
                 #: Sensitivity of the Space Navigator movement/rotation
-                self.spaceNavMoveSensitivity = 5.0
-                self.spaceNavRotSensitivity = 0.005
+                self.spaceNavMoveSensitivity = 0.05
+                self.spaceNavRotSensitivity = 0.05
 
                 self.controllerSensitivity = 3.0
                 self.controllerDeadzone = 0.0
@@ -42,9 +51,9 @@ class DAEventHandler():
                 self.prevMousePos = None
 
                 #:Mouse sensitivity
-                self.xRotSensitivity = 0.3
-                self.yRotSensitivity = 0.3
-                self.zRotSensitivity = 0.3
+                self.xRotSensitivity = 0.004
+                self.yRotSensitivity = 0.004
+                self.zRotSensitivity = 0.004
                 
                 self.xMoveSensitivity = 0.004
                 self.yMoveSensitivity = 0.004
@@ -71,6 +80,14 @@ class DAEventHandler():
                 self.allowStereoSetting = True
 
                 self.printHelp()
+
+        def addGeo(self, geo):
+                """Registers a `GeometryFile` object."""
+                self.geos.append(geo)
+                self.objects.addChild(geo.model)
+                geo.cameraPosition = -Vector3(*self.initialCamPosition)
+                # position objects relative to camera
+                self.resetView()
 
         def printHelp(self):
                 print "\n=========================\n"
@@ -108,11 +125,6 @@ class DAEventHandler():
                 print "Rotation on z axis is %s" % stringConvert[self.allowZRot]
                 print "\n=========================\n"
                 
-
-        def addGeo(self, geo):
-                """Registers a `GeometryFile` object."""
-                self.geos.append(geo)
-
         # Space Navigator axes:
         #0 (-left, +right)
         #1 (-forward, +back)
@@ -125,19 +137,19 @@ class DAEventHandler():
                 if e.isButtonDown(EventFlags.Button1):
                         self.resetView()
                 if e.isButtonDown(EventFlags.Button2):
-                        self.cameraControl = not self.cameraControl
+                        self.toggleView()
 
                 # set pitch and movement negative for intuitive movement and mouse compliance
 
-                pitch = -e.getExtraDataFloat(3) * self.spaceNavMoveSensitivity
-                yaw   = e.getExtraDataFloat(5) * self.spaceNavMoveSensitivity
-                roll  = e.getExtraDataFloat(4) * self.spaceNavMoveSensitivity
+                pitch = -e.getExtraDataFloat(3) * self.spaceNavRotSensitivity
+                yaw   = e.getExtraDataFloat(5) * self.spaceNavRotSensitivity
+                roll  = e.getExtraDataFloat(4) * self.spaceNavRotSensitivity
 
                 angles = [pitch, yaw, roll]
 
-                x = -e.getExtraDataFloat(0) * self.spaceNavRotSensitivity
-                y = -e.getExtraDataFloat(2) * self.spaceNavRotSensitivity
-                z = -e.getExtraDataFloat(1) * self.spaceNavRotSensitivity
+                x = -e.getExtraDataFloat(0) * self.spaceNavMoveSensitivity
+                y = -e.getExtraDataFloat(2) * self.spaceNavMoveSensitivity
+                z = -e.getExtraDataFloat(1) * self.spaceNavMoveSensitivity
 
                 position = [x, y, z]
 
@@ -242,6 +254,54 @@ class DAEventHandler():
 
                 return angles, position
 
+        def onEvent(self):
+                """Callback for omegalib to register with `setEventFunction`."""
+                e = getEvent()
+                angles = [0, 0, 0]
+                position = [0, 0, 0]
+                
+                if self.allowStereoSetting:
+                        if e.isKeyDown(ord('s')):
+                                self.changeStereo()
+
+                if e.isKeyDown(ord('m')):
+                        self.toggleView()
+
+                if e.isKeyDown(ord('n')):
+                        self.resetView()
+
+                if e.isKeyDown(ord('i')):
+                        self.printConfig()
+
+                if e.getServiceType() == ServiceType.Controller:
+                    if e.getSourceId() == 1:
+                            # space navigator
+                            angles, position = self.onSpaceNavEvent(e)
+                    elif e.getSourceId() == 0:
+                            angles, position = self.onGameControllerEvent(e)
+
+                if e.getServiceType() == ServiceType.Pointer:
+                        angles, position = self.onMouseEvent(e)
+
+                self.restrictControl(e)
+                angles, position = self.applyRestriction(angles, position)
+                angles, position = self.invertNavigation(e, angles, position)
+
+                if self.cameraControl:
+                        self.cameraObject.setOrientation( \
+                             self.cameraObject.getOrientation() * quaternionFromEulerDeg(*angles))
+                        # no rotation of objects anymore
+                        angles = [0, 0, 0]
+                        # but include rotation in translation
+                        position = self.cameraObject.getOrientation() * Vector3(*position)
+
+                [ g.updateModel(angles, position) for g in self.geos ]
+
+        def onUpdate(self, frame, time, dt):
+                """Callback for omegalib to register with `setUpdateFunction`."""
+                pass
+#                self.doControllerMove()
+
         def restrictControl(self, event):
                 """Restricts movement on axes.
 
@@ -277,81 +337,6 @@ class DAEventHandler():
 
                 return angles, position
 
-        def onEvent(self):
-                """Callback for omegalib to register with `setEventFunction`."""
-                e = getEvent()
-                angles = [0, 0, 0]
-                position = [0, 0, 0]
-                
-                if self.allowStereoSetting:
-                        if e.isKeyDown(ord('s')):
-                                self.changeStereo()
-
-                if e.isKeyDown(ord('m')):
-                        self.cameraControl = not self.cameraControl
-
-                if e.isKeyDown(ord('n')):
-                        self.resetView()
-
-                if e.isKeyDown(ord('i')):
-                        self.printConfig()
-
-                if e.getServiceType() == ServiceType.Controller:
-                    if e.getSourceId() == 1:
-                            # space navigator
-                            angles, position = self.onSpaceNavEvent(e)
-                    elif e.getSourceId() == 0:
-                            angles, position = self.onGameControllerEvent(e)
-
-                if e.getServiceType() == ServiceType.Pointer:
-                        angles, position = self.onMouseEvent(e)
-
-                self.restrictControl(e)
-                angles, position = self.applyRestriction(angles, position)
-                angles, position = self.invertNavigation(e, angles, position)
-
-                if self.cameraControl:
-                        self.cameraObject.setOrientation(quaternionFromEulerDeg(*angles) * self.cameraObject.getOrientation())
-                        self.cameraObject.setPosition(*(position + self.cameraObject.getPosition()))
-                else:
-                        [ g.updateModel(angles, position) for g in self.geos ]
-
-        def onUpdate(self, frame, time, dt):
-                """Callback for omegalib to register with `setUpdateFunction`."""
-                pass
-#                self.doControllerMove()
-
-        def resetCamera(self):
-                """Reset the campera position/orientation to initial values."""
-                self.cameraObject.setOrientation(quaternionFromEulerDeg(*self.initialCamRotation))
-                self.cameraObject.setPosition(*self.initialCamPosition)
-
-        def getCamera(self):
-                """Returns the camera of the scene.
-
-                Getter necessary because of parented camera object.
-                This is done to correctly implement rotation of translated objects.
-                Allows to ajust camera parameters, such as clipping planes or eye separation.
-                """
-                return self.cameraObject.getChildByIndex(0)
-
-        def resetView(self):
-                """Resets the position of object or camera."""
-                if self.cameraControl:
-                        self.resetCamera()
-                else:
-                        [ g.reset() for g in self.geos ]
-
-        def changeStereo(self):
-                """Toggles stereo view and sets eye separation"""
-                toggleStereo()
-                if isStereoEnabled():
-                        #getDisplayConfig().stereoMode = StereoMode.LineInterleaved
-                        getDefaultCamera().setEyeSeparation(0.0007)
-                else:
-                        #getDisplayConfig().stereoMode = StereoMode.Mono
-                        getDefaultCamera().setEyeSeparation(0.06)
-
         def invertNavigation(self, event, angles, position):
                 if event.isKeyDown(ord('X')):
                         self.invertXMove = not self.invertXMove
@@ -385,6 +370,63 @@ class DAEventHandler():
 
                 return angles, position
 
+        def getCamera(self):
+                """Returns the camera of the scene.
+
+                Getter necessary because of parented camera object.
+                This is done to correctly implement rotation of translated objects.
+                Allows to ajust camera parameters, such as clipping planes or eye separation.
+                """
+                return self.cameraObject.getChildByIndex(0)
+
+        def changeStereo(self):
+                """Toggles stereo view and sets eye separation"""
+                toggleStereo()
+                if isStereoEnabled():
+                        #getDisplayConfig().stereoMode = StereoMode.LineInterleaved
+                        self.getCamera().setEyeSeparation(0.0007)
+                else:
+                        #getDisplayConfig().stereoMode = StereoMode.Mono
+                        self.getCamera().setEyeSeparation(0.06)
+
+        def resetView(self):
+                """Resets the position of object or camera."""
+                if self.cameraControl:
+                    self.cameraObject.setOrientation(quaternionFromEulerDeg(*self.initialCamRotation))
+                    self.objects.resetOrientation()
+                else:
+                    self.objects.setOrientation(quaternionFromEulerDeg(*self.initialCamRotation).conjugated())
+                    self.cameraObject.resetOrientation()
+
+                for g in self.geos:
+                    g.reset()
+                    g.updateModel([0,0,0], -Vector3(*self.initialCamPosition))
+
+        def toggleView(self):
+                self.cameraControl = not self.cameraControl
+                self.adjustSensitivity()
+                if self.cameraControl:
+                    self.cameraObject.setOrientation(self.objects.getOrientation().conjugated())
+                    self.objects.resetOrientation()
+                else:
+                    self.objects.setOrientation(self.cameraObject.getOrientation().conjugated())
+                    self.cameraObject.resetOrientation()
+
+        def adjustSensitivity(self):
+                """Sensitivity is lower for camera rotation."""
+                if self.cameraControl:
+                    self.xRotSensitivity *= 10
+                    self.yRotSensitivity *= 10
+                    self.zRotSensitivity *= 10
+                    self.spaceNavRotSensitivity *= 10
+                else:
+                    self.xRotSensitivity /= 10
+                    self.yRotSensitivity /= 10
+                    self.zRotSensitivity /= 10
+                    self.spaceNavRotSensitivity /= 10
+
+from daHEngine import HoudiniEngine
+
 class OTLHandler(DAEventHandler):
 
         def __init__(self):
@@ -397,13 +439,13 @@ class OTLHandler(DAEventHandler):
 
         def addGeo(self, otl):
                 """Loads OTL with HoudiniEngine."""
-                DAEventHandler.addGeo(self, otl)
-
                 otlName, assetName, geoName = otl.otlDescription
                 self.engine.loadAssetLibraryFromFile(otlName)
                 self.engine.instantiateAsset(assetName)
                 staticObject = self.engine.instantiateGeometry(geoName)
                 otl.setModel(staticObject)
+
+                DAEventHandler.addGeo(self, otl)
 
         def renderFrame(self, frame):
                 self.engine.setTime(frame / self.framesPerSec)
