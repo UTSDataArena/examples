@@ -428,7 +428,11 @@ class DAEventHandler():
 from daHEngine import HoudiniEngine
 
 class OTLHandler(DAEventHandler):
+        """The OTLHandler provides specific methods to interact with OTL objects from the GeometrFile class.
 
+        With the HoudiniEngine in omegalib, the OTLHandler loads an OTL and instantiates the geometry.
+        There are methods to access different frames in the OTL and render them sequentially.
+        """
         def __init__(self):
                 """Initializes DAEventHandler and HoudiniEngine."""
                 DAEventHandler.__init__(self)
@@ -448,6 +452,7 @@ class OTLHandler(DAEventHandler):
                 DAEventHandler.addGeo(self, otl)
 
         def renderFrame(self, frame):
+                """Renders the given frame of the OTL."""
                 self.engine.setTime(frame / self.framesPerSec)
                 self.engine.cook()
 

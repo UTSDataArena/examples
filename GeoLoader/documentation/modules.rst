@@ -1,5 +1,5 @@
-Modules
-=======
+API
+===
 .. autodoc documentation:
    http://sphinx-doc.org/ext/autodoc.html
 
@@ -12,9 +12,7 @@ GeometryFile
 
 DAEventHandler
 --------------
+
 .. automodule:: DAEventHandler
       :members:
       :special-members:
-
-.. automodule:: LoadGeo
-      :members:
