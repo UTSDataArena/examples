@@ -52,23 +52,8 @@
                 </li>
               </ul>
             </form>
-            <span class="pure-menu-heading" style="text-align:center">Scripts</span>
-            <form method="get" action="runShellScript" align="center">
-              <ul id="scripts" class="pure-menu-list">
-                {% for key in scripts.keys()|sort %}
-                <li class="pure-menu-item" id="currentScript">
-                  {% for item in scripts[key] %}
-                  <button type="submit" name="button" value="{{ item }}" class="pure-button">
-                  {{ key }} {{ loop.cycle('On', 'Off') }}
-                  </button>
-                  {% endfor %}<p style="font-size:25%;">
-                </li>
-                {% endfor %}
-              </ul>
-            </form>
           <span class="pure-menu-heading" style="text-align:center">Movie Controls</span>
           <form method="get" action="runScript" align="center">
-            <!--        <form method="get" action="#" method="post"> -->
             <ul id="scripts" class="pure-menu-list">
               <li class="pure-menu-item" id="currentDemo">
                 <button type="submit" name="bino" value="toggle-pause" class="pure-button">
@@ -94,6 +79,5 @@
         </div>
       </div>
     </div>
-    <!--    <a style="font-size: 80%" class="pure-button" href="/launch">Launch Night</a> -->
   </body>
 </html>

@@ -1,3 +1,2 @@
-this is a web launcher for all the examples
-
-it uses cherrypy to make a web page and launch omegalib
+This is a launcher for demos of the Data Arena.
+It starts a webserver based on [Cherrypy](http://cherrypy.org/) to start examples and play videos within the software stack.
