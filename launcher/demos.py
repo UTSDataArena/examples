@@ -18,6 +18,7 @@ omegalibDemos = {
         "Bar Chart": "barchart/LoadBarChart.py",
         "Weld": "misc/LoadWeld.py",
         "Brain": "misc/LoadBrain.py",
+        "Faces": "misc/LoadFaces.py",
     },
 }
 

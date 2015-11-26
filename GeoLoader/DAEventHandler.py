@@ -16,6 +16,7 @@ class DAEventHandler():
         def __init__(self):
                 """The constructor provides several tuning parameters."""
                 self.geos = []
+                self.currentModel = -1
                 #: Parent all objects to apply camera rotation, while camera stays the same.
                 self.objects = SceneNode.create("objects")
 
@@ -273,6 +274,9 @@ class DAEventHandler():
                 if e.isKeyDown(ord('i')):
                         self.printConfig()
 
+                if e.isKeyDown(ord('>')):
+                        self.nextModel()
+
                 if e.getServiceType() == ServiceType.Controller:
                     if e.getSourceId() == 1:
                             # space navigator
@@ -390,7 +394,7 @@ class DAEventHandler():
                         self.getCamera().setEyeSeparation(0.06)
 
         def resetView(self):
-                """Resets the position of object or camera."""
+                """Resets the position and orientation of object and camera."""
                 if self.cameraControl:
                     self.cameraObject.setOrientation(quaternionFromEulerDeg(*self.initialCamRotation))
                     self.objects.resetOrientation()
@@ -424,6 +428,28 @@ class DAEventHandler():
                     self.yRotSensitivity /= 10
                     self.zRotSensitivity /= 10
                     self.spaceNavRotSensitivity /= 10
+
+        def nextModel(self):
+                """Displays one model at a time.
+
+                When more than one model is loaded, the first call just displays the first model.
+                After that the models are swapped around.
+                """
+                if len(self.geos) <= 1: return
+
+                if self.currentModel == -1:
+                    # hide all models on first call
+                    self.currentModel = len(self.geos) - 1
+                    for i in range(0, len(self.geos)):
+                        self.geos[i].model.getChildByIndex(0).setVisible(False)
+                    self.nextModel()
+                    return
+                # then show one model after another
+                self.geos[self.currentModel].model.getChildByIndex(0).setVisible(False)
+                self.currentModel += 1
+                if self.currentModel >= len(self.geos):
+                    self.currentModel = 0
+                self.geos[self.currentModel].model.getChildByIndex(0).setVisible(True)
 
 from daHEngine import HoudiniEngine
 
