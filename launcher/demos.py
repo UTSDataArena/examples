@@ -3,7 +3,7 @@
 
 omegalibDemos = {
     "127.0.0.1" : {
-	"Wombeyan Caves": "cave",
+	"Wombeyan Caves": "misc/LoadWombeyan.py",
 	"Water Pipe": "pipe",
 	"Fashion Turntable": "ft",
 	"DAB Fashion Show": "fs.solo.sound",
@@ -16,6 +16,8 @@ omegalibDemos = {
         "Parallel Coords": "parallel/DAParallelCoords.py",
         "Mocap": "box/LoadOTL.py",
         "Bar Chart": "barchart/LoadBarChart.py",
+        "Weld": "misc/LoadWeld.py",
+        "Brain": "misc/LoadBrain.py",
     },
 }
 

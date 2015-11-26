@@ -69,7 +69,7 @@ class GeometryFile():
 		modelInfo.name = fileToLoad
 		modelInfo.path = fileToLoad
                 # optimising takes a LONG time..
-		modelInfo.optimize = False 
+                modelInfo.optimize = False
 		self.modelInfos.append(modelInfo)
 
 		getSceneManager().loadModel(modelInfo)
@@ -90,6 +90,13 @@ class GeometryFile():
                 #: Use parent object to apply correct rotation on initially translated objects.
                 self.model = SceneNode.create("ParentOf_" + fileToLoad)
                 self.model.addChild(newModel)
+
+        def setShader(self, program):
+                getSceneManager().addProgram(program)
+                self.getMaterial().setProgram(program.name)
+
+        def getMaterial(self):
+                return self.model.getChildByIndex(0).getMaterial()
 
         def updateModel(self, newRotation, newPosition):
                 """Callback for DAEventhandler to update coordinates.
