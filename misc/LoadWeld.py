@@ -12,7 +12,7 @@ cave.initialPosition = [0.05, 0, -0.9]
 cave.reset()
 
 handler = DAEventHandler()
-handler.cameraControl = True
+handler.toggleView()
 
 handler.allowZRot = False
 handler.allowXMove = handler.allowYMove = False

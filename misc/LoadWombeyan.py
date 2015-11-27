@@ -26,7 +26,7 @@ cave.getMaterial().getUniform('pointScale').setFloat(0.01)
 cave.xMoveClamp = cave.yMoveClamp = cave.zMoveClamp = 50
 
 handler = DAEventHandler()
-handler.cameraControl = True
+handler.toggleView()
 
 handler.allowZRot = False
 handler.xMoveSensitivity *= 4
@@ -35,6 +35,8 @@ handler.zMoveSensitivity *= 4
 handler.xRotSensitivity *= 7
 handler.yRotSensitivity *= 7
 handler.zRotSensitivity *= 7
+
+handler.spaceNavRotSensitivity *= 7
 
 handler.initialCamPosition = [-22, -11, -7]
 handler.initialCamRotation = [0, 180, 0]
