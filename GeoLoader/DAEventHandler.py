@@ -16,6 +16,7 @@ class DAEventHandler():
         def __init__(self):
                 """The constructor provides several tuning parameters."""
                 self.geos = []
+                self.currentModel = -1
                 #: Parent all objects to apply camera rotation, while camera stays the same.
                 self.objects = SceneNode.create("objects")
 
@@ -70,12 +71,12 @@ class DAEventHandler():
 
                 #: Invert direction of movement
                 self.invertXMove = True
-                self.invertYMove = False
+                self.invertYMove = True
                 self.invertZMove = True
 
                 self.invertXRot = True
                 self.invertYRot = True
-                self.invertZRot = False
+                self.invertZRot = True
 
                 self.allowStereoSetting = True
 
@@ -139,16 +140,19 @@ class DAEventHandler():
                 if e.isButtonDown(EventFlags.Button2):
                         self.toggleView()
 
-                # set pitch and movement negative for intuitive movement and mouse compliance
-
+                # set pitch, roll and x,z movement negative for intuitive movement
                 pitch = -e.getExtraDataFloat(3) * self.spaceNavRotSensitivity
                 yaw   = e.getExtraDataFloat(5) * self.spaceNavRotSensitivity
-                roll  = e.getExtraDataFloat(4) * self.spaceNavRotSensitivity
+                roll  = -e.getExtraDataFloat(4) * self.spaceNavRotSensitivity
+                if self.cameraControl:
+                    pitch = -pitch
+                    yaw = -yaw
+                    roll = -roll
 
                 angles = [pitch, yaw, roll]
 
                 x = -e.getExtraDataFloat(0) * self.spaceNavMoveSensitivity
-                y = -e.getExtraDataFloat(2) * self.spaceNavMoveSensitivity
+                y = e.getExtraDataFloat(2) * self.spaceNavMoveSensitivity
                 z = -e.getExtraDataFloat(1) * self.spaceNavMoveSensitivity
 
                 position = [x, y, z]
@@ -208,7 +212,8 @@ class DAEventHandler():
                         yMove = self.yMoveSensitivity * delta.y
 
                         position[0] = xMove
-                        position[1] = yMove
+                        # Make it negative for intuitive movement
+                        position[1] = -yMove
 
                         self.prevMousePos = e.getPosition()
 
@@ -272,6 +277,9 @@ class DAEventHandler():
 
                 if e.isKeyDown(ord('i')):
                         self.printConfig()
+
+                if e.isKeyDown(ord('>')):
+                        self.nextModel()
 
                 if e.getServiceType() == ServiceType.Controller:
                     if e.getSourceId() == 1:
@@ -390,19 +398,24 @@ class DAEventHandler():
                         self.getCamera().setEyeSeparation(0.06)
 
         def resetView(self):
-                """Resets the position of object or camera."""
+                """Resets the position and orientation of object and camera."""
                 if self.cameraControl:
                     self.cameraObject.setOrientation(quaternionFromEulerDeg(*self.initialCamRotation))
                     self.objects.resetOrientation()
+                    cameraOffset = -Vector3(*self.initialCamPosition)
                 else:
-                    self.objects.setOrientation(quaternionFromEulerDeg(*self.initialCamRotation).conjugated())
                     self.cameraObject.resetOrientation()
+                    cameraRotation = quaternionFromEulerDeg(*self.initialCamRotation).conjugated()
+                    self.objects.setOrientation(cameraRotation)
+                    cameraOffset = cameraRotation * -Vector3(*self.initialCamPosition)
 
                 for g in self.geos:
                     g.reset()
-                    g.updateModel([0,0,0], -Vector3(*self.initialCamPosition))
+                    # move objects invers of initial camera position
+                    g.updateModel([0,0,0], cameraOffset)
 
         def toggleView(self):
+                """Toggles between object and camera control."""
                 self.cameraControl = not self.cameraControl
                 self.adjustSensitivity()
                 if self.cameraControl:
@@ -411,6 +424,13 @@ class DAEventHandler():
                 else:
                     self.objects.setOrientation(self.cameraObject.getOrientation().conjugated())
                     self.cameraObject.resetOrientation()
+
+                self.invertXMove = not self.invertXMove
+                self.invertYMove = not self.invertYMove
+                self.invertZMove = not self.invertZMove
+                self.invertXRot = not self.invertXRot
+                self.invertYRot = not self.invertYRot
+                self.invertZRot = not self.invertZRot
 
         def adjustSensitivity(self):
                 """Sensitivity is lower for camera rotation."""
@@ -424,6 +444,28 @@ class DAEventHandler():
                     self.yRotSensitivity /= 10
                     self.zRotSensitivity /= 10
                     self.spaceNavRotSensitivity /= 10
+
+        def nextModel(self):
+                """Displays one model at a time.
+
+                When more than one model is loaded, the first call just displays the first model.
+                After that the models are swapped around.
+                """
+                if len(self.geos) <= 1: return
+
+                if self.currentModel == -1:
+                    # hide all models on first call
+                    self.currentModel = len(self.geos) - 1
+                    for i in range(0, len(self.geos)):
+                        self.geos[i].model.getChildByIndex(0).setVisible(False)
+                    self.nextModel()
+                    return
+                # then show one model after another
+                self.geos[self.currentModel].model.getChildByIndex(0).setVisible(False)
+                self.currentModel += 1
+                if self.currentModel >= len(self.geos):
+                    self.currentModel = 0
+                self.geos[self.currentModel].model.getChildByIndex(0).setVisible(True)
 
 from daHEngine import HoudiniEngine
 

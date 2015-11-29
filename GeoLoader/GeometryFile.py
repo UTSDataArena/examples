@@ -69,7 +69,7 @@ class GeometryFile():
 		modelInfo.name = fileToLoad
 		modelInfo.path = fileToLoad
                 # optimising takes a LONG time..
-		modelInfo.optimize = False 
+                modelInfo.optimize = False
 		self.modelInfos.append(modelInfo)
 
 		getSceneManager().loadModel(modelInfo)
@@ -90,6 +90,13 @@ class GeometryFile():
                 #: Use parent object to apply correct rotation on initially translated objects.
                 self.model = SceneNode.create("ParentOf_" + fileToLoad)
                 self.model.addChild(newModel)
+
+        def setShader(self, program):
+                getSceneManager().addProgram(program)
+                self.getMaterial().setProgram(program.name)
+
+        def getMaterial(self):
+                return self.model.getChildByIndex(0).getMaterial()
 
         def updateModel(self, newRotation, newPosition):
                 """Callback for DAEventhandler to update coordinates.
@@ -114,6 +121,12 @@ class GeometryFile():
                         min(max(newRotation[1], -self.yRotClamp), self.yRotClamp),
                         min(max(newRotation[2], -self.zRotClamp), self.zRotClamp)
                 ]
+
+                # use world space, since camera always aligned with that
+                self.model.rotate(Vector3(1,0,0), angles[0], Space.World)
+                self.model.rotate(Vector3(0,1,0), angles[1], Space.World)
+                self.model.rotate(Vector3(0,0,1), angles[2], Space.World)
+
                 oldPosition = self.model.getPosition()
                 position = [0, 0, 0]
                 for i in range(0,3):
@@ -125,11 +138,6 @@ class GeometryFile():
                     newPosition[1] = 0
                 if position[2] > self.zMoveClamp or position[2] < -self.zMoveClamp:
                     newPosition[2] = 0
-
-                # use world space, since camera always aligned with that
-                self.model.rotate(Vector3(1,0,0), angles[0], Space.World)
-                self.model.rotate(Vector3(0,1,0), angles[1], Space.World)
-                self.model.rotate(Vector3(0,0,1), angles[2], Space.World)
 
                 self.model.translate(Vector3(*newPosition), Space.World)
 
