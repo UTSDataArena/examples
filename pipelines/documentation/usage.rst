@@ -1,11 +1,25 @@
 Usage
 =====
 
-These Python scripts offer a modular way to display geometry data via omegalib.
-Supported input formats are *.obj*, *.fbx*, *.ply* [list all available formats in cyclops]
-The files are loaded as shown in `GeometryLoader.py`.
+This Python package offers a modular way to display visualizations in the Data Arena.
+Classes in the `objects` module contain a visualization of data.
+New visualizations should inherit the `BaseObject` or any existing type of data which is similar.
+Available are:
 
-Navigation in the scene is possible with Mouse and Space Navigator (GameController comming soon).
+* Geometry: Supported input formats are *.obj*, *.fbx*, *.ply* and displays the 3D model.
+* OTL: Loads an Houdini OTL and instanciates the geometry.
+
+The `handler` module provides the interaction with a visualization.
+New handler should inherit from the `BaseHandler` or any similar existing handler.
+Available are:
+
+* GeometryHandler
+* OTLHandler
+
+Navigation
+----------
+
+Navigation in the scene is possible with Mouse and Space Navigator.
 
 The keyboard is used to configure the input devices and display the settings.
 This can be done by pressing the *i* key (info).
@@ -61,7 +75,7 @@ This settings are not reset with *n*, but can be toggled all the time.
 Developer Settings
 ------------------
 
-The `DAEventHandler.py` has several parameters, which further tune the behaviour.
+The handler object has several parameters, which further tune the behaviour.
 `__init__` contains the following parameters:
 
 * Sensitivity tuning of Mouse and Space Navigator
@@ -70,7 +84,7 @@ The `DAEventHandler.py` has several parameters, which further tune the behaviour
 
   since the Space Navigator and Mouse send different values these settings are also adjusted in `onSpaceNavEvent()`
 
-`GeometryFile.py` encapsulates the geometric data of a single object.
+`Geometry.py` encapsulates the geometric data of a single object.
 Likewise, `__init__` contains several parameters:
 
 * Restrictions for maximum movement and rotation

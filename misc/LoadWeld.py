@@ -3,21 +3,22 @@ import sys
 sys.path.append('/local/examples')
 
 from omega import setEventFunction, setUpdateFunction
-from GeoLoader.GeometryFile import GeometryFile
-from GeoLoader.DAEventHandler import DAEventHandler
+from pipelines.objects import Geometry
+from pipelines.handler import GeometryHandler
 
-cave = GeometryFile("/da/proj/paulBourke/weld/take1.obj")
-cave.initialRotation = [-15, 170, -175]
-cave.initialPosition = [0.05, 0, -0.9]
-cave.reset()
+weld = Geometry("/da/proj/paulBourke/weld/take1.obj")
+weld.initialRotation = [-15, 215, -175]
+weld.initialPosition = [0.9, 0, -5]
+weld.model.setScale(0.1, 0.1, 0.1)
+weld.reset()
 
-handler = DAEventHandler()
+handler = GeometryHandler()
 handler.toggleView()
 
 handler.allowZRot = False
 handler.allowXMove = handler.allowYMove = False
 
-handler.addGeo(cave)
+handler.addGeo(weld)
 
 setEventFunction(handler.onEvent)
 setUpdateFunction(handler.onUpdate)

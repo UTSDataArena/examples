@@ -4,8 +4,8 @@ sys.path.append('/local/examples')
 
 from omega import setEventFunction, setUpdateFunction
 from cyclops import ProgramAsset, PrimitiveType, UniformType
-from GeoLoader.GeometryFile import GeometryFile
-from GeoLoader.DAEventHandler import DAEventHandler
+from pipelines.objects import Geometry
+from pipelines.handler import GeometryHandler
 
 shaderPath = "/da/sw/omegalib/darren.omegalib/core/modules/pointCloud/shaders"
 program = ProgramAsset()
@@ -18,14 +18,14 @@ program.geometryInput = PrimitiveType.Points
 program.geometryOutput = PrimitiveType.TriangleStrip
 
 filename = "/da/proj/caves/Victoria_Arch/wcr03_victoria_arch_3cm_shape_rotYup_binary.ply"
-cave = GeometryFile(filename)
+cave = Geometry(filename)
 cave.setShader(program)
 cave.getMaterial().addUniform('pointScale', UniformType.Float)
 cave.getMaterial().getUniform('pointScale').setFloat(0.01)
 
 cave.xMoveClamp = cave.yMoveClamp = cave.zMoveClamp = 50
 
-handler = DAEventHandler()
+handler = GeometryHandler()
 handler.toggleView()
 
 handler.allowZRot = False

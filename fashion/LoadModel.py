@@ -3,17 +3,17 @@ import sys
 sys.path.append('/local/examples')
 
 from omega import setEventFunction, setUpdateFunction
-from GeoLoader.GeometryFile import GeometryFile
-from GeoLoader.DAEventHandler import DAEventHandler
+from pipelines.objects import Geometry
+from pipelines.handler import GeometryHandler
 
 fileToLoad = "/local/examples/fashion/Mook_mix1_initial.fbx"
 
-model = GeometryFile(fileToLoad)
+model = Geometry(fileToLoad)
 # original model is too big
 model.model.setScale(0.1, 0.1, 0.1)
 model.zMoveClamp = 33
 
-handler = DAEventHandler()
+handler = GeometryHandler()
 handler.initialCamPosition = [0, 0, 35]
 
 handler.addGeo(model)

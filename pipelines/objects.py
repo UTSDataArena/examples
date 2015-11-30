@@ -1,11 +1,53 @@
-from euclid import Vector3
-from omega import SceneNode, quaternionFromEulerDeg, Space
-from cyclops import ModelInfo, StaticObject, getSceneManager
+"""The module provides classes for different visualizations in the Data Arena."""
 
-class GeometryFile():
+try:
+    from omega import SceneNode, quaternionFromEulerDeg, Space
+except ImportError:
+    print "Could not import module: omega."
+try:
+    from euclid import Vector3
+except ImportError:
+    print "Could not import module: euclid."
+try:
+    from cyclops import ModelInfo, StaticObject, getSceneManager
+except ImportError:
+    print "Could not import module: cyclops."
+
+class BaseObject():
+        """The class provides a base wrapper for objects of Data Arena visualizations."""
+
+        def __init__(self): 
+                """The constructor provides some parameters to tune the object interaction."""
+
+                self.model = None
+
+                #: Changing initial position/rotation requires reset() call.
+		self.initialRotation = [0, 0, 0]
+		self.initialPosition = [0, 0, 0]
+
+                #: Specifies rotation point of the object, requires reset(). (default: center of bounding box)
+                self.pivotPoint = [0, 0, 0]
+
+        def reset(self):
+                """Reset to initial position."""
+                pass
+
+        def updateModel(self, newRotation, newPosition):
+                """Callback for Handler to update position and orientation.
+
+                :param newRotation: Rotation vector
+                :param newPosition: Translation vector
+                :type newRotation: List with 3 double values
+                :type newPosition: List with 3 double values
+
+                This method is used to change the angle and position or the object with the given vectors
+                """
+                pass
+
+class Geometry(BaseObject):
         """The class provides a wrapper to load a geometry file into omegalib.
 
-        An instantiated object is registered at a `DAEventHandler` object and encapsulates the geometry.
+        An instantiated object is registered at a `GeometryHandler` object and encapsulates the geometry.
         """
 
         def __init__(self, fileToLoad): 
@@ -15,19 +57,12 @@ class GeometryFile():
                 :type fileToLoad: String
 
                 :return: instantiated object
-                :rtype: GeometryFile object
+                :rtype: Geometry object
                 """
 
-                self.model = None
-
-                #: Changing initial position/rotation requires reset() call.
-		self.initialRotation = [0, 0, 0]
-		self.initialPosition = [0, 0, 0]
+                BaseObject.__init__(self)
 
                 self.cameraPosition = [0, 0, 0]
-
-                #: Specifies rotation point of the object, requires reset(). (default: center of bounding box)
-                self.pivotPoint = [0, 0, 0]
 
                 #: Set maximum rotation here.
                 #: TODO Not working so far, see updateModel()
@@ -53,6 +88,7 @@ class GeometryFile():
                 
                 Update pivot point and set configured initialRotation/Position, redraw with updateModel().
                 """
+
                 if self.model is None: return
 
                 self.model.getChildByIndex(0).setPosition(*self.pivotPoint)
@@ -99,15 +135,6 @@ class GeometryFile():
                 return self.model.getChildByIndex(0).getMaterial()
 
         def updateModel(self, newRotation, newPosition):
-                """Callback for DAEventhandler to update coordinates.
-
-                :param newRotation: Rotation vector
-                :param newPosition: Translation vector
-                :type newRotation: List with 3 double values
-                :type newPosition: List with 3 double values
-
-                This method is used to change the angle and position or the object with the given vectors
-                """
                 #TODO: clamping the rotation does not work with Quaternions, omegalib conversion seems not precise
                 # First try: convert quaternion to euler, clamp and apply result
                 # Result: Object moves around without dragging (rounded conversiona?)
@@ -142,16 +169,16 @@ class GeometryFile():
                 self.model.translate(Vector3(*newPosition), Space.World)
 
 
-class OTL(GeometryFile):
-        """Encapsulates an OTL to load it into omegalib with OTLHandler."""
+class OTL(Geometry):
+        """Encapsulates an OTL to load it into omegalib with an OTLHandler."""
 
         def __init__(self, otlDescription):
-                """Initialize empty GeometryFile object.
+                """Initialize empty Geometry object.
 
                 :param otlDescription: Information of the OTL to load later.
                 :type otlDescription: Tripel: OTL filename, OTL object name, geometry name)
                 """
-                GeometryFile.__init__(self, None)
+                Geometry.__init__(self, None)
                 self.otlDescription = otlDescription
 
         def loadModel(self, otlDescription):

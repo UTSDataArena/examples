@@ -3,16 +3,16 @@ API
 .. autodoc documentation:
    http://sphinx-doc.org/ext/autodoc.html
 
-GeometryFile
-------------
+Visualizations
+--------------
 
-.. automodule:: GeometryFile 
+.. automodule:: objects
       :members:
       :special-members:
 
-DAEventHandler
+Handler
 --------------
 
-.. automodule:: DAEventHandler
+.. automodule:: handler
       :members:
       :special-members:

@@ -1,22 +1,23 @@
-from omega import getDefaultCamera, getEvent, ServiceType, EventFlags, EventType, isStereoEnabled, toggleStereo, quaternionFromEulerDeg, SceneNode
-from euclid import Vector3
+"""The module contains different classes to interact with visualization objects of the Data Arena."""
 
-class DAEventHandler():
-        """This class encapsulates the navigation interaction with geometry loaded into omegalib.
+try:
+    from omega import getDefaultCamera, getEvent, ServiceType, EventFlags, EventType, isStereoEnabled, toggleStereo, quaternionFromEulerDeg, SceneNode
+except ImportError:
+    print "Could not import module: omega."
+try:
+    from euclid import Vector3
+except ImportError:
+    print "Could not import module: euclid."
+try:
+    from daHEngine import HoudiniEngine
+except ImportError:
+    print "Could not import module: daHEngine."
 
-        An instance of DAEventHandler can load several `GemoetryFile` objects.
-        The functions `onEvent()` and `onUpdate()` are registered at the omegalib callbacks.
-        Interaction with the loaded objects is then provided via mouse, keyboard or Space Navigator.
+class BaseHandler():
+        """This class encapsulates the interaction with objects loaded into omegalib."""
 
-        self.objects and self.cameraObject stay always on position [0,0,0] which is the pivot point for the camera.
-        Instead of moving the camera, all objects in self.objects are moved.
-        Rotation is applied either on cameraObject (in cameraControl) or self.objects.
-        This aligns the view always with the intuitive coordinat system (x: horizontal, y: vertical, z: depth).
-        """
         def __init__(self):
                 """The constructor provides several tuning parameters."""
-                self.geos = []
-                self.currentModel = -1
                 #: Parent all objects to apply camera rotation, while camera stays the same.
                 self.objects = SceneNode.create("objects")
 
@@ -33,6 +34,33 @@ class DAEventHandler():
                 #: Parent camera to abstract from headOffset
                 self.cameraObject = SceneNode.create("Camera")
                 self.cameraObject.addChild(defCam)
+
+        def onEvent(self):
+                """Callback for omegalib to register with `setEventFunction`."""
+                pass
+
+        def onUpdate(self, frame, time, dt):
+                """Callback for omegalib to register with `setUpdateFunction`."""
+                pass
+
+class GeometryHandler(BaseHandler):
+        """This class encapsulates the navigation interaction with `Geometry` objects loaded into omegalib.
+
+        An instance of GeometryHandler can load several `Geometry` objects.
+        The functions `onEvent()` and `onUpdate()` are registered at the omegalib callbacks.
+        Interaction with the loaded objects is then provided via mouse, keyboard or Space Navigator.
+
+        self.objects and self.cameraObject stay always on position [0,0,0] which is the pivot point for the camera.
+        Instead of moving the camera, all objects in self.objects are moved.
+        Rotation is applied either on cameraObject (in cameraControl) or self.objects.
+        This aligns the view always with the intuitive coordinat system (x: horizontal, y: vertical, z: depth).
+        """
+        def __init__(self):
+
+                BaseHandler.__init__(self)
+
+                self.geos = []
+                self.currentModel = -1
 
                 self.cameraControl = False
 
@@ -134,7 +162,7 @@ class DAEventHandler():
         #4 roll (-right, +left)
         #5 yaw (-left, +right)
         def onSpaceNavEvent(self, e):
-                """Callback for `onEvent` to read Space Navigator input."""
+                """Read Space Navigator input and return postition/angle changes."""
                 if e.isButtonDown(EventFlags.Button1):
                         self.resetView()
                 if e.isButtonDown(EventFlags.Button2):
@@ -194,7 +222,7 @@ class DAEventHandler():
                 return angles, position
 
         def onMouseEvent(self, e):
-                """Callback for `onEvent` to read Mouse input."""
+                """Read Mouse input and return position/rotation changes."""
                 angles = [0, 0, 0]
                 position = [0, 0, 0]
                 if e.isButtonDown(EventFlags.Left):
@@ -260,7 +288,6 @@ class DAEventHandler():
                 return angles, position
 
         def onEvent(self):
-                """Callback for omegalib to register with `setEventFunction`."""
                 e = getEvent()
                 angles = [0, 0, 0]
                 position = [0, 0, 0]
@@ -304,11 +331,6 @@ class DAEventHandler():
                         position = self.cameraObject.getOrientation() * Vector3(*position)
 
                 [ g.updateModel(angles, position) for g in self.geos ]
-
-        def onUpdate(self, frame, time, dt):
-                """Callback for omegalib to register with `setUpdateFunction`."""
-                pass
-#                self.doControllerMove()
 
         def restrictControl(self, event):
                 """Restricts movement on axes.
@@ -467,31 +489,29 @@ class DAEventHandler():
                     self.currentModel = 0
                 self.geos[self.currentModel].model.getChildByIndex(0).setVisible(True)
 
-from daHEngine import HoudiniEngine
-
-class OTLHandler(DAEventHandler):
-        """The OTLHandler provides specific methods to interact with OTL objects from the GeometrFile class.
+class OTLHandler(GeometryHandler):
+        """The OTLHandler provides specific methods to interact with `OTL` objects.
 
         With the HoudiniEngine in omegalib, the OTLHandler loads an OTL and instantiates the geometry.
         There are methods to access different frames in the OTL and render them sequentially.
         """
         def __init__(self):
-                """Initializes DAEventHandler and HoudiniEngine."""
-                DAEventHandler.__init__(self)
+                """Initializes GeometryHandler and HoudiniEngine."""
+                GeometryHandler.__init__(self)
                 self.engine = HoudiniEngine.createAndInitialize()
                 self.engine.setLoggingEnabled(False)
                 self.framesPerSec = 25
                 self.play = False
 
         def addGeo(self, otl):
-                """Loads OTL with HoudiniEngine."""
+                """Load OTL with HoudiniEngine."""
                 otlName, assetName, geoName = otl.otlDescription
                 self.engine.loadAssetLibraryFromFile(otlName)
                 self.engine.instantiateAsset(assetName)
                 staticObject = self.engine.instantiateGeometry(geoName)
                 otl.setModel(staticObject)
 
-                DAEventHandler.addGeo(self, otl)
+                GeometryHandler.addGeo(self, otl)
 
         def renderFrame(self, frame):
                 """Renders the given frame of the OTL."""
@@ -503,13 +523,11 @@ class OTLHandler(DAEventHandler):
                 self.renderFrame(seconds * self.framesPerSec + 1 + offset)
 
         def onUpdate(self, frame, time, dt):
-                """Callback for omegalib to register with `setUpdateFunction`."""
                 if self.play:
                     self.nextFrame()
 
         def onEvent(self):
-                """Callback for omegalib to register with `setEventFunction`."""
-                DAEventHandler.onEvent(self)
+                GeometryHandler.onEvent(self)
 
                 e = getEvent()
                 if e.isKeyDown(ord('f')):

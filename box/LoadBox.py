@@ -3,18 +3,18 @@ import sys
 sys.path.append('/local/examples')
 
 from omega import setEventFunction, setUpdateFunction
-from GeoLoader.GeometryFile import GeometryFile
-from GeoLoader.DAEventHandler import DAEventHandler
+from pipelines.objects import Geometry
+from pipelines.handler import GeometryHandler 
 
 fileToLoad = "/local/examples/box/box.obj"
 fileToLoad2 = "/local/examples/box/box_translated.obj"
 
-geo = GeometryFile(fileToLoad)
-geo2 = GeometryFile(fileToLoad2)
+geo = Geometry(fileToLoad)
+geo2 = Geometry(fileToLoad2)
 geo2.initialPosition = [2, 0, 0]
 geo2.reset()
 
-handler = DAEventHandler()
+handler = GeometryHandler()
 handler.initialCamPosition = [1, 0, 5]
 
 handler.addGeo(geo)

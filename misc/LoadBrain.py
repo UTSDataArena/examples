@@ -3,17 +3,16 @@ import sys
 sys.path.append('/local/examples')
 
 from omega import setEventFunction, setUpdateFunction
-from GeoLoader.GeometryFile import GeometryFile
-from GeoLoader.DAEventHandler import DAEventHandler
+from pipelines.objects import Geometry
+from pipelines.handler import GeometryHandler
 
-brainFile = "/da/proj/paulBourke/brain/model.obj"
-
-brain = GeometryFile(brainFile)
+brain = Geometry("/da/proj/paulBourke/brain/model.obj")
 brain.initialRotation = [-80, 100, 10]
-brain.initialPosition = [0, 0.03, -0.9]
+brain.initialPosition = [0, 1, -28]
+brain.model.setScale(0.1, 0.1, 0.1)
 brain.reset()
 
-handler = DAEventHandler()
+handler = GeometryHandler()
 
 handler.allowXMove = handler.allowYMove = handler.allowZMove = False
 
