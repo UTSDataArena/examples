@@ -21,7 +21,7 @@ omegalibDemos = {
 }
 
 movieDemos = {
-	"Spitzer Spectroscopy": "SpitzerL2_vm.mp4",
+	"Spitzer Spectroscopy": "Spitzer_L2_vm.mp4",
 	"Spitzer Labels": "videoSpitzer.label_vm.mp4",
 	"Bacteria Trails": "bacteria_trailD_vm.mp4",
 	"Parasites": "parasite.drishti.2_vm.mkv",
