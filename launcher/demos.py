@@ -2,19 +2,9 @@
 
 omegalibDemos = {
     "127.0.0.1" : {
-	"Wombeyan Caves": "misc/LoadWombeyan.py",
-	"Water Pipe": "pipe",
-	"Fashion Turntable": "ft",
-	"DAB Fashion Show": "fs.solo.sound",
-	"Pong": "p",
-	"Parallel Coordinates": "pcm",
+	"Parallel Coordinates": "parallel/DA_ParallelCoords.merged.py",
         "Box": "box/LoadBox.py",
         "Earth": "earth/LoadEarth.py",
-        "Motion Capture": "box/LoadOTL.py",
-        "Bar Chart": "barchart/LoadBarChart.py",
-        "Weld": "misc/LoadWeld.py",
-        "Brain": "misc/LoadBrain.py",
-        "Faces": "misc/LoadFaces.py",
         "Small Wombeyan": "misc/LoadCave.py",
         "Fashion Model": "fashion/LoadModel.py",
     },
