@@ -1,14 +1,14 @@
 # TODO: append GeoLoader package to python search path in omegalib: workaround
 import sys
-sys.path.append('/home/fabian/Code/examples')
+sys.path.append('/local/examples')
 
 from omega import setEventFunction, setUpdateFunction
-from GeoLoader.GeometryFile import GeometryFile
-from GeoLoader.DAEventHandler import DAEventHandler
+from pipelines.objects import Geometry
+from pipelines.handler import GeometryHandler
 
-modelFile = "/home/fabian/Code/examples/earth/mapquest_osm.earth"
+modelFile = "/local/examples/earth/mapquest_osm.earth"
 
-geo = GeometryFile(modelFile)
+geo = Geometry(modelFile)
 
 geo.yRotClamp = 360
 geo.xRotClamp = geo.zRotClamp = 0
@@ -18,7 +18,7 @@ geo.initialRotation = [-90, 140, 0]
 geo.model.setScale(0.1**7, 0.1**7, 0.1**7)
 geo.reset()
 
-handler = DAEventHandler()
+handler = GeometryHandler()
 handler.initialCamPosition = [0, 0, 2.4]
 
 handler.yRotSensitivity /= 4

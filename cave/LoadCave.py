@@ -4,8 +4,8 @@ sys.path.append('/local/examples')
 
 from omega import setEventFunction, setUpdateFunction
 from cyclops import ProgramAsset, PrimitiveType, UniformType
-from GeoLoader.GeometryFile import GeometryFile
-from GeoLoader.DAEventHandler import DAEventHandler
+from pipelines.objects import Geometry
+from pipelines.handler import GeometryHandler
 
 shaderPath = "/local/omegalib/modules/pointCloud/shaders"
 program = ProgramAsset()
@@ -17,7 +17,7 @@ program.geometryOutVertices = 4
 program.geometryInput = PrimitiveType.Points
 program.geometryOutput = PrimitiveType.TriangleStrip
 
-cave = GeometryFile("/local/examples/cave/wcc04_archentrance_9pct.ply")
+cave = Geometry("/local/examples/cave/wcc04_archentrance_9pct.ply")
 cave.initialRotation = [-90, 150, 0]
 cave.initialPosition = [2, 6, -18]
 cave.setShader(program)
@@ -26,7 +26,7 @@ cave.getMaterial().getUniform('pointScale').setFloat(0.07)
 
 cave.xMoveClamp = cave.yMoveClamp = cave.zMoveClamp = 20
 
-handler = DAEventHandler()
+handler = GeometryHandler()
 handler.toggleView()
 
 handler.allowZRot = False
