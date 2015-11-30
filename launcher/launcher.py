@@ -92,7 +92,7 @@ class DAVM_Launcher(object):
         return jtemp.render(omegaList=demos.omegalibDemos[DAVM_Launcher.myHost], movieList=demos.movieDemos, currentDemo=button)
 
 if __name__ == '__main__':
-    cherrypy.config.update({'tools.sessions.on' : True})
+    cherrypy.config.update({'tools.sessions.on' : True, 'server.socket_port' : 8002})
     conf = {
         '/images': {
             'tools.staticdir.on' : True,
