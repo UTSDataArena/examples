@@ -12,6 +12,12 @@ try:
     from cyclops import ModelInfo, StaticObject, getSceneManager
 except ImportError:
     print "Could not import module: cyclops."
+try:
+    from webView import WebView, WebFrame
+    from omega import isMaster, PixelData, PixelFormat, ImageFormat
+    from omegaToolkit import ImageBroadcastModule, Image
+except ImportError:
+    print "Could not import modules for Canvas."
 
 class BaseObject():
         """The class provides a base wrapper for objects of Data Arena visualizations."""
@@ -193,29 +199,18 @@ class OTL(Geometry):
                 self.model.addChild(staticObject)
                 self.reset()
 
-from webView import WebView, WebFrame
-from euclid import Vector2
-from omega import ImageFormat, isMaster, PixelData, PixelFormat, ImageFormat
-from omegaToolkit import ImageBroadcastModule, Image
 
-class Canvas(GeometryFile):
+class Canvas(BaseObject):
         """Encapsulates a webpage"""
 
         def __init__(self, url, width, height):
-                """Initialize new webpage with file or http descriptor."""
-                GeometryFile.__init__(self, None)
+                """Initialize new webpage with filename or URL."""
+                # not necessary to call super class
                 self.url = url
                 self.width = width
                 self.height = height
-
-        def loadModel(self, fileToLoad):
-                # reset inherited member
-                self.modelInfos = None
-                self.textured = None
-
-        def reset(self):
-                # not working because of missing child node
-                pass
+                # Vector2 set from Handler
+                self.position = None
 
         def setModel(self, container):
                 """Called from Handler to add data in container."""
@@ -231,12 +226,6 @@ class Canvas(GeometryFile):
                     frame = Image.create(container)
                     frame.setDestRect(0, 0, self.width, self.height)
                     frame.setData(view)
-                position = Vector2(*self.initialPosition[:1])
-                frame.setPosition(position)
+                frame.setPosition(self.position)
                 ImageBroadcastModule.instance().addChannel(view, self.url, ImageFormat.FormatNone)
-                #self.pivotPoint = list(-frame.getBoundCenter())
-
-                #: Use parent object to apply correct rotation on initially translated objects.
-                #self.model = SceneNode.create("Parent")
-                # seems to be a different node though
-                self.model = container.get3dSettings().node
+                #self.model = container.get3dSettings().node

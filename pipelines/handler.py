@@ -12,6 +12,12 @@ try:
     from daHEngine import HoudiniEngine
 except ImportError:
     print "Could not import module: daHEngine."
+try:
+    from euclid import Vector2, Vector3, Quaternion
+    from omega import Color, loadImage
+    from omegaToolkit import UiModule, Container, ContainerLayout, Label, Image
+except ImportError:
+    print "Could not import modules for CanvasHandler."
 
 class BaseHandler():
         """This class encapsulates the interaction with objects loaded into omegalib."""
@@ -543,36 +549,28 @@ class OTLHandler(GeometryHandler):
 
 
 
-from euclid import Vector2, Vector3
-from omega import Color, loadImage, SceneNode
-from omegaToolkit import Container, ContainerLayout, Label, Image, UiModule
-
-class CanvasHandler(DAEventHandler):
+class CanvasHandler(BaseHandler):
 
         def __init__(self):
-                DAEventHandler.__init__(self)
+                BaseHandler.__init__(self)
                 self.cursors = []
                 self.distance = 0
 
-
                 ui = UiModule.createAndInitialize()
-                node = SceneNode.create("container")
-                self.geos.append(node)
-
                 self.container = Container.create(ContainerLayout.LayoutFree, ui.getUi())
+
                 c3d = self.container.get3dSettings()
                 c3d.enable3d = True
-                c3d.position = Vector3(-4, 2.7, -3) # dablab
+                # just default, overwrite with setPosition
+                c3d.position = Vector3(-1.35, 0.75, -2.7)
                 c3d.scale = 0.001
-                c3d.node = node
+                c3d.node = self.objects 
 
                 self.cursorImg = loadImage('/da/sw/omegalib/myCursor.png')
                 self.cursorClickImg = loadImage('/da/sw/omegalib/myCursor_click.png')
 
-        def addGeo(self, canvas):
+        def addCanvas(self, canvas):
                 """Loads canvas and set position in container."""
-                #DAEventHandler.addGeo(self, canvas)
-
                 # Update container size and position canvas
                 width = canvas.width
                 height = canvas.height
@@ -580,8 +578,12 @@ class CanvasHandler(DAEventHandler):
                 if (self.container.getHeight() < height):
                     self.container.setHeight(height)
 
-                canvas.initialPosition = [ self.container.getWidth() - width, 0, 0]
+                canvas.position = Vector2(self.container.getWidth() - width, 0)
                 canvas.setModel(self.container)
+
+        def setPosition(self, position):
+                self.initialCamPosition = position
+                self.container.get3dSettings().position = -Vector3(*position)
 
         def addCursor(self, name, color):
                 cursor = Image.create(cont)
@@ -605,9 +607,7 @@ class CanvasHandler(DAEventHandler):
                 return ((abs(q2.w) + abs(q2.x) + abs(q2.y) + abs(q2.z)) -
                          (abs(q1.w) + abs(q1.x) + abs(q1.y) + abs(q1.z)))
 
-        def onEvent():
-                print "in canvas handler"
-                DAEventHandler.onEvent(self)
+        def onEvent(self):
 
                 prevDiffAmt = 0.0
                 prevOrientations = [[Quaternion()]] * len(self.cursors)
