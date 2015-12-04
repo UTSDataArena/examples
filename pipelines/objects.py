@@ -12,6 +12,10 @@ try:
     from cyclops import ModelInfo, StaticObject, getSceneManager
 except ImportError:
     print "Could not import module: cyclops."
+try:
+    from KmlLoader import KmlLoader
+except ImportError:
+    print "Could not import module: KmlLoader."
 
 class BaseObject():
         """The class provides a base wrapper for objects of Data Arena visualizations."""
@@ -192,3 +196,22 @@ class OTL(Geometry):
                 self.model = SceneNode.create("Parent")
                 self.model.addChild(staticObject)
                 self.reset()
+
+
+class KML(Geometry):
+    """Uses osgEarth to load KML models into a GIS model."""
+
+    def __init__(self, model):
+        Geometry.__init__(self, model)
+        getSceneManager().addLoader(KmlLoader())
+
+    def addKml(self, kmlPath):
+        """Attache a KML to the model."""
+        kmzModel = ModelInfo()
+        kmzModel.name = kmlPath
+        kmzModel.path = kmlPath
+        kmzModel.mapName = self.model.getChildByIndex(0).getName()
+        kmzModel.optimize = False
+        getSceneManager().loadModel(kmzModel)
+        kmz = StaticObject.create(kmlPath)
+        self.model.addChild(kmz)
