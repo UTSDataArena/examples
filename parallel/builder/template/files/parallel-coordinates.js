@@ -61,7 +61,7 @@
         .enter().append("svg:path")
           .attr("d", path)
           .attr("style", function(d) {
-            return "stroke:" + colors[d.GROUP] + ";";
+            return "stroke:" + colors[d["GROUP"]] + ";";
           });
 
       // Add a group element for each dimension.
@@ -174,7 +174,7 @@
                          .enter().append("svg:path")
                            .attr("d", path)
                            .attr("style", function(d) {
-                             return "stroke:" + colors[d.GROUP] + ";";
+                             return "stroke:" + colors[d["GROUP"]] + ";";
                            });
         }
       };
