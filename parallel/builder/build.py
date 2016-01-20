@@ -1,3 +1,5 @@
+#!/usr/bin/python2
+
 import csv
 import json
 from distutils import dir_util 
