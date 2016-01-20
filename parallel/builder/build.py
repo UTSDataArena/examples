@@ -51,9 +51,14 @@ colors = {}
 for i in groups:
     colors[i] = '#%06x' % random.randint(0, 0xFFFFFF)
 
+# puts colours in with no quotes if groups have no quotes
+if not isinstance(groups[0], basestring):
+    replace('COLORS', str(colors)  + ';', baseDir + 'index.html')
+else:
+    replace('COLORS', json.dumps(colors)  + ';', baseDir + 'index.html')
+
 replace('TITLE', path.split('/')[-1], baseDir + 'index.html')
 replace('GROUPS', json.dumps(groups) + ';', baseDir + 'index.html')
-replace('COLORS', json.dumps(colors) + ';', baseDir + 'index.html')
 replace('EXCLUDE', strColumn, baseDir + 'files/parallel-coordinates.js')
 replace('GROUP', groupColumn, baseDir + 'files/parallel-coordinates.js')
 
