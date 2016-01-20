@@ -15,12 +15,15 @@ if len(argv)>2:
 
 path = csvName[:-4]
 # has to end with /
+
 baseDir = path + "/"
 dir_util.mkpath(baseDir) 
 dir_util.copy_tree('./template', baseDir)
  
+print "Copied files to folder {}..".format(path)
 groups = []
-firstRow = {} 
+firstRow = {}
+
 with open(csvName) as csvfile:
     reader = csv.DictReader(csvfile, quoting=csv.QUOTE_NONNUMERIC)
     with open(baseDir + 'files/data.js','w') as jsonfile:
@@ -34,6 +37,8 @@ with open(csvName) as csvfile:
             json.dump(row, jsonfile)
             jsonfile.write(',\n')
         jsonfile.write(']')
+
+print "Wrote new json file {}".format(baseDir+ 'file/data.js')
 
 def replace(s1, s2, filename):
     command = 's/{}/{}/g'.format(s1, s2)
