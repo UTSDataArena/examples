@@ -7,11 +7,20 @@ from subprocess import call
 import random
 from sys import argv
             
+
+
+
 csvName = 'Public.csv'
 groupColumn = 'Institution'
 if len(argv)>2:
     csvName = argv[1]
     groupColumn = argv[2]
+else:
+    print "Usage: {} <csv file> <group Column name>".format(argv[0])
+    print "Example: {} Public.csv 'Institution'".format(argv[0])
+    exit(1)
+
+print "Using {} file and '{}' as Group".format(csvName, groupColumn)
 
 path = csvName[:-4]
 # has to end with /
