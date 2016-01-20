@@ -78,7 +78,8 @@ class DAVM_Launcher(object):
 	pipePath = "/local/bino/fifo/bino.pipe"
 
         args = [
-        	"/local/bino/install/bin/bino --loop",
+        	"/local/bino/install/bin/bino",
+		"--loop",
 		"-i",
 		"mono",
 		"--log-file=/var/tmp/bino.log",
