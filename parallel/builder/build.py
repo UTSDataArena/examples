@@ -6,9 +6,7 @@ from distutils import dir_util
 from subprocess import call
 import random
 from sys import argv
-            
-
-
+from sys import platform
 
 csvName = 'Public.csv'
 groupColumn = 'Institution'
@@ -53,7 +51,7 @@ def replace(s1, s2, filename):
     command = 's/{}/{}/g'.format(s1, s2)
     replace = ['sed', '-i', command, filename]
     # differences in sed on linux vs osx (http://stackoverflow.com/a/2321958)
-    if 'darwin' in sys.platform:
+    if 'darwin' in platform:
         replace = ['sed', '-i', '-e', command, filename]
     call(replace)
 
