@@ -39,6 +39,9 @@ class DAVM_Launcher(object):
 
     @cherrypy.expose
     def runScript(self, bino, movie):
+        if movie=="":
+            return self.index()
+
         # useful: http://bino3d.org/doc/bino.html#Script-Commands
 
         binoCmd = str(bino)
@@ -70,20 +73,16 @@ class DAVM_Launcher(object):
 
     @cherrypy.expose
     def runMovie(self, button):
-        #TODO: dv script path
-        myDv = "dv"
-        moviePath = '/local/movies/'
+        player = "/local/bino/install/bin/bino --loop -i mono --log-file=/var/tmp/bino.log -o equalizer --eq-config /etc/eq/local.auto.eqc  --read-commands /var/tmp/bino.pipe"
+        moviePath = '/local/videos/'
 
-        args = [
-            myDv,
-            moviePath + button
-        ]
+        args = player.split(" ")
+        args.append(moviePath + button)
 
         result = subprocess.Popen(args, preexec_fn=os.setsid)
         cherrypy.session['mySession'] = result
 
-        #TODO: bino pipe path 
-        DAVM_Launcher.fifo = os.open('/da/tmp/bino.dev1', os.O_WRONLY)
+        DAVM_Launcher.fifo = os.open('/local/bino/fifo/bino.pipe', os.O_WRONLY)
 
         os.write(DAVM_Launcher.fifo, 'pause\n')
         os.write(DAVM_Launcher.fifo, 'step\n')
