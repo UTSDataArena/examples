@@ -52,7 +52,7 @@ def replace(s1, s2, filename):
     replace = ['sed', '-i', command, filename]
     # differences in sed on linux vs osx (http://stackoverflow.com/a/2321958)
     if 'darwin' in platform:
-        replace = ['sed', '-i', '-e', command, filename]
+        replace = ['sed', '-i', '', command, filename]
     call(replace)
 
 # exclude string columns from diagram
