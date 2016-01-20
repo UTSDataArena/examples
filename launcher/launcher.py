@@ -82,7 +82,7 @@ class DAVM_Launcher(object):
         result = subprocess.Popen(args, preexec_fn=os.setsid)
         cherrypy.session['mySession'] = result
 
-        DAVM_Launcher.fifo = os.open('/var/tmp/bino.pipe', os.O_WRONLY)
+        DAVM_Launcher.fifo = os.open('/local/bino/fifo/bino.pipe', os.O_WRONLY)
 
         os.write(DAVM_Launcher.fifo, 'pause\n')
         os.write(DAVM_Launcher.fifo, 'step\n')
