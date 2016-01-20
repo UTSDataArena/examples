@@ -64,6 +64,7 @@ else:
 
 replace('TITLE', path.split('/')[-1], baseDir + 'index.html')
 replace('GROUPS', json.dumps(groups) + ';', baseDir + 'index.html')
+replace('GROUP', groupColumn, baseDir + 'index.html')
 replace('EXCLUDE', strColumn, baseDir + 'files/parallel-coordinates.js')
 replace('GROUP', groupColumn, baseDir + 'files/parallel-coordinates.js')
 

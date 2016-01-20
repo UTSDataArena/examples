@@ -80,7 +80,7 @@
     });
 
     var pc = parallel(dimensions, colors);
-    var pie = piegroups(dataJSON, groups, colors, 'group');
+    var pie = piegroups(dataJSON, groups, colors, 'GROUP');
     var totals = pietotals(
       ['in', 'out'],
       [_(dataJSON).size(), 0]
