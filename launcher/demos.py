@@ -2,7 +2,7 @@
 
 omegalibDemos = {
     "127.0.0.1" : {
-	"Parallel Coordinates": "parallel/DA_ParallelCoords.merged.py",
+	"Parallel Coordinates": "parallel/DAParallelCoords.py",
         "Box": "box/LoadBox.py",
         "Earth": "earth/LoadEarth.py",
         "Small Wombeyan": "misc/LoadCave.py",
