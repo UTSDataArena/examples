@@ -4,6 +4,23 @@
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
     <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
     <meta name="mobile-web-app-capable" content="yes">
+    <style>
+    button.me {
+		border-radius: 0px;
+		width: 100%;
+		background: #222;
+		color: white;
+	}
+    button.half {
+		border-radius: 0px;
+		width: 49%;
+		background: #222;
+		color: white;
+	}
+    button.me:hover, .me:focus, .half:hover, .half:focus {
+		background-image: linear-gradient(rgba(94,94,94,.5), rgba(14,14,14,.05));
+	}
+    </style>
   </head>
   <body style="background: #222; font-size: 150%">
     <div style="width: 80%; height: 100%; position: absolute; top: 0; bottom: 0; left: 0; right: 0; margin: auto;">
@@ -19,7 +36,7 @@
             <ul id="omegaList" class="pure-menu-list">
               {% for item in omegaList.keys()|sort %}
               <li class="pure-menu-item" id="currentDemo">
-                <button {% if currentDemo %}disabled {% endif %}type="submit" name="button" value="{{ omegaList[item] }}" class="pure-button {% if currentDemo %}pure-button-active {% endif %}{% if currentDemo == omegaList[item] %}" style="background: #4C3"{% endif %}">
+                <button {% if currentDemo %}disabled {% endif %}type="submit" name="button" value="{{ omegaList[item] }}" class="pure-button{% if currentDemo %} pure-button-active{% endif %} me"{% if currentDemo == omegaList[item] %}style="background: #4C3"{% endif %}>
                 {{ item }}
                 </button>
               </li>
@@ -33,7 +50,7 @@
               <ul id="movieList" class="pure-menu-list">
                 {% for item in movieList.keys()|sort %}
                 <li class="pure-menu-item" id="currentDemo">
-                  <button {% if currentDemo %}disabled {% endif %}type="submit" name="button" value="{{ movieList[item] }}" class="pure-button  {% if currentDemo %}pure-button-active {% endif %}{% if currentDemo == movieList[item] %}" style="background: #4C3{% endif %}">
+                  <button {% if currentDemo %}disabled {% endif %}type="submit" name="button" value="{{ movieList[item] }}" class="pure-button{% if currentDemo %} pure-button-active{% endif %} me"{% if currentDemo == movieList[item] %}style="background: #4C3"{% endif %}>
                   {{ item }}
                   </button>
                 </li>
@@ -46,7 +63,7 @@
             <form method="get" action="stopIt" align="center">
               <ul id="stopButton" class="pure-menu-list">
                 <li class="pure-menu-item" id="currentDemo">
-                  <button type="submit" class="pure-button {% if currentDemo %}" style="background: #B22;"{% endif %}">
+                  <button type="submit" class="pure-button me" {% if currentDemo %}style="background: #B22"{% endif %}>
                   Interrupt Demo
                   </button>
                 </li>
@@ -56,20 +73,20 @@
           <form method="get" action="runScript" align="center">
             <ul id="scripts" class="pure-menu-list">
               <li class="pure-menu-item" id="currentDemo">
-                <button type="submit" name="bino" value="toggle-pause" class="pure-button">
+                <button type="submit" name="bino" value="toggle-pause" class="pure-button me">
                 Start/Stop Movie
                 </button><p style="font-size:25%;">
               </li>
               <li>
-                <button type="submit" name="bino" value="seekB" class="pure-button">
+                <button type="submit" name="bino" value="seekB" class="pure-button half">
                 Rew
                 </button>
-                <button type="submit" name="bino" value="seekF" class="pure-button">
+                <button type="submit" name="bino" value="seekF" class="pure-button half">
                 Fwd
                 </button><p style="font-size:25%;">
               </li>
               <li>
-                <button type="submit" name="bino" value="rewind" class="pure-button">
+                <button type="submit" name="bino" value="rewind" class="pure-button me">
                 Restart
                 </button>
                 <input type="hidden" name="movie" value="{{ currentDemo }}"><p style="font-size:25%;">
