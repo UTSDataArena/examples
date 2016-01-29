@@ -46,8 +46,8 @@ def getData(filename):
             datapoint['day'] = int(date[2])
             # TODO better filtering of NULL values
             try:
-                datapoint['maxTemp'] = float(row[1] or 0)
-                datapoint['minTemp'] = float(row[2] or 0)
+                datapoint['minTemp'] = float(row[1] or 0)
+                datapoint['maxTemp'] = float(row[2] or 0)
                 datapoint['rainFall'] = float(row[3] or 0)
                 datapoint['evaporation'] = float(row[4] or 0)
                 datapoint['sunshine'] = float(row[5] or 0)
