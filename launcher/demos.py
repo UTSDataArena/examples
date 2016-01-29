@@ -6,7 +6,7 @@ omegalibDemos = {
         "Box": "box/LoadBox.py",
         "Earth": "earth/LoadEarth.py",
         "Small Wombeyan": "misc/LoadCave.py",
-        "Fashion Model": "fashion/LoadModel.py",
+        "Fashion Model": "fashion/DA_Turntable.py",
     },
 }
 
