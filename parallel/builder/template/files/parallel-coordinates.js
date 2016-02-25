@@ -12,10 +12,10 @@
         background,
         foreground;
   
-    var cars = model.get('data');
-    
+    var myData = model.get('data');
+
     self.update = function(data) {
-      cars = data;
+      myData = data;
     };
     
     self.render = function() {
@@ -38,10 +38,10 @@
 
       // Extract the list of dimensions and create a scale for each.
       // Excludes axis from diagram
-      x.domain(dimensions = d3.keys(cars[0]).filter(function(d) {
+      x.domain(dimensions = d3.keys(myData[0]).filter(function(d) {
         return d != "id" &&  EXCLUDE
                (y[d] = d3.scale.linear()
-            .domain(d3.extent(cars, function(p) { return +p[d]; }))
+            .domain(d3.extent(myData, function(p) { return +p[d]; }))
             .range([h, 0]));
       }));
       
@@ -49,7 +49,7 @@
       background = svg.append("svg:g")
           .attr("class", "background")
         .selectAll("path")
-          .data(cars)
+          .data(myData)
         .enter().append("svg:path")
           .attr("d", path);
 
@@ -57,7 +57,7 @@
       foreground = svg.append("svg:g")
           .attr("class", "foreground")
         .selectAll("path")
-          .data(cars)
+          .data(myData)
         .enter().append("svg:path")
           .attr("d", path)
           .attr("style", function(d) {
