@@ -10,6 +10,7 @@ from sys import platform
 
 csvName = 'Public.csv'
 groupColumn = 'Institution'
+ordinals = []
 if len(argv)>2:
     csvName = argv[1]
     groupColumn = argv[2]
@@ -32,7 +33,7 @@ groups = []
 firstRow = {}
 
 with open(csvName) as csvfile:
-    reader = csv.DictReader(csvfile, quoting=csv.QUOTE_NONNUMERIC)
+    reader = csv.DictReader(csvfile)
     with open(baseDir + 'files/data.js','w') as jsonfile:
         jsonfile.write('var dataJSON = [')
         for row in reader:
@@ -58,8 +59,12 @@ def replace(s1, s2, filename):
 # exclude string columns from diagram
 strColumn = ''
 for key, value in firstRow.iteritems():
-    if isinstance(value, basestring):
-        strColumn += 'd != "{}" \&\& '.format(key)
+    try:
+        float(value)
+        print "Numeric", key, value
+    except ValueError:
+        print "Ordinal", key, value
+        ordinals.append(key)
 
 # generate colors for all group values
 colors = {}
@@ -75,6 +80,7 @@ else:
 replace('TITLE', path.split('/')[-1], baseDir + 'index.html')
 replace('GROUPS', json.dumps(groups) + ';', baseDir + 'index.html')
 replace('GROUP', groupColumn, baseDir + 'index.html')
+replace('ORDINALS', json.dumps(ordinals), baseDir + 'files/parallel-coordinates.js')
 replace('EXCLUDE', strColumn, baseDir + 'files/parallel-coordinates.js')
 replace('GROUP', groupColumn, baseDir + 'files/parallel-coordinates.js')
 

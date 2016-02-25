@@ -39,10 +39,18 @@
       // Extract the list of dimensions and create a scale for each.
       // Excludes axis from diagram
       x.domain(dimensions = d3.keys(myData[0]).filter(function(d) {
+        // ordinal categories
+
+        if (ORDINALS.indexOf(d) >= 0) {
+          return (y[d] = d3.scale.ordinal()
+            .domain(myData.map(function(p) { return p[d]; }))
+            .rangePoints([0, h]));
+        }
+        // linear axes, excluding some dimensions
         return d != "id" &&  EXCLUDE
-               (y[d] = d3.scale.linear()
-            .domain(d3.extent(myData, function(p) { return +p[d]; }))
-            .range([h, 0]));
+          (y[d] = d3.scale.linear()
+          .domain(d3.extent(myData, function(p) { return +p[d]; }))
+          .range([h, 0]));
       }));
       
       // Add grey background lines for context.
@@ -140,12 +148,20 @@
             min: extents[i][0],
             max: extents[i][1]
           }
+          // crude support for ordinals (and in filter.js)
+          if (y[key].rangeExtent) {
+            filter[key].scale = y[key]
+          }
         });
         model.set({filter: filter});
         /***/
         foreground.style("display", function(d) {
           return actives.every(function(p, i) {
-            return extents[i][0] <= d[p] && d[p] <= extents[i][1];
+            return y[p].rangeExtent ?
+			  // ordinal
+	            extents[i][0] <= y[p](d[p]) && y[p](d[p]) <= extents[i][1] :
+			  // quantitative
+	            extents[i][0] <= d[p] && d[p] <= extents[i][1];
           }) ? null : "none";
         });
       }

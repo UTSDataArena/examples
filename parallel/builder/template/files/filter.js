@@ -89,7 +89,10 @@
     check: function(d) {
       var filter = this.get('filter')
       for (key in this.get('filter')) {
-        if ((d[key] < filter[key].min) || (d[key] > filter[key].max))
+        if (filter[key].scale) { // adding crude support for ordinals
+          if ((filter[key].scale(d[key]) < filter[key].min) || (filter[key].scale(d[key]) > filter[key].max))
+            return false;
+        } else if ((d[key] < filter[key].min) || (d[key] > filter[key].max))
           return false;
       }
       return true;
