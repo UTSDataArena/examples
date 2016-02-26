@@ -12,10 +12,10 @@
         background,
         foreground;
   
-    var cars = model.get('data');
-    
+    var myData = model.get('data');
+
     self.update = function(data) {
-      cars = data;
+      myData = data;
     };
     
     self.render = function() {
@@ -38,18 +38,30 @@
 
       // Extract the list of dimensions and create a scale for each.
       // Excludes axis from diagram
-      x.domain(dimensions = d3.keys(cars[0]).filter(function(d) {
-        return d != "id" &&  EXCLUDE
-               (y[d] = d3.scale.linear()
-            .domain(d3.extent(cars, function(p) { return +p[d]; }))
-            .range([h, 0]));
+      x.domain(dimensions = d3.keys(myData[0]).filter(function(d) {
+
+        var excludes = EXCLUDES;
+        var ex = d != "id" && (excludes.indexOf(d) < 0);
+
+        // ordinal categories
+        if (ORDINALS.indexOf(d) >= 0) {
+          return ex &&
+            (y[d] = d3.scale.ordinal()
+            .domain(myData.map(function(p) { return p[d]; }))
+            .rangePoints([0, h]));
+        }
+        // linear axes
+        return ex &&
+          (y[d] = d3.scale.linear()
+          .domain(d3.extent(myData, function(p) { return +p[d]; }))
+          .range([h, 0]));
       }));
       
       // Add grey background lines for context.
       background = svg.append("svg:g")
           .attr("class", "background")
         .selectAll("path")
-          .data(cars)
+          .data(myData)
         .enter().append("svg:path")
           .attr("d", path);
 
@@ -57,7 +69,7 @@
       foreground = svg.append("svg:g")
           .attr("class", "foreground")
         .selectAll("path")
-          .data(cars)
+          .data(myData)
         .enter().append("svg:path")
           .attr("d", path)
           .attr("style", function(d) {
@@ -140,12 +152,20 @@
             min: extents[i][0],
             max: extents[i][1]
           }
+          // crude support for ordinals (and in filter.js)
+          if (y[key].rangeExtent) {
+            filter[key].scale = y[key]
+          }
         });
         model.set({filter: filter});
         /***/
         foreground.style("display", function(d) {
           return actives.every(function(p, i) {
-            return extents[i][0] <= d[p] && d[p] <= extents[i][1];
+            return y[p].rangeExtent ?
+			  // ordinal
+	            extents[i][0] <= y[p](d[p]) && y[p](d[p]) <= extents[i][1] :
+			  // quantitative
+	            extents[i][0] <= d[p] && d[p] <= extents[i][1];
           }) ? null : "none";
         });
       }
