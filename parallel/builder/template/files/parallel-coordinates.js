@@ -39,15 +39,19 @@
       // Extract the list of dimensions and create a scale for each.
       // Excludes axis from diagram
       x.domain(dimensions = d3.keys(myData[0]).filter(function(d) {
-        // ordinal categories
 
+        var excludes = EXCLUDES;
+        var ex = d != "id" && (excludes.indexOf(d) < 0);
+
+        // ordinal categories
         if (ORDINALS.indexOf(d) >= 0) {
-          return (y[d] = d3.scale.ordinal()
+          return ex &&
+            (y[d] = d3.scale.ordinal()
             .domain(myData.map(function(p) { return p[d]; }))
             .rangePoints([0, h]));
         }
-        // linear axes, excluding some dimensions
-        return d != "id" &&  EXCLUDE
+        // linear axes
+        return ex &&
           (y[d] = d3.scale.linear()
           .domain(d3.extent(myData, function(p) { return +p[d]; }))
           .range([h, 0]));

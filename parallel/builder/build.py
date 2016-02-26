@@ -11,9 +11,12 @@ from sys import platform
 csvName = 'Public.csv'
 groupColumn = 'Institution'
 ordinals = []
+excludes = []
+
 if len(argv)>2:
     csvName = argv[1]
     groupColumn = argv[2]
+    excludes = argv[3:]
 else:
     print "Usage: {} <csv file> <group Column name>".format(argv[0])
     print "Example: {} Public.csv 'Institution'".format(argv[0])
@@ -23,7 +26,6 @@ print "Using {} file and '{}' as Group".format(csvName, groupColumn)
 
 path = csvName[:-4]
 # has to end with /
-
 baseDir = path + "/"
 dir_util.mkpath(baseDir) 
 dir_util.copy_tree('./template', baseDir)
@@ -56,8 +58,8 @@ def replace(s1, s2, filename):
         replace = ['sed', '-i', '', command, filename]
     call(replace)
 
-# exclude string columns from diagram
-strColumn = ''
+# figure out ordinals (they are columns that can't be converted to a float
+# note: relying on the fact that an int can be considered a float
 for key, value in firstRow.iteritems():
     try:
         float(value)
@@ -81,7 +83,7 @@ replace('TITLE', path.split('/')[-1], baseDir + 'index.html')
 replace('GROUPS', json.dumps(groups) + ';', baseDir + 'index.html')
 replace('GROUP', groupColumn, baseDir + 'index.html')
 replace('ORDINALS', json.dumps(ordinals), baseDir + 'files/parallel-coordinates.js')
-replace('EXCLUDE', strColumn, baseDir + 'files/parallel-coordinates.js')
+replace('EXCLUDES', excludes, baseDir + 'files/parallel-coordinates.js')
 replace('GROUP', groupColumn, baseDir + 'files/parallel-coordinates.js')
 
 print "Saved to: " + baseDir
