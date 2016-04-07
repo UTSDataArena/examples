@@ -51,7 +51,7 @@ with open(csvName) as csvfile:
 print "Wrote new json file {}".format(baseDir+ 'file/data.js')
 
 def replace(s1, s2, filename):
-    command = 's/{}/{}/g'.format(s1, s2)
+    command = 's|{}|{}|g'.format(s1, s2)
     replace = ['sed', '-i', command, filename]
     # differences in sed on linux vs osx (http://stackoverflow.com/a/2321958)
     if 'darwin' in platform:
