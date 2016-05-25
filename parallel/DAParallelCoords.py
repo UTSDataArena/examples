@@ -12,8 +12,8 @@ uiroot = ui.getUi()
 
 if(isMaster()):
 	ww = WebView.create(width, height)
-	ww.loadUrl("http://www.exposedata.com/parallel/")
-	#ww.loadUrl("file://gene/index.htm")
+	# ww.loadUrl("http://www.exposedata.com/parallel/") # original site
+	ww.loadUrl("file:///local/examples/parallel/food/NutrientDatabase.html")
 	#ww.setZoom(200)
 	frame = WebFrame.create(uiroot)
 	frame.setView(ww)
