@@ -119,6 +119,9 @@ class Turntable():
 
 		model.translate(self.offsets[model.getName()], Space.Local)
 
+	def getModel(self, n=1):
+		return self.base.getChildByIndex(n - 1)
+
 	def unsetModel(self):
 		while self.base.numChildren() > 0:
 			self.base.removeChildByIndex(0)
