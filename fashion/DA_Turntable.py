@@ -92,16 +92,17 @@ class Turntable():
 		mdlModel = ModelInfo()
 		mdlModel.name = fileToLoad
 		mdlModel.path = fileToLoad
-		mdlModel.size = 1.0
+		# mdlModel.size = 1.0
 		mdlModel.optimize=False # optimising takes a LONG time..
 		self.modelInfos.append(mdlModel)
 		return self.modelInfos[-1]
 
 
-	def loadModel(self, fileToLoad):
+	def loadModel(self, fileToLoad, scale=Vector3(1,1,1)):
 		getSceneManager().loadModel(self.addModel(fileToLoad))
 		newModel = StaticObject.create(fileToLoad)
 		newModel.setName(fileToLoad)
+		newModel.setScale(scale)
 		self.setModel(newModel)
 
 
@@ -117,6 +118,9 @@ class Turntable():
 			self.offsets[model.getName()] = -model.getBoundCenter()
 
 		model.translate(self.offsets[model.getName()], Space.Local)
+
+	def getModel(self, n=1):
+		return self.base.getChildByIndex(n - 1)
 
 	def unsetModel(self):
 		while self.base.numChildren() > 0:
@@ -386,7 +390,7 @@ if __name__ == "__main__":
 
 	turntable = Turntable()
 	turntable.allowStereoSetting = True
-	turntable.loadModel(fileToLoad)
+	turntable.loadModel(fileToLoad, Vector3(0.01,0.01, 0.01))
 
 	setEventFunction(turntable.onEvent)
 	setUpdateFunction(turntable.onUpdate)
