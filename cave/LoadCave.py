@@ -6,7 +6,7 @@ from omega import setEventFunction, setUpdateFunction
 from cyclops import ProgramAsset, PrimitiveType, UniformType, getSceneManager
 from pipelines.objects import Geometry
 from pipelines.handler import GeometryHandler
-from templateModule import PointCloud
+from pointCloud import PointCloud
 
 VM = False
 
@@ -18,17 +18,18 @@ modelName = "cave"
 modelPath = "/local/examples/cave/wcc04_archentrance_9pct"
 modelExtension = "ply"
 
+shaderPath = "/local/omegalib/modules/pointCloud/shaders"
+
+
 if VM:
 	pointSize = 8.0
 	pointCloudMaker = PointCloud.createAndInitialize(getSceneManager(), modelName, modelPath, modelExtension, pointSize)
 	cave = Geometry()
 	cave.setStaticObject(pointCloudMaker.getStaticObject())
-	shaderPath = "/local/examples/cave/"
 	program.vertexShaderName = shaderPath + "/pointsVM.vert"
 	program.fragmentShaderName = shaderPath + "/pointsVM.frag"
 else:
 	cave = Geometry(modelPath+"."+modelExtension)
-	shaderPath = "/local/omegalib/modules/pointCloud/shaders"
 	program.vertexShaderName = shaderPath + "/Sphere.vert"
 	program.fragmentShaderName = shaderPath + "/Sphere.frag"
 	program.geometryShaderName = shaderPath + "/Sphere.geom"
