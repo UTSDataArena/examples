@@ -58,6 +58,8 @@ class Geometry(BaseObject):
     An instantiated object is registered at a `GeometryHandler` object and encapsulates the geometry.
     """
 
+    createdInstances = {}
+
     def __init__(self, fileToLoad=""):
         """The constructor provides some parameters to tune the object interaction.
 
@@ -87,6 +89,8 @@ class Geometry(BaseObject):
 
         self.modelInfos = []
 
+          
+
         if fileToLoad != "":
             self.loadModel(fileToLoad)
             self.reset()
@@ -111,8 +115,13 @@ class Geometry(BaseObject):
 
         :param fileToLoad: Path to geo file
         """
+
+        modelName = self._makeName(fileToLoad)
+        print "model:", modelName
+
         modelInfo = ModelInfo()
-        modelInfo.name = fileToLoad
+
+        modelInfo.name = modelName
         modelInfo.path = fileToLoad
         # optimising takes a LONG time..
         modelInfo.optimize = False
@@ -120,8 +129,8 @@ class Geometry(BaseObject):
 
         getSceneManager().loadModel(modelInfo)
 
-        newModel = StaticObject.create(fileToLoad)
-        newModel.setName(fileToLoad)
+        newModel = StaticObject.create(modelName)
+        newModel.setName(modelName)
 
         if self.textured:
             newModel.setEffect("textured")
@@ -134,8 +143,24 @@ class Geometry(BaseObject):
         self.pivotPoint = list(-newModel.getBoundCenter())
 
         #: Use parent object to apply correct rotation on initially translated objects.
-        self.model = SceneNode.create("ParentOf_" + fileToLoad)
+        self.model = SceneNode.create("ParentOf_" + modelName)
         self.model.addChild(newModel)
+
+    def _makeName(self, fileToLoad):
+        if Geometry.createdInstances.has_key(fileToLoad):
+            Geometry.createdInstances[fileToLoad]+=1
+            return fileToLoad+str(Geometry.createdInstances[fileToLoad])
+        else:
+            Geometry.createdInstances[fileToLoad] = 1
+        
+        return fileToLoad
+
+    def setPosition(self, position):
+        """ Set model to position.
+
+        :param position: A 3-tuple or list """
+        # self.model.
+        self.model.setPosition(*position)
 
     def setModel(self, modelGeometry):
         """Sets the object to have the given geometry
