@@ -6,7 +6,7 @@ omegalibDemos = {
 	"Parallel Coordinates (Weather)": "parallel/DAParallelCoords.weather.py",
         "Box": "box/LoadBox.py",
         "Earth": "earth/LoadEarth.py",
-        "Small Wombeyan": "misc/LoadCave.py",
+        "Small Wombeyan": "cave/LoadCave.py",
         "Fashion Model": "fashion/DA_Turntable.py",
     },
 }
