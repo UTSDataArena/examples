@@ -40,17 +40,20 @@ class UTSModelController(BaseObject):
 		assert camMat != None
 		return camMat
 
-class CustomEventHandler():
+class MouseCameraManipulator:
 	def __init__(self):
-		pass
+		self.camManip = CameraManipulator.create()
+
+	def setTrackedNode(self, node):
+		self.camManip.setTrackedNode(node)
 
 	def onEvent(self):
-        """Callback for omegalib to register with `setEventFunction`."""
-        pass
+		"""Callback for omegalib to register with `setEventFunction`."""
+		self.camManip.onEvent(getEvent())
 
-    def onUpdate(self, frame, time, dt):
-        """Callback for omegalib to register with `setUpdateFunction`."""
-        pass
+	def onUpdate(self, frame, time, dt):
+		"""Callback for omegalib to register with `setUpdateFunction`."""
+		pass
 
 # handler = GeometryHandler()
 controller = UTSModelController()
@@ -59,8 +62,12 @@ controller = UTSModelController()
 camMat = controller.getModelCameraMatrix()
 getDefaultCamera().setPosition(camMat.getPosition())
 getDefaultCamera().setOrientation(camMat.getOrientation())
+
+camManipulator = MouseCameraManipulator()
+camManipulator.setTrackedNode(controller.model)
+
 # handler.addObject(controller)
 
 # getDefaultCamera().
-# setEventFunction(handler.onEvent)
-# setUpdateFunction(handler.onUpdate)
+setEventFunction(camManipulator.onEvent)
+#setUpdateFunction(handler.onUpdate)
