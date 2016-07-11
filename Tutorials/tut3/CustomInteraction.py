@@ -42,7 +42,7 @@ class UTSModelController(BaseObject):
         self.model.setSelectable(False)
         for pieceName in self.model.listPieces("Root"):
             if pieceName == "Camera": #dont extract the camera yet
-                return
+                continue
             mod = self.model.getPiece("Root/" + pieceName)
             if pieceName.startswith("cb"):
                 if mod != None:
@@ -87,8 +87,9 @@ class CameraHandler:
             if(e.getServiceType() == ServiceType.Wand): confirmButton = EventFlags.Button5
             
             # When the confirm button is pressed:
-            if(e.isButtonDown(confirmButton) or e.isFlagSet(EventFlags.Left)):
+            if(e.isButtonDown(confirmButton)):
                 if(r[0]): 
+                    # print r[1],r[2]
                     querySceneRay(r[1], r[2], printnode, QueryFlags.QuerySort | QueryFlags.QueryFirst)
 
 
