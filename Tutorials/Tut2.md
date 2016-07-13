@@ -47,7 +47,7 @@ for i in range(0, 8, 1):
     quad.setEffect('colored -e ' + self.colors[i])
 ```
 
-Effects are a quick way to add custom appearance to objects and will be covered in the next tutorial. 
+Effects are a quick way to add custom appearance to objects and will be covered in another tutorial. 
 
 (insert planes1.png)
 
@@ -68,12 +68,19 @@ class MyQuads(BaseObject):
         self.quads = []
         
         for i in range(0, 8, 1):
-            quad.setPosition(Vector3(sin(2 * pi * i / 8.0) * 2,
-                                         cos(2 * pi * i / 8.0) * 2 , 0))
-            ...
+            quad = StaticObject.create("quad")
+            quad.setPosition(Vector3(sin(pi * i / 4.0) * 2,
+                                         cos(pi * i / 4.0) * 2 , 0))
+            quad.setEffect('colored -e ' + self.colors[i])
             self.quads.append(quad)
             self.model.addChild(quad)
 
+```
+
+Here, we added a parentNode to the quads, so that the object can be transformed as a whole, the pivot center of the rotation is therefore the center of "parentNode". Adding the quads as childs of the model will aplly every transform of the parent node to the child node. We set our self.model to the position (0,0,-10) and therefore all the children will be translated -10 along the z-axis additionally to their own transformations. We also store the quads seperately in a list for convenient access in the updateModel method.
+
+
+```python
     def updateModel(self, newRotation, newPosition):
         self.model.rotate(Vector3(1, 0, 0), newRotation[0], Space.World)
         self.model.rotate(Vector3(0, 1, 0), newRotation[1], Space.World)
@@ -81,9 +88,12 @@ class MyQuads(BaseObject):
         # add a quirky self rotation of the quads
         for quad in self.quads:
             quad.rotate(Vector3(0, 1, 0), newRotation[1] * 3, Space.World)
+```
 
+The function ```updateModel``` gets called for every new event from the geometryhandler and receives the new rotation and position. This example uses only the rotation to rotate the entire circle of quads around the pivot point in three degrees of freedom (euler angles). Additionally, a y-axis rotation is added for every subquad, to show the effect of manipulating child objects.
 
-# register object with handler, like in the first tutorial
+```python
+# register object with handler
 handler = GeometryHandler()
 quad = MyQuads()
 handler.addObject(quad)
@@ -91,12 +101,11 @@ handler.addObject(quad)
 setEventFunction(handler.onEvent)
 setUpdateFunction(handler.onUpdate)
 ```
+Finally, the handlers are initialized and registered, like in the first tutorial.
 
-Add a parentNode to the quads, so that the object can be transformed as a whole, the pivot center of the rotation is therefore the center of "parentNode". The function ```updateModel``` gets called for every new event from the geometryhandler and receives the new rotation and position. This example uses only the rotation to rotate the entire circle of quads around the pivot point in three degrees of freedom. Additionally, a y-axis rotation is added for every subquad, to show the effect of manipulating child objects.
 
 (insert planes2.png)
 
-The MyQuad class is registered to the GeometryHandler in the same way as in tutorial 1.
 The complete source for the example lies in */local/examples/Tutorials/tut2/BuildSceneGraph.py* .
 
 

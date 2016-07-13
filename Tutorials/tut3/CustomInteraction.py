@@ -67,7 +67,7 @@ class CameraHandler:
         self.camManipController.setManipulator(self.manipulator)
         
         self.eventAdapter = MyControllerAdapter(self.manipulator)
-        #self.camManipController.setEventAdapter(self.eventAdapter)
+        self.camManipController.setEventAdapter(self.eventAdapter)
 
     def setNode(self, node):
         self.manipulator.setTerrainNode(node)
