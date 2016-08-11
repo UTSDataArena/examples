@@ -61,13 +61,17 @@ class UTSModelController(BaseObject):
 
 
 class CameraHandler:
+    eventAdapter =  None
+
     def __init__(self):
         self.camManipController = ManipulatorController.create()
         self.manipulator = TerrainManipulator.create()
-        self.camManipController.setManipulator(self.manipulator)
+        #set manipulator and reference node (None)
+        self.camManipController.setManipulator(self.manipulator, None)
         
-        self.eventAdapter = MyControllerAdapter(self.manipulator)
-        self.camManipController.setEventAdapter(self.eventAdapter)
+        #use mouse by default, uncomment to use PS controller
+        #self.eventAdapter = MyControllerAdapter(self.manipulator)
+        #self.camManipController.setEventAdapter(self.eventAdapter)
 
     def setNode(self, node):
         self.manipulator.setTerrainNode(node)
