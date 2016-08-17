@@ -1,6 +1,6 @@
 # Paraview
 
-[Paraview](http://www.paraview.org/) is a GUI based toolkit for visualizing scientifical data in 3D. It is built on top of the Visualization Toolkit (VTK) and offers parallel processing and rendering capabilities.
+[Paraview](http://www.paraview.org/) is a GUI based toolkit for visualizing scientifical data in 3D. It is built on top of the Visualization Toolkit (VTK) and offers parallel processing and rendering capabilities. It also can visualize live simulation data.
 
 TODO: insert cool pic of paraview?
 
