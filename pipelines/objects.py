@@ -13,7 +13,6 @@ try:
 except ImportError:
     print "Could not import module: cyclops."
 try:
-    from webView import WebView, WebFrame
     from omega import isMaster, PixelData, PixelFormat, ImageFormat
     from omegaToolkit import ImageBroadcastModule, Image
 except ImportError:
@@ -263,6 +262,11 @@ class Canvas(BaseObject):
     """Encapsulates a webpage"""
 
     def __init__(self, url, width, height):
+        #[max] The reason to shift the import here is to prevent an error loading the gconf library
+        # silently mess up loading other libraries. Therefore purposfully crash, if the import fails
+        from webView import WebView, WebFrame
+
+
         """Initialize new webpage with filename or URL."""
         # not necessary to call super class
         self.url = url

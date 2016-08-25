@@ -1,0 +1,12 @@
+{
+ "buildings":{
+         "cb1" : {"height": 150},
+         "cb2" : {"height": 20},
+         "cb3" : {"height": 15},
+         "cb4" : {"height": 15},
+         "cb5" : {"height": 20},
+         "cb6" : {"height": 60},
+         "cb10" : {"height": 35},
+         "cb11" : {"height": 40}
+        }
+}
