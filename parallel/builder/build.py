@@ -8,6 +8,8 @@ import random
 from sys import argv
 from sys import platform
 
+from collections import OrderedDict
+
 csvName = 'Public.csv'
 groupColumn = 'Institution'
 ordinals = []
@@ -36,6 +38,7 @@ firstRow = {}
 
 with open(csvName) as csvfile:
     reader = csv.DictReader(csvfile)
+    print reader.fieldnames
     with open(baseDir + 'files/data.js','w') as jsonfile:
         jsonfile.write('var dataJSON = [')
         for row in reader:
@@ -43,8 +46,11 @@ with open(csvName) as csvfile:
             # collect all values of group column
             if row[groupColumn] not in groups:
                 groups.append(row[groupColumn])
-
-            json.dump(row, jsonfile)
+            od = OrderedDict()
+            for field in reader.fieldnames:
+                od[field] = row[field]
+            #json.dump(row, jsonfile)
+            json.dump(od, jsonfile)
             jsonfile.write(',\n')
         jsonfile.write(']')
 
