@@ -8,9 +8,10 @@ from omega import setEventFunction, setUpdateFunction
 from cyclops import ProgramAsset, PrimitiveType, UniformType, getSceneManager
 from pipelines.objects import Geometry
 from pipelines.handler import GeometryHandler
+from pipelines.util import vmCheck
 from pointCloud import PointCloud
 
-VM = False
+VM = vmCheck()
 
 
 program = ProgramAsset()
