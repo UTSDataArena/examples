@@ -1,0 +1,114 @@
+Animations will not be exported
+obj Lamp.001
+
+Type of Lamp.001 is LAMP
+obj Cube.007
+
+Type of Cube.007 is MESH
+exporting object Cube.007
+mesh_object is Cube.009
+mesh Cube.007 without material
+vertexes reduced from 44 to 40
+faces 11
+------------------------------
+vertex groups False False 
+obj Cube.006
+
+Type of Cube.006 is MESH
+exporting object Cube.006
+mesh_object is Cube.008
+mesh Cube.006 without material
+vertexes reduced from 56 to 48
+faces 14
+------------------------------
+vertex groups False False 
+obj Cube.005
+
+Type of Cube.005 is MESH
+exporting object Cube.005
+mesh_object is Cube.007
+mesh Cube.005 without material
+vertexes reduced from 144 to 92
+faces 36
+------------------------------
+vertex groups False False 
+obj Cube.004
+
+Type of Cube.004 is MESH
+exporting object Cube.004
+mesh_object is Cube.006
+mesh Cube.004 without material
+vertexes reduced from 96 to 70
+faces 24
+------------------------------
+vertex groups False False 
+obj Cube.003
+
+Type of Cube.003 is MESH
+exporting object Cube.003
+mesh_object is Cube.005
+mesh Cube.003 without material
+vertexes 20
+faces 5
+------------------------------
+vertex groups False False 
+obj Cube.002
+
+Type of Cube.002 is MESH
+exporting object Cube.002
+mesh_object is Cube.004
+mesh Cube.002 without material
+vertexes 24
+faces 6
+------------------------------
+vertex groups False False 
+obj Cube.001
+
+Type of Cube.001 is MESH
+exporting object Cube.001
+mesh_object is Cube.002
+mesh Cube.001 without material
+vertexes reduced from 96 to 66
+faces 24
+------------------------------
+vertex groups False False 
+obj Cube
+
+Type of Cube is MESH
+exporting object Cube
+mesh_object is Cube.001
+mesh Cube without material
+vertexes 24
+faces 6
+--------------------------
+vertex groups False False 
+obj Plane
+
+Type of Plane is MESH
+exporting object Plane
+mesh_object is Plane
+mesh Plane with material Material.001
+vertexes 4
+faces 1
+uvs channels 1 - dict_keys(['UVMap'])
+WARNING update material animation not yet supported
+-------------------------------------
+vertex groups False False 
+obj Lamp
+
+Type of Lamp is LAMP
+obj Camera
+
+Type of Camera is CAMERA
+geode GeodeCube.009
+geode GeodeCube.008
+geode GeodeCube.007
+geode GeodeCube.006
+geode GeodeCube.005
+geode GeodeCube.004
+geode GeodeCube.002
+geode GeodeCube.001
+geode GeodePlane
+write file to /local/examples/Tutorials/tut3/uts.osgt
+copy file /home/max/Downloads/map.png to /local/examples/Tutorials/tut3/textures/map.png
+Check log file /local/examples/Tutorials/tut3/uts.log

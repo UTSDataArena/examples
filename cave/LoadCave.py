@@ -1,3 +1,5 @@
+
+
 # TODO: append GeoLoader package to python search path in omegalib: workaround
 import sys
 sys.path.append('/local/examples')
@@ -65,3 +67,4 @@ handler.addGeo(cave)
 
 setEventFunction(handler.onEvent)
 setUpdateFunction(handler.onUpdate)
+
