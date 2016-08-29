@@ -8,6 +8,9 @@ omegalibDemos = {
         "Earth": "earth/LoadEarth.py",
         "Small Wombeyan": "cave/LoadCave.py",
         "Fashion Model": "fashion/DA_Turntable.py",
+	"Exporting Geometry": "Tutorials/exportTut/loadGeom.py",
+	"Building A SceneGraph": "Tutorials/tut2/BuildSceneGraph.py",
+	"Custom Interaction": "Tutorials/tut3/CustomInteraction.py",
     },
 }
 
