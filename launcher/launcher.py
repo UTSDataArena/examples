@@ -73,7 +73,7 @@ class DAVM_Launcher(object):
 
     @cherrypy.expose
     def runMovie(self, button):
-        moviePath = '/local/videos/'
+        moviePath = '/local/davm.movies/'
 
 	pipePath = "/local/bino/fifo/bino.pipe"
 
