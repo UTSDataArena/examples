@@ -8,7 +8,10 @@ def vmCheck():
     from platform import system as psys
     if psys() == "Linux":
         from os import system as osys
-        out = osys("grep -q \"^flags.*\ hypervisor\" /proc/cpuinfo")
+        # old method
+        ##out = osys("grep -q \"^flags.*\ hypervisor\" /proc/cpuinfo")
+        # slightly more reliable method:
+        out = osys("dmesg | grep -q \"DMI:.*VirtualBox\"")
         return out == 0
     else:
         return False
