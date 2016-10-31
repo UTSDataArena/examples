@@ -51,7 +51,8 @@ if not VM:
 	pipe.getMaterial().addUniform('pointScale', UniformType.Float)
 	pipe.getMaterial().getUniform('pointScale').setFloat(0.07)
 
-pipe.xMoveClamp = pipe.yMoveClamp = pipe.zMoveClamp = 100
+pipe.xMoveClamp = pipe.yMoveClamp = 100
+pipe.zMoveClamp = 200
 
 handler = GeometryHandler()
 
