@@ -1,7 +1,11 @@
 from cyclops import *
 from daMatlab import *
 
+ip = 30000
+port = "127.0.0.1"
+
 mm = MatlabModule.createAndInitialize()
+mm.startDataReader(ip, port)
 
 scene = mm.getSceneManager()
 
