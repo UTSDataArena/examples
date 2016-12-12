@@ -97,6 +97,9 @@ class DAVM_Launcher(object):
 
         DAVM_Launcher.fifo = os.open(pipePath, os.O_WRONLY)
 
+        os.write(DAVM_Launcher.fifo, 'pause\n')
+        os.write(DAVM_Launcher.fifo, 'step\n')
+
         jtemp = jenv.get_template('index.html')
         return jtemp.render(omegaList=demos.omegalibDemos[DAVM_Launcher.myHost], movieList=demos.movieDemos, currentDemo=button)
 
