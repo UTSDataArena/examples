@@ -62,4 +62,7 @@ if __name__ == '__main__':
     manager.add(box1)
     manager.add(box2)
 
-    setEventFunction(manager.on_event)
+    def on_event():
+        manager.on_event()
+
+    setEventFunction(on_event)
