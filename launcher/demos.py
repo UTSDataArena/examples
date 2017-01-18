@@ -12,6 +12,7 @@ omegalibDemos = {
 	"Building A SceneGraph": "Tutorials/tut2/BuildSceneGraph.py",
 	"Custom Interaction": "Tutorials/tut3/CustomInteraction.py",
 	"Pipe Section": "pipe/LoadPipe.py",
+	"HSDH 3D": "hsdh/DA_HSDH.py",
     },
 }
 
