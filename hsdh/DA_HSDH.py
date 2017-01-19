@@ -17,8 +17,8 @@
 from cyclops import *
 import DA_spaceNav
 from omega import *
-
 from daHEngine import LoaderTools
+import os.path
 
 LoaderTools.registerDAPlyLoader()
 
@@ -35,7 +35,7 @@ initRot = quaternionFromEulerDeg(0, 0, 0)
 rotOffset = quaternionFromEulerDeg(0,0,0)
 
 # Paths to objects
-basePath = "/local/examples/hsdh"
+basePath = os.path.dirname(os.path.abspath(__file__))
 fileToLoad = basePath + "/opaque.ply"
 isoFile = basePath + "/transparent.ply"
 townFile = basePath + "/labels.ply"

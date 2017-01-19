@@ -1,6 +1,8 @@
 # TODO: append GeoLoader package to python search path in omegalib: workaround
-import sys
-sys.path.append('/local/examples')
+import os.path, sys
+basePath = os.path.dirname(os.path.abspath(__file__)) # for current dir of file
+modulePath = os.path.dirname(basePath) # for GeoLoader packages - '/local/examples'
+sys.path.append(modulePath) 
 
 from omega import setEventFunction, setUpdateFunction
 from pipelines.objects import Canvas
@@ -10,7 +12,7 @@ width = 2680
 height = 1720
 distance = 0
 
-fileprefix = "file:///local/examples/parallel/University/"
+fileprefix = "file://{}/".format(basePath)
 files = [
     "CompetitiveGrantsIncome/Commonwealth",
     "CompetitiveGrantsIncome/NonCommonwealth",

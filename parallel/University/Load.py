@@ -2,6 +2,10 @@ from webView import WebView, WebFrame
 from euclid import Vector2, Vector3
 from omega import SceneNode, getDefaultCamera, getEvent, ServiceType, ImageFormat, Color, isMaster, PixelData
 from omegaToolkit import ImageBroadcastModule, Container, ContainerLayout, Label, Image
+import os.path, sys
+basePath = os.path.dirname(os.path.abspath(__file__)) # for current dir of file
+modulePath = os.path.dirname(basePath) # for GeoLoader packages - '/local/examples'
+sys.path.append(modulePath) 
 
 width = 2680
 height = 1720
@@ -10,7 +14,7 @@ distance = 0
 cam = getDefaultCamera()
 cam.setEyeSeparation(0)
 
-fileprefix = "file:///local/examples/parallel/University/"
+fileprefix = "file://{}/".format(basePath)
 files = [
     "CompetitiveGrantsIncome/Commonwealth",
     "CompetitiveGrantsIncome/NonCommonwealth",

@@ -1,12 +1,14 @@
 # TODO: append GeoLoader package to python search path in omegalib: workaround
-import sys
-sys.path.append('/local/examples')
+import os.path, sys
+basePath = os.path.dirname(os.path.abspath(__file__)) # for current dir of file
+modulePath = os.path.dirname(basePath) # for GeoLoader packages - '/local/examples'
+sys.path.append(modulePath) 
 
 from omega import setEventFunction, setUpdateFunction
 from pipelines.objects import Geometry
 from pipelines.handler import GeometryHandler
 
-modelFile = "/local/examples/earth/mapquest_osm.earth"
+modelFile = basePath + "/mapquest_osm.earth"
 
 geo = Geometry(modelFile)
 

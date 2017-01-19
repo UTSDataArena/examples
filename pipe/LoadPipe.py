@@ -1,8 +1,10 @@
-
+# Loads a point cloud dataset of a section of a pipe capture by LIDAR
 
 # TODO: append GeoLoader package to python search path in omegalib: workaround
-import sys
-sys.path.append('/local/examples')
+import os.path, sys
+basePath = os.path.dirname(os.path.abspath(__file__)) # for current dir of file
+modulePath = os.path.dirname(basePath) # for GeoLoader packages - '/local/examples'
+sys.path.append(modulePath) 
 
 from omega import setEventFunction, setUpdateFunction
 from cyclops import ProgramAsset, PrimitiveType, UniformType, getSceneManager, Light
@@ -17,11 +19,10 @@ program = ProgramAsset()
 program.name = "pointsDepth"
 
 modelName = "pipe"
-modelPath = "/local/examples/pipe/squarePipeSliceA.002"
+modelPath = basePath + "/squarePipeSliceA.002"
 modelExtension = "ply"
 
-shaderPath = "/local/omegalib/modules/pointCloud/shaders"
-
+shaderPath = "pointCloud/shaders"
 
 if VM:
 	pointSize = 5.0

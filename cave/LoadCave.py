@@ -1,8 +1,10 @@
 
 
 # TODO: append GeoLoader package to python search path in omegalib: workaround
-import sys
-sys.path.append('/local/examples')
+import os.path, sys
+basePath = os.path.dirname(os.path.abspath(__file__)) # for current dir of file
+modulePath = os.path.dirname(basePath) # for GeoLoader packages - '/local/examples'
+sys.path.append(modulePath) 
 
 from omega import setEventFunction, setUpdateFunction
 from cyclops import ProgramAsset, PrimitiveType, UniformType, getSceneManager
@@ -18,10 +20,10 @@ program = ProgramAsset()
 program.name = "pointsDepth"
 
 modelName = "cave"
-modelPath = "/local/examples/cave/wcc04_archentrance_9pct"
+modelPath = basePath + "/wcc04_archentrance_9pct"
 modelExtension = "ply"
 
-shaderPath = "/local/omegalib/modules/pointCloud/shaders"
+shaderPath = "pointCloud/shaders"
 
 
 if VM:
