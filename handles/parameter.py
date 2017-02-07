@@ -42,15 +42,16 @@ if __name__ == '__main__':
 
     control_builder = HoudiniParameterControlBuilder()
     control_builder.set_geometry_builder(geometry_builder)
-    control_builder.set_control_parameter(parameters['len'])
-    control_builder.set_control_rate_limiter(RateLimiter(10))
+    control_builder.set_parameter(parameters['len'])
+    control_builder.set_rate_limiter(RateLimiter(10))
 
-    single_builder = SingleControlGroupBuilder()
-    single_builder.set_ui_context(ui_context)
-    single_builder.set_control_builder(control_builder)
+    slider_builder = HoudiniParameterSliderControlGroupBuilder()
+    slider_builder.set_ui_context(ui_context)
+    slider_builder.set_control_builder(control_builder)
+    slider_builder.set_axis(Axis.X_AXIS)
 
     axis = ControllableSceneNode('axis', StaticObject.create('axisA11'))
-    axis.add_control(single_builder.set_parent(axis).build())
+    axis.add_control(slider_builder.set_parent(axis).build())
     axis.node.setPosition(-1, 2, -10)
     axis.node.rotate(Vector3(0, 1, 0), math.radians(-45), Space.Local)
 
