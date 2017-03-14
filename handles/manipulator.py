@@ -23,7 +23,7 @@ if __name__ == '__main__':
     resources = os.path.join(path, 'resources')
 
     ui_context = UiContext()
-    ui_context.add_cursor(SpaceNavControllerCursor('spacenav', os.path.join(resources, 'cursor.png'), ui_context))
+    ui_context.add_cursor(SpaceNavControllerCursor('spacenav', os.path.join(resources, 'cursor_up.png'), os.path.join(resources, 'cursor_down.png'),  ui_context))
 
     getDefaultCamera().setControllerEnabled(False)
 
