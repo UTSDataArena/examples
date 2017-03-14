@@ -30,6 +30,10 @@ from math import *
 from euclid import *
 from omega import *
 from cyclops import *
+import os.path, sys
+basePath = os.path.dirname(os.path.abspath(__file__)) # for current dir of file
+modulePath = os.path.dirname(basePath) # for GeoLoader packages - '/local/examples'
+sys.path.append(modulePath) 
 
 class Turntable():
 	_turntableCount = 0
@@ -376,7 +380,7 @@ class Turntable():
 
 if __name__ == "__main__":
 
-	fileToLoad = "/local/examples/fashion/Mook_mix1_initial.fbx"
+	fileToLoad = basePath + "/Mook_mix1_initial.fbx"
 
 	objects = []
 

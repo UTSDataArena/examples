@@ -1,4 +1,8 @@
 from webView import *
+import os.path, sys
+basePath = os.path.dirname(os.path.abspath(__file__)) # for current dir of file
+modulePath = os.path.dirname(basePath) # for GeoLoader packages - '/local/examples'
+sys.path.append(modulePath) 
 
 #width = 11020
 #height = 1200
@@ -12,7 +16,7 @@ uiroot = ui.getUi()
 
 if(isMaster()):
 	ww = WebView.create(width, height)
-	ww.loadUrl("file:///local/examples/parallel/weather/index.htm")
+	ww.loadUrl("file://{}/weather/index.htm".format(basePath))
 	frame = WebFrame.create(uiroot)
 	frame.setView(ww)
 else:

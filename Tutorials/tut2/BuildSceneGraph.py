@@ -1,5 +1,7 @@
-import sys
-sys.path.append('/local/examples')
+import os.path, sys
+basePath = os.path.dirname(os.path.abspath(__file__)) # for current dir of file
+modulePath = os.path.dirname(os.path.dirname(basePath)) # for GeoLoader packages - '/local/examples'
+sys.path.append(modulePath) 
 
 
 from pipelines.objects import BaseObject

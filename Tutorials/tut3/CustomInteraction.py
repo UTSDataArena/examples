@@ -1,6 +1,8 @@
 # TODO: append GeoLoader package to python search path in omegalib: workaround
-import sys
-sys.path.append('/local/examples')
+import os.path, sys
+basePath = os.path.dirname(os.path.abspath(__file__)) # for current dir of file
+modulePath = os.path.dirname(os.path.dirname(basePath)) # for GeoLoader packages - '/local/examples'
+sys.path.append(modulePath) 
 
 from omega import getDefaultCamera, getEvent, querySceneRay, SceneNode
 from cyclops import *
@@ -11,7 +13,7 @@ from pipelines.objects import BaseObject
 from pipelines.eventadapters import MyControllerAdapter
 import json
 
-fileToLoad = "/local/examples/Tutorials/tut3/uts.osgt"
+fileToLoad = basePath + "/uts.osgt"
 
 
 class UTSModelController(BaseObject):

@@ -7,7 +7,7 @@ from daHandles import *
 if __name__ == '__main__':
     """
     This example demonstrates how to setup a scene containing objects which may
-    be manipulated using on-screen handles.   It show show to use many of the
+    be manipulated using on-screen handles.   It shows how to use many of the
     features which are provided by the daHandles library, including:
 
         - How to specify controllers and add them to the UI context
@@ -16,10 +16,14 @@ if __name__ == '__main__':
         - How to set up a selection manager to process user interactions via controls
     """
 
-    resources = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'resources')
+    path = os.path.dirname(__file__)
+    if not path:
+        path = os.getcwd()
+
+    resources = os.path.join(path, 'resources')
 
     ui_context = UiContext()
-    ui_context.add_cursor(SpaceNavControllerCursor('spacenav', os.path.join(resources, 'cursor.png'), ui_context))
+    ui_context.add_cursor(SpaceNavControllerCursor('spacenav', os.path.join(resources, 'cursor_up.png'), os.path.join(resources, 'cursor_down.png'),  ui_context))
 
     getDefaultCamera().setControllerEnabled(False)
 
@@ -62,4 +66,7 @@ if __name__ == '__main__':
     manager.add(box1)
     manager.add(box2)
 
-    setEventFunction(manager.on_event)
+    def on_event():
+        manager.on_event()
+
+    setEventFunction(on_event)
