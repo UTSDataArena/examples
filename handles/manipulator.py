@@ -11,7 +11,6 @@ if __name__ == '__main__':
     be manipulated using on-screen handles.   It shows how to use many of the
     features which are provided by the daHandles library, including:
 
-        - How to specify controllers and add them to the UI context
         - How to use builders to create control geometry, controls and control groups
         - How to specify scene nodes and attach controls to them
         - How to set up a selection manager to process user interactions via controls
