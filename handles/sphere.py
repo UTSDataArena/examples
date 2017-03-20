@@ -1,10 +1,12 @@
 import os
 import math
 
-from daHEngine import *
-from daHandles import *
 from cyclops import *
 from omegaToolkit import *
+
+from daInput import *
+from daHEngine import *
+from daHandles import *
 
 if __name__ == '__main__':
     """
