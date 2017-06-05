@@ -16,7 +16,9 @@ PeasyCam cam;
 Movie co2vid;
 Movie timescale;
 
-PGraphics contents;
+// If you're in the Data Arena, set this to true
+// and run matrix.solo.mono in a shell
+boolean dataArena = false;
 
 PShape globe;
 boolean play = true;
@@ -25,11 +27,17 @@ float guiStart;
 float guiEnd;
 PImage co2scale;
 
+void settings() {
+  if (dataArena) {
+    size(displayWidth, 1200, P3D);
+  } else {
+    // set your custom testing resolution here
+    size(1920, 1200, P3D);
+  }
+}
+
 void setup() {
-  //size(10172, 2400, P3D); // Data Arena resolution
-  size(1920, 2400, P3D); // Development resolution
-  contents = createGraphics(width, height/2, P3D);
-  cam = new PeasyCam(this, contents, 800);
+  cam = new PeasyCam(this, 800);
   co2vid = new Movie(this, "nasaco2.mp4");
   co2vid.loop();
   globe = createShape(SPHERE, 200);
@@ -46,60 +54,45 @@ void setup() {
   co2scale = loadImage("scale.jpg");
 }
 
-void drawContents(PGraphics pg) {
-  
-  pg.background(0);
-  pg.noLights();
+void draw() {
+  background(0);
+  drawGlobe();
+  drawHUD();
+}
+
+void drawGlobe() {
   cam.beginHUD();
-  pg.translate(-width/2, 0);
-  pg.scale(2);
-  pg.noFill();
-  pg.stroke(100);
-  pg.line(guiStart-10, pg.height-60, guiEnd+10, pg.height-60);
-  pg.noStroke();
-  pg.fill(255);
-  pg.ellipse(map(co2vid.time(), 0, co2vid.duration(), guiStart, guiEnd), pg.height-60, 4, 4);
-  pg.textAlign(CENTER);
+  directionalLight(255, 255, 255, 0.5, 0.5, -1); 
+  cam.endHUD();
+  shape(globe);
+}
+
+void drawHUD() {
+  noLights();
+  cam.beginHUD();
+  noFill();
+  stroke(100);
+  line(guiStart-10, height-60, guiEnd+10, height-60);
+  noStroke();
+  fill(255);
+  ellipse(map(co2vid.time(), 0, co2vid.duration(), guiStart, guiEnd), height-60, 4, 4);
+  textAlign(CENTER);
   for (int i = 0; i < monthNames.length; i++) {
     float x = map(i, 0, monthNames.length-1, guiStart, guiEnd);
     String monthName = monthNames[i].toUpperCase();
-    pg.text(monthName, x, pg.height-40);
+    text(monthName, x, height-40);
   }
-  pg.textAlign(LEFT);
-  pg.text("2006", guiStart-10, pg.height-75);
-  pg.text("Carbon Dioxide Column Concentration [ppmv]", width/2+25, height-75);
-  pg.image(co2scale, pg.width/2+25, pg.height-62, ((pg.width/2+400)-(pg.width/2+25)), 5);
+  textAlign(LEFT);
+  text("2006", guiStart-10, height-75);
+  text("Carbon Dioxide Column Concentration [ppmv]", width/2+25, height-75);
+  image(co2scale, width/2+25, height-62, ((width/2+400)-(width/2+25)), 5);
   for (int i = 0; i < 10; i++) {
-    float x = map(i, 0, 9, pg.width/2+25, pg.width/2+400);
+    float x = map(i, 0, 9, width/2+25, width/2+400);
     float value = map(i, 0, 9, 377, 395);
-    pg.text((int)value, x, pg.height-40);
+    text((int)value, x, height-40);
   }
   cam.endHUD();
-  
-  cam.beginHUD();
-  pg.directionalLight(255, 255, 255, 0.5, 0.5, -1);
-  cam.endHUD();
-  pg.shape(globe);
 }
-
-void draw() {
-  contents.beginDraw();
-  drawContents(contents);
-  contents.endDraw();
-  image(contents, 0, 0);
-  image(contents, 0, height/2);
-}
-// remove this after making vrpn version
-//void updateCam() {
-//  dist += (spty*50);
-//  rotY = sprz*0.05;
-//  rotX = -sprx*0.01;
-//  rotZ = spry*0.01;
-//  cam.rotateY(rotY);
-//  cam.rotateX(rotX);
-//  cam.rotateZ(rotZ);
-//  //cam.setDistance(dist, 1);
-//}
 
 void movieEvent(Movie m) {
   m.read();

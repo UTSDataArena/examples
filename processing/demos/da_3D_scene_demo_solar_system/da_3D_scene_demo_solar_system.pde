@@ -21,10 +21,8 @@
 // right arrow: look right
 // z: roll anti-clockwise
 // x: roll clockwise
-
 // n: show/hide planet names
 // l: show/hide orbit lines
-
 // h: increase timescale
 // g: decrease timescale
 
@@ -32,7 +30,9 @@ import peasy.*;
 
 PeasyCam cam;
 
-PGraphics contents;
+// If you're in the Data Arena, set this to true
+// and run matrix.solo.mono in a shell
+boolean dataArena = false;
 
 boolean toScale = false;
 boolean names = true;
@@ -70,17 +70,23 @@ float time, timeScale, sizeScale, distScale;
 
 PFont font;
 
-void setup() {
-  //size(10172, 2400, P3D); // Data Arena resolution
-  size(1920, 2400, P3D); // Development resolution
-  contents = createGraphics(width, height/2, P3D);
-  if (toScale) {
-    cam = new PeasyCam(this, contents, 0, 80000, 40000, 10);
+void settings() {
+  if (dataArena) {
+    size(displayWidth, 1200, P3D);
   } else {
-    cam = new PeasyCam(this, contents, 0, 10000, 3000, 10);
+    // set your custom testing resolution here
+    size(1920, 1200, P3D);
   }
-  cam.setMinimumDistance(100);
-  cam.setMaximumDistance(100);
+}
+
+void setup() {
+  if (toScale) {
+    cam = new PeasyCam(this, 0, 80000, 40000, 10);
+  } else {
+    cam = new PeasyCam(this, 0, 10000, 3000, 10);
+  }
+  cam.setMinimumDistance(10);
+  cam.setMaximumDistance(10);
   cam.rotateX(radians(-75));
   camDirection = new PVector();
   camPosition = new PVector();
@@ -92,8 +98,6 @@ void setup() {
   font = loadFont("font.vlw");
 
   textFont(font);
-  contents.hint(ENABLE_DEPTH_TEST);
-  contents.hint(ENABLE_DEPTH_SORT);
 
   if (toScale) {
     timeScale = 1;
@@ -104,14 +108,14 @@ void setup() {
     distScale = 0.00001;
     sizeScale = 0.000719;
   }
-  
+
   if (toScale) {
     println("MODE: TO SCALE");
     println("ONE UNIT = " + 1/distScale + "KM");
   }
 
   // Sun
-  contents.sphereDetail(60);
+  sphereDetail(60);
   sunTexture = loadImage("sunmap.jpg");
   sunRadius = (planetData.getFloat(1, "SUN")/2) * sizeScale;
   sun = createShape(SPHERE, sunRadius);
@@ -127,50 +131,39 @@ void setup() {
 
   planets = new ArrayList<Planet>();
   for (int i = 0; i < planetNames.length; i++) {
-    planets.add(new Planet(planetNames[i], contents));
+    planets.add(new Planet(planetNames[i]));
   }
-}
-
-void drawContents(PGraphics pg) {
-  updateCam();
-  time = millis();
-  // Adjust far clipping plane to account for small or large distances
-  if (toScale) {
-    pg.perspective(PI/3.0, (float)pg.width / (float)pg.height, 10, 10000000);
-  } else {
-    pg.perspective(PI/3.0, (float)pg.width / (float)pg.height, 10, 1000000);
-  }
-  pg.background(0);
-  pg.noLights();
-  pg.pointLight(255, 255, 255, camPosition.x, camPosition.y, camPosition.z);
-  pg.pointLight(220, 220, 220, camPosition.x, camPosition.y, camPosition.z);
-  pg.shape(sun);
-  pg.noLights();
-  for (Planet p : planets) {
-    p.movePlanet(pg);
-    if (lines) p.displayOrbitGuide(pg);
-    p.displayPlanet(pg);
-    if (names) p.showLabels(pg);
-  }
-  pg.pushMatrix();
-  pg.rotateY(radians(60));
-  for (Star s : stars) {
-    s.position();
-    s.display(pg);
-  }
-  pg.popMatrix();
-  
-  printCamDetail(pg);
-  
 }
 
 void draw() {
-  background(255, 0, 0);
-  contents.beginDraw();
-  drawContents(contents);
-  contents.endDraw();
-  image(contents, 0, 0);
-  image(contents, 0, height/2);
+  updateCam();
+  time = millis();
+
+  if (dataArena) {
+    perspective(PI/5.4, (float)width / (float)height, 10, 10000000);
+  } else {
+    perspective(PI/3.0, (float)width / (float)height, 10, 1000000);
+  }
+  
+  background(0);
+  noLights();
+  pointLight(255, 255, 255, camPosition.x, camPosition.y, camPosition.z);
+  pointLight(220, 220, 220, camPosition.x, camPosition.y, camPosition.z);
+  shape(sun);
+  noLights();
+  for (Planet p : planets) {
+    p.movePlanet();
+    if (lines) p.displayOrbitGuide();
+    p.displayPlanet();
+    if (names) p.showLabels();
+  }
+
+  for (Star s : stars) {
+    s.position();
+    s.display();
+  }
+  
+  printCamDetail();
 }
 
 void updateCam() {
@@ -178,10 +171,12 @@ void updateCam() {
   camPosition.x = getCamPosition[0];
   camPosition.y = getCamPosition[1];
   camPosition.z = getCamPosition[2];
+  
   getCamTarget = cam.getPosition();
   camTarget.x = getCamTarget[0];
   camTarget.y = getCamTarget[1];
   camTarget.z = getCamTarget[2];
+  
   if (keyPressed) {
     if (key == 'w') camTranslateZ += 1 * tranSen;
     if (key == 's') camTranslateZ -= 1 * tranSen;
@@ -199,22 +194,25 @@ void updateCam() {
   camTranslateXLerp = lerp(camTranslateXLerp, camTranslateX, lerpSpeed);
   camTranslateYLerp = lerp(camTranslateYLerp, camTranslateY, lerpSpeed);
   camTranslateZLerp = lerp(camTranslateZLerp, camTranslateZ, lerpSpeed);
+  
   camRotateXLerp = lerp(camRotateXLerp, camRotateX, lerpSpeed);
   camRotateYLerp = lerp(camRotateYLerp, camRotateY, lerpSpeed);
   camRotateZLerp = lerp(camRotateZLerp, camRotateZ, lerpSpeed);
+  
   camDirection = PVector.sub(camPosition, camTarget);
   camDirection.normalize();
   camDirection.mult((camTranslateZLerp));
   camPosition.add(camDirection);
   cam.lookAt(camPosition.x, camPosition.y, camPosition.z, 0);
   cam.pan(camTranslateXLerp, camTranslateYLerp);
+  
   cam.rotateX(radians(camRotateXLerp));
   cam.rotateY(radians(camRotateYLerp));
   cam.rotateZ(radians(camRotateZLerp));
 }
 
-void printCamDetail(PGraphics pg) {
-  pg.noLights();
+void printCamDetail() {
+  noLights();
   if (millis() - speedTimer >= speedTimerInterval) {
     speed = PVector.dist(latestRecordedPosition, camPosition) * (1000/speedTimerInterval);
     speed *= (1/distScale);
@@ -225,20 +223,19 @@ void printCamDetail(PGraphics pg) {
   }
   float[] getCamRotation = cam.getRotations();
   cam.beginHUD();
-  pg.translate(-pg.width/2, 0);
-  pg.scale(2);
-  pg.textSize(12);
-  pg.fill(255);
-  pg.text("Frames per second: " + (int)frameRate, 20, 20);
-  pg.text("Camera rotations: ", 20, 50);
-  pg.text("x: " + (int)degrees(getCamRotation[0]), 30, 70);
-  pg.text("y: " + (int)degrees(getCamRotation[1]), 30, 90);
-  pg.text("z: " + (int)degrees(getCamRotation[2]), 30, 110);
-  pg.text("Camera position: ", 20, 140);
-  pg.text("x: " + (int)camPosition.x, 30, 160);
-  pg.text("y: " + (int)camPosition.y, 30, 180);
-  pg.text("z: " + (int)camPosition.z, 30, 200);
-  if (toScale) pg.text("Speed: " + (int)speed + "km/s", 20, 230);
+  perspective(PI/3.0, (float)width / (float)height, 10, 1000000);
+  textSize(12);
+  fill(255);
+  text("Frames per second: " + (int)frameRate, 20, 20);
+  text("Camera rotations: ", 20, 50);
+  text("x: " + (int)degrees(getCamRotation[0]), 30, 70);
+  text("y: " + (int)degrees(getCamRotation[1]), 30, 90);
+  text("z: " + (int)degrees(getCamRotation[2]), 30, 110);
+  text("Camera position: ", 20, 140);
+  text("x: " + (int)camPosition.x, 30, 160);
+  text("y: " + (int)camPosition.y, 30, 180);
+  text("z: " + (int)camPosition.z, 30, 200);
+  if (toScale) text("Speed: " + (int)speed + "km/s", 20, 230);
   cam.endHUD();
 }
 

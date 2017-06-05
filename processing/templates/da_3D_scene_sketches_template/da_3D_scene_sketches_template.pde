@@ -1,6 +1,5 @@
 // Processing in the Data Arena
 // 3D Scene Mode Sketches Template
-// with over/under PGraphics windows
 
 // Keyboard controls
 // w: move forwards
@@ -19,7 +18,9 @@
 import peasy.*;
 PeasyCam cam;
 
-PGraphics contents;
+// If you're in the Data Arena, set this to true
+// and run matrix.solo.mono in a shell
+boolean dataArena = false;
 
 // Camera
 float[] getCamRotation, getCamPosition, getCamTarget;
@@ -30,80 +31,56 @@ float lerpSpeed = 0.1;
 float tranSen = 1;
 float rotSen = 1;
 
+void settings() {
+  if (dataArena) {
+    // size will be detected automagically
+    size(displayWidth, 1200, P3D);
+  } else {
+    // set your custom testing resolution here
+    size(1920, 1200, P3D);
+  }
+}
+
 void setup() {
-  // As the Data Arena resolution is beyond usable
-  // on regular monitors, leave the first size() function
-  // commented until you're ready to test in the space
-
-  // Remember to double the ordinary height of your sketch
-  // to allow for over/under duplicates
-
-  //size(10172, 2400, P3D); // Data Arena resolution
-  size(1920, 2400, P3D); // Your development resolution
-
-  // Here we set the contents graphics window to half height
-  // so we can place it over and under
-  // Half height of size() becomes your standard sketch height
-  contents = createGraphics(width, height/2, P3D);
-
-  cam = new PeasyCam(this, contents, 0, 0, 5000, 1);
-  cam.setMinimumDistance(1);
-  cam.setMaximumDistance(1);
+  cam = new PeasyCam(this, 0, 0, 5000, 10);
+  cam.setMinimumDistance(10);
+  cam.setMaximumDistance(10);
   camDirection = new PVector();
   camPosition = new PVector();
   camTarget = new PVector();
 }
 
-void drawContents(PGraphics pg) {
-  // Draw contents of your sketch here
-  // rather than in the regular draw() function
-  // This will let us easily copy the contents
-  // to the top and bottom displays
-
+void draw() {
   // Remember to run camUpdate in draw to refresh camera position
   updateCam();
   
   // Also, use the perspective() function to adjust your field of fiew
   // and the far clipping plane
   // You might want to test various FOV values in the Data Arena
-  pg.perspective(PI/3.0, (float)pg.width / (float)pg.height, 10, 100000);
+  perspective(PI/3.0, (float)width / (float)height, 10, 100000);
 
-  pg.background(0);
-  pg.stroke(0);
-  pg.strokeWeight(2);
-  randomSeed(1);
+  background(0);
+  stroke(0);
+  strokeWeight(1);
   for (int i = -2000; i < 2000; i += 100) {
     for (int j = -2000; j < 2000; j += 100) {
-      pg.pushMatrix();
-      pg.translate(i, j, 0);
-      pg.fill(random(150, 255), random(150, 255), random(150, 255));
-      pg.box(50);
-      pg.popMatrix();
+      pushMatrix();
+      translate(i, j, 0);
+      fill(0);
+      stroke(0, 255, 0);
+      box(50);
+      popMatrix();
     }
   }
 
-  printCamDetail(pg);
+  printCamDetail();
 }
 
-void draw() {
-  // Now in draw we assign our PGraphics window
-  // "contents" to the drawContents() function
-  // within the standard PGraphics begin and end functions
-
-  contents.beginDraw();
-  drawContents(contents);
-  contents.endDraw();
-
-  // and use image() to draw our sketch to where we want
-  // in this case both at 0, 0 and
-  // halfway down at 0, height/2
-  image(contents, 0, 0);
-  image(contents, 0, height/2);
-}
 
 // the updateCam() function manages all PeasyCam functions
 // and calculates the vector for forward motion
 void updateCam() {
+  
   // assign camera position and target values to our vectors
   getCamPosition = cam.getLookAt();
   camPosition.x = getCamPosition[0];
@@ -154,22 +131,20 @@ void updateCam() {
 
 // this function demonstrates displaying on-screen graphics
 // or a heads-up display
-void printCamDetail(PGraphics pg) {
+void printCamDetail() {
   float[] getCamRotation = cam.getRotations();
   cam.beginHUD();
-  pg.translate(-pg.width/2, 0);
-  pg.scale(2);
-  pg.textSize(12);
-  pg.fill(255);
-  pg.text("Frames per second: " + (int)frameRate, 20, 20);
-  pg.text("Camera rotations: ", 20, 50);
-  pg.text("x: " + (int)degrees(getCamRotation[0]), 30, 70);
-  pg.text("y: " + (int)degrees(getCamRotation[1]), 30, 90);
-  pg.text("z: " + (int)degrees(getCamRotation[2]), 30, 110);
-  pg.text("Camera position: ", 20, 140);
-  pg.text("x: " + (int)camPosition.x, 30, 160);
-  pg.text("y: " + (int)camPosition.y, 30, 180);
-  pg.text("z: " + (int)camPosition.z, 30, 200);
+  textSize(12);
+  fill(255);
+  text("Frames per second: " + (int)frameRate, 20, 20);
+  text("Camera rotations: ", 20, 50);
+  text("x: " + (int)degrees(getCamRotation[0]), 30, 70);
+  text("y: " + (int)degrees(getCamRotation[1]), 30, 90);
+  text("z: " + (int)degrees(getCamRotation[2]), 30, 110);
+  text("Camera position: ", 20, 140);
+  text("x: " + (int)camPosition.x, 30, 160);
+  text("y: " + (int)camPosition.y, 30, 180);
+  text("z: " + (int)camPosition.z, 30, 200);
   cam.endHUD();
 }
 
