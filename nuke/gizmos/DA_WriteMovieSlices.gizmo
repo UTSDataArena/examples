@@ -1,0 +1,240 @@
+#! /mnt/da/sw/nuke/Nuke10.0v6/libnuke-10.0.6.so -nx
+version 10.0 v6
+Gizmo {
+addUserKnob {20 dataarena l DataArena}
+addUserKnob {2 file}
+addUserKnob {3 first l "frame range" t "The first frame to be executable."}
+addUserKnob {3 last l "" t "The last frame to be executable." -STARTLINE}
+}
+Input {
+inputs 0
+name Input1
+xpos 298
+ypos 340
+}
+Dot {
+name Dot1
+xpos 332
+ypos 380
+}
+set Ne52a190 [stack 0]
+Crop {
+box {0 0 540 0}
+reformat true
+name Crop_Overlap
+xpos 298
+ypos 543
+}
+Position {
+translate {9782 0}
+name Position2
+xpos 298
+ypos 585
+}
+push $Ne52a190
+Position {
+translate {-298 0}
+name Position1
+xpos 384
+ypos 423
+}
+BlackOutside {
+name BlackOutside1
+xpos 384
+ypos 447
+}
+Constant {
+inputs 0
+channels rgb
+format "10320 2400 0 0 10320 2400 1 Data Arena Stereo Movie"
+name Constant1
+xpos 482
+ypos 397
+}
+Merge2 {
+inputs 2
+operation copy
+bbox B
+metainput A
+name Merge1
+xpos 432
+ypos 542
+}
+Merge2 {
+inputs 2
+operation plus
+bbox B
+name Merge2
+xpos 432
+ypos 585
+}
+set Nb617100 [stack 0]
+Output {
+name Output1
+xpos 432
+ypos 685
+}
+push $Nb617100
+Dot {
+name Dot2
+xpos 466
+ypos 699
+}
+set Nb62aab0 [stack 0]
+Crop {
+box {0 0 1920 2400}
+reformat true
+crop false
+name Crop_Slice1
+xpos 132
+ypos 773
+}
+Write {
+colorspace Gamma2.2
+raw true
+views {main}
+file_type exr
+use_limit true
+beforeRender DA_WriteMovieSlices.beforeRenderCallback()
+name Write_Slice1
+xpos 132
+ypos 797
+addUserKnob {20 dataarena l DataArena}
+addUserKnob {3 slice t "Slice number."}
+slice 1
+addUserKnob {20 caravr l CaraVR}
+addUserKnob {4 viewPresets l "View Presets" M {main stereo cams all}}
+addUserKnob {22 set l Set -STARTLINE T "w = nuke.thisNode()\nscriptViews = nuke.views()\nviewPreset = w\['viewPresets'].getValue()\nselectedViews = None\nif viewPreset == 0:\n  selectedViews = \['main']\nif viewPreset == 1:\n  stereoViews = \['left', 'right']\n  if set(stereoViews).issubset(set(scriptViews)):\n    selectedViews = stereoViews\n  else:\n    selectedViews = None\nelif viewPreset == 2:\n  selectedViews = \[v for v in scriptViews if 'cam' in v.lower()]\nelif viewPreset == 3:\n  selectedViews = scriptViews\nif selectedViews:\n  w\['views'].fromScript(' '.join(selectedViews))\n"}
+}
+push $Nb62aab0
+Crop {
+box {1680 0 3600 2400}
+reformat true
+crop false
+name Crop_Slice2
+xpos 252
+ypos 773
+}
+Write {
+colorspace Gamma2.2
+raw true
+views {main}
+file_type exr
+use_limit true
+beforeRender DA_WriteMovieSlices.beforeRenderCallback()
+name Write_Slice2
+xpos 252
+ypos 797
+addUserKnob {20 dataarena l DataArena}
+addUserKnob {3 slice t "Slice number."}
+slice 2
+addUserKnob {20 caravr l CaraVR}
+addUserKnob {4 viewPresets l "View Presets" M {main stereo cams all}}
+addUserKnob {22 set l Set -STARTLINE T "w = nuke.thisNode()\nscriptViews = nuke.views()\nviewPreset = w\['viewPresets'].getValue()\nselectedViews = None\nif viewPreset == 0:\n  selectedViews = \['main']\nif viewPreset == 1:\n  stereoViews = \['left', 'right']\n  if set(stereoViews).issubset(set(scriptViews)):\n    selectedViews = stereoViews\n  else:\n    selectedViews = None\nelif viewPreset == 2:\n  selectedViews = \[v for v in scriptViews if 'cam' in v.lower()]\nelif viewPreset == 3:\n  selectedViews = scriptViews\nif selectedViews:\n  w\['views'].fromScript(' '.join(selectedViews))\n"}
+}
+push $Nb62aab0
+Crop {
+box {3360 0 5280 2400}
+reformat true
+crop false
+name Crop_Slice3
+xpos 373
+ypos 772
+}
+Write {
+colorspace Gamma2.2
+raw true
+views {main}
+file_type exr
+use_limit true
+beforeRender DA_WriteMovieSlices.beforeRenderCallback()
+name Write_Slice3
+xpos 373
+ypos 796
+addUserKnob {20 dataarena l DataArena}
+addUserKnob {3 slice t "Slice number."}
+slice 3
+addUserKnob {20 caravr l CaraVR}
+addUserKnob {4 viewPresets l "View Presets" M {main stereo cams all}}
+addUserKnob {22 set l Set -STARTLINE T "w = nuke.thisNode()\nscriptViews = nuke.views()\nviewPreset = w\['viewPresets'].getValue()\nselectedViews = None\nif viewPreset == 0:\n  selectedViews = \['main']\nif viewPreset == 1:\n  stereoViews = \['left', 'right']\n  if set(stereoViews).issubset(set(scriptViews)):\n    selectedViews = stereoViews\n  else:\n    selectedViews = None\nelif viewPreset == 2:\n  selectedViews = \[v for v in scriptViews if 'cam' in v.lower()]\nelif viewPreset == 3:\n  selectedViews = scriptViews\nif selectedViews:\n  w\['views'].fromScript(' '.join(selectedViews))\n"}
+}
+push $Nb62aab0
+Crop {
+box {5040 0 6960 2400}
+reformat true
+crop false
+name Crop_Slice4
+xpos 490
+ypos 772
+}
+Write {
+colorspace Gamma2.2
+raw true
+views {main}
+file_type exr
+use_limit true
+beforeRender DA_WriteMovieSlices.beforeRenderCallback()
+name Write_Slice4
+xpos 490
+ypos 796
+addUserKnob {20 dataarena l DataArena}
+addUserKnob {3 slice t "Slice number."}
+slice 4
+addUserKnob {20 caravr l CaraVR}
+addUserKnob {4 viewPresets l "View Presets" M {main stereo cams all}}
+addUserKnob {22 set l Set -STARTLINE T "w = nuke.thisNode()\nscriptViews = nuke.views()\nviewPreset = w\['viewPresets'].getValue()\nselectedViews = None\nif viewPreset == 0:\n  selectedViews = \['main']\nif viewPreset == 1:\n  stereoViews = \['left', 'right']\n  if set(stereoViews).issubset(set(scriptViews)):\n    selectedViews = stereoViews\n  else:\n    selectedViews = None\nelif viewPreset == 2:\n  selectedViews = \[v for v in scriptViews if 'cam' in v.lower()]\nelif viewPreset == 3:\n  selectedViews = scriptViews\nif selectedViews:\n  w\['views'].fromScript(' '.join(selectedViews))\n"}
+}
+push $Nb62aab0
+Crop {
+box {6720 0 8640 2400}
+reformat true
+crop false
+name Crop_Slice5
+xpos 607
+ypos 771
+}
+Write {
+colorspace Gamma2.2
+raw true
+views {main}
+file_type exr
+use_limit true
+beforeRender DA_WriteMovieSlices.beforeRenderCallback()
+name Write_Slice5
+xpos 607
+ypos 795
+addUserKnob {20 dataarena l DataArena}
+addUserKnob {3 slice t "Slice number."}
+slice 5
+addUserKnob {20 caravr l CaraVR}
+addUserKnob {4 viewPresets l "View Presets" M {main stereo cams all}}
+addUserKnob {22 set l Set -STARTLINE T "w = nuke.thisNode()\nscriptViews = nuke.views()\nviewPreset = w\['viewPresets'].getValue()\nselectedViews = None\nif viewPreset == 0:\n  selectedViews = \['main']\nif viewPreset == 1:\n  stereoViews = \['left', 'right']\n  if set(stereoViews).issubset(set(scriptViews)):\n    selectedViews = stereoViews\n  else:\n    selectedViews = None\nelif viewPreset == 2:\n  selectedViews = \[v for v in scriptViews if 'cam' in v.lower()]\nelif viewPreset == 3:\n  selectedViews = scriptViews\nif selectedViews:\n  w\['views'].fromScript(' '.join(selectedViews))\n"}
+}
+push $Nb62aab0
+Crop {
+box {8400 0 10320 2400}
+reformat true
+crop false
+name Crop_Slice6
+xpos 721
+ypos 771
+}
+Write {
+colorspace Gamma2.2
+raw true
+views {main}
+file_type exr
+use_limit true
+beforeRender DA_WriteMovieSlices.beforeRenderCallback()
+name Write_Slice6
+selected true
+xpos 721
+ypos 795
+addUserKnob {20 dataarena l DataArena}
+addUserKnob {3 slice t "Slice number."}
+slice 6
+addUserKnob {20 caravr l CaraVR}
+addUserKnob {4 viewPresets l "View Presets" M {main stereo cams all}}
+addUserKnob {22 set l Set -STARTLINE T "w = nuke.thisNode()\nscriptViews = nuke.views()\nviewPreset = w\['viewPresets'].getValue()\nselectedViews = None\nif viewPreset == 0:\n  selectedViews = \['main']\nif viewPreset == 1:\n  stereoViews = \['left', 'right']\n  if set(stereoViews).issubset(set(scriptViews)):\n    selectedViews = stereoViews\n  else:\n    selectedViews = None\nelif viewPreset == 2:\n  selectedViews = \[v for v in scriptViews if 'cam' in v.lower()]\nelif viewPreset == 3:\n  selectedViews = scriptViews\nif selectedViews:\n  w\['views'].fromScript(' '.join(selectedViews))\n"}
+}
+end_group
