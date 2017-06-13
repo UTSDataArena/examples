@@ -3,6 +3,7 @@ import os
 from cyclops import *
 from omegaToolkit import *
 
+from daInput import *
 from daHEngine import *
 from daHandles import *
 
