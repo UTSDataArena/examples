@@ -28,7 +28,7 @@ float cursorX, cursorY;
 
 // If you're in the Data Arena, set this to true
 // and run matrix.solo.mono in a shell
-boolean dataArena = false;
+boolean dataArena = true;
 int xStart, xEnd, yStart, yEnd;
 
 Flock flock;

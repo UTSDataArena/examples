@@ -30,7 +30,7 @@ void settings() {
     size(displayWidth, 1200, P3D);
   } else {
     // set your custom testing resolution here
-    size(1920, 1200, P3D);
+    size(1920, 1080, P3D);
   }
 }
 
@@ -53,7 +53,11 @@ void draw() {
   // Also, use the perspective() function to adjust your field of fiew
   // and the far clipping plane
   // You might want to test various FOV values in the Data Arena
-  perspective(PI/3.0, (float)width / (float)height, 10, 100000);
+  if (dataArena) {
+    perspective(PI/5.4, (float)width / (float)height, 10, 10000000);
+  } else {
+    perspective(PI/3.0, (float)width / (float)height, 10, 1000000);
+  }
 
   background(0);
   stroke(0);
@@ -109,6 +113,7 @@ void updateCam() {
 void printCamDetail() {
   float[] getCamRotation = cam.getRotations();
   cam.beginHUD();
+  perspective(PI/3.0, (float)width / (float)height, 10, 1000000);
   textSize(12);
   fill(255);
   text("Frames per second: " + (int)frameRate, 20, 20);

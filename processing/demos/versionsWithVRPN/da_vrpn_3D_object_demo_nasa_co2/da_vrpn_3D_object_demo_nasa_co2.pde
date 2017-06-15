@@ -1,5 +1,9 @@
 // Processing in the Data Arena
 // 3D object mode sketches
+// with VRPN connection support
+
+// This example uses the 3D Connexion Space Navigator
+// to control globe rotations.
 
 // NASA CO2 demo
 // This demo continues 3D sketches, using the drawContents() function from earlier
