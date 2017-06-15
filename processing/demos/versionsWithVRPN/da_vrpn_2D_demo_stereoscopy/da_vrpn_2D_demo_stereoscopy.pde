@@ -1,5 +1,9 @@
 // Processing in the Data Arena
-// 2D mode sketches
+// 2D stereoscopic mode sketches
+// with VRPN connection support
+
+// This example uses the 3D Connexion Space Navigator
+// to control noise values.
 
 // Stereoscopy
 // This demo introduces stereoscopic visuals in 2D environments
@@ -12,7 +16,7 @@ DeviceRead read;
 
 // If you're in the Data Arena, set this to true
 // and run matrix.solo in a shell
-boolean dataArena = false;
+boolean dataArena = true;
 int xStart, xEnd, yStart, yEnd;
 
 PGraphics contentsTop, contentsBottom;

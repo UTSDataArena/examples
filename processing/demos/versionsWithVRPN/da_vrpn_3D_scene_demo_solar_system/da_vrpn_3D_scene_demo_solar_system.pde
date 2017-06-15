@@ -1,5 +1,9 @@
 // Processing in the Data Arena
 // 3D Scene Mode sketch
+// with VRPN connection support
+
+// This example uses the 3D Connexion Space Navigator
+// to control camera tranformation and rotation.
 
 // Solar System demo
 // This sketch introduces 3D sketches in "scene" mode
@@ -95,9 +99,9 @@ void setup() {
   camTarget = new PVector();
   latestRecordedPosition = new PVector();
 
-  planetData = loadTable("solarSystemData.csv", "header");
-  starsData = loadTable("galaxyMapData.csv", "header");
-  font = loadFont("font.vlw");
+  planetData = loadTable("../../../resources/data/solarSystemData.csv", "header");
+  starsData = loadTable("../../../resources/data/galaxyMapData.csv", "header");
+  font = loadFont("../../../resources/fonts/font.vlw");
 
   textFont(font);
 
@@ -118,7 +122,7 @@ void setup() {
 
   // Sun
   sphereDetail(60);
-  sunTexture = loadImage("sunmap.jpg");
+  sunTexture = loadImage("../../../resources/images/sunmap.jpg");
   sunRadius = (planetData.getFloat(1, "SUN")/2) * sizeScale;
   sun = createShape(SPHERE, sunRadius);
   println(sunRadius);
