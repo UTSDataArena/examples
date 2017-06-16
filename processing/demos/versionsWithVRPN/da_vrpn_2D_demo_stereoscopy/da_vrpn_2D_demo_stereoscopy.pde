@@ -16,7 +16,7 @@ DeviceRead read;
 
 // If you're in the Data Arena, set this to true
 // and run matrix.solo in a shell
-boolean dataArena = true;
+boolean dataArena = false;
 int xStart, xEnd, yStart, yEnd;
 
 PGraphics contentsTop, contentsBottom;

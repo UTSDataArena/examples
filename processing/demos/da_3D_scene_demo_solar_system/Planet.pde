@@ -32,7 +32,7 @@ class Planet {
       radius = 50;
     }
     planetShape = createShape(SPHERE, radius);
-    planetTexture = loadImage("../../resources/images/" + nameShort + ".jpg");
+    planetTexture = loadImage(nameShort + ".jpg");
     planetShape.setStroke(false);
     planetShape.setTexture(planetTexture);
     startPosition = planetData.getFloat(20, planetName);
@@ -47,7 +47,7 @@ class Planet {
       opacity = new int[ringCount];
       weight = new float[ringCount];
       ringSize = radius * 3;
-      colours = loadStrings("../../resources/data/colours.txt");
+      colours = loadStrings("colours.txt");
       for (int i = 0; i < ringCount; i++) {
         weight[i] = random(3, 5);
         opacity[i] = (int)random(20, 80);
