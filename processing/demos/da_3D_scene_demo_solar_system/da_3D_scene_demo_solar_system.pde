@@ -93,9 +93,9 @@ void setup() {
   camTarget = new PVector();
   latestRecordedPosition = new PVector();
 
-  planetData = loadTable("../../resources/data/solarSystemData.csv", "header");
-  starsData = loadTable("../../resources/data/galaxyMapData.csv", "header");
-  font = loadFont("../../resources/fonts/font.vlw");
+  planetData = loadTable("solarSystemData.csv", "header");
+  starsData = loadTable("galaxyMapData.csv", "header");
+  font = loadFont("font.vlw");
 
   textFont(font);
 
@@ -116,10 +116,9 @@ void setup() {
 
   // Sun
   sphereDetail(60);
-  sunTexture = loadImage("../../resources/images/sunmap.jpg");
+  sunTexture = loadImage("sunmap.jpg");
   sunRadius = (planetData.getFloat(1, "SUN")/2) * sizeScale;
   sun = createShape(SPHERE, sunRadius);
-  println(sunRadius);
   sun.setTexture(sunTexture);
   sun.setStroke(false);
 

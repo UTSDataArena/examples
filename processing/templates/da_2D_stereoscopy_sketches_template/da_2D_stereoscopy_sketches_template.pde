@@ -2,7 +2,7 @@
 // 2D Stereoscopic Sketches Template
 
 // If you're in the Data Arena, set this to true
-// and run matrix.solo.mono in a shell
+// and run matrix.solo in a shell
 boolean dataArena = false;
 int xStart, xEnd, yStart, yEnd;
 

@@ -35,6 +35,7 @@ PImage co2scale;
 
 float camRotateX, camRotateY, camRotateZ;
 float dist = 800;
+File f;
 
 void settings() {
   if (dataArena) {
@@ -47,7 +48,7 @@ void settings() {
 
 void setup() {
   cam = new PeasyCam(this, 800);
-  co2vid = new Movie(this, "nasaco2.mp4");
+  co2vid = new Movie(this, "nasaco2.mkv");
   co2vid.loop();
   globe = createShape(SPHERE, 200);
   globe.setTexture(co2vid);
