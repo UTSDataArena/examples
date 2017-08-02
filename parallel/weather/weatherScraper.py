@@ -82,6 +82,8 @@ locationDict = {
    'Hobart':'IDCJDW7021',
    'Darwin':'IDCJDW8014'
 }
+# note: The BOM website hosts the last n months of weather data only, so these dates may need to be 
+#       updated to match the data set that is currently available at the time of execution.
 dates = ['201707','201706','201705','201704','201703','201702','201701','201612','201611','201610','201609','201608','201607']
 
 data = []
