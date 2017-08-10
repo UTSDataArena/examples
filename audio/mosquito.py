@@ -6,6 +6,14 @@ from daAudio import *
 from daInput import *
 
 if __name__ == '__main__':
+    """
+    This example demonstrates how to introduce audio into an omegalib visualisation.   It shows 
+    how to use various features which are provided by the daAudio and daInput omegalib modules, 
+    including:
+
+        - How to create an input cursor and use it to control the position of a sound source
+        - How to load and play an audio effect in a continuous loop
+    """
 
     path = os.path.dirname(__file__)
     if not path:
