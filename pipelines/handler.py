@@ -13,6 +13,7 @@ try:
 except ImportError:
     print "Could not import module: daHEngine."
 try:
+    import os
     from euclid import Vector2, Vector3, Quaternion
     from omega import Color, loadImage
     from omegaToolkit import UiModule, Container, ContainerLayout, Label, Image
@@ -565,6 +566,8 @@ class OTLHandler(GeometryHandler):
 
 class CanvasHandler(BaseHandler):
 
+        resources = '/local/examples/pipelines/resources' 
+
         def __init__(self):
                 BaseHandler.__init__(self)
                 self.cursors = []
@@ -580,8 +583,8 @@ class CanvasHandler(BaseHandler):
                 c3d.scale = 0.001
                 c3d.node = self.objects 
 
-                self.cursorImg = loadImage('/da/sw/omegalib/myCursor.png')
-                self.cursorClickImg = loadImage('/da/sw/omegalib/myCursor_click.png')
+                self.cursorImg = loadImage(os.path.join(CanvasHandler.resources, 'myCursor.png'))
+                self.cursorClickImg = loadImage(os.path.join(CanvasHandler.resources, 'myCursor_click.png'))
 
         def addCanvas(self, canvas):
                 """Loads canvas and set position in container."""
@@ -613,7 +616,7 @@ class CanvasHandler(BaseHandler):
                         cursor.setSize(Vector2(32, 32))
                         cursor.setData(cursorImg)
                 else:
-                        cursor.setData(loadImage('/da/sw/omegalib/myCursor_' + str(i + 1) + '.png'))
+                        cursor.setData(loadImage(os.path.join(CanvasHandler.resources, 'myCursor_' + str(i + 1) + '.png')))
                         cursor.setSize(Vector2(24, 24))
                 self.cursors.append((cursor, label))
 
