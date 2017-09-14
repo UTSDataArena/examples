@@ -47,9 +47,10 @@ if __name__ == '__main__':
 
         ui_context.on_event(event)
         cursor = ui_context.get_cursor(event)
-        position = cursor.get_position()
 
         if ControllerCursor.is_interested(event) and isinstance(cursor, ControllerCursor):
+            position = cursor.get_position()
+
             mosquito.set_position([position.x, position.y, position.z])
             player.update() 
 
